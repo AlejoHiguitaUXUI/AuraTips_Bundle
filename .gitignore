@@ -42,3 +42,8 @@ next-env.d.ts
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# supabase
+supabase/.temp/
+
+
