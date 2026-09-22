@@ -13,6 +13,8 @@ import {
   CalendarIcon,
   ClipboardCheckIcon,
   ArrowRightIcon,
+  SparklesIcon,
+  ActivityIcon,
 } from "@/components/icons";
 
 export default async function CourseDetailPage({
@@ -168,8 +170,9 @@ export default async function CourseDetailPage({
           />
           <div className="procedure-hero-backdrop" aria-hidden="true" />
           <div className="procedure-hero-card animate-slide-up">
-            <span className="category-pill-gold">
-              <span>✦</span> {course.category}
+            <span className="category-pill-gold" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              <SparklesIcon size={12} />
+              <span>{course.category}</span>
             </span>
             <h1>{course.title}</h1>
             <p>
@@ -190,7 +193,10 @@ export default async function CourseDetailPage({
           <span className="val">{course.recovery_time}</span>
         </div>
         <div className="ribbon-cell">
-          <span className="lbl">Nivel de Molestia</span>
+          <span className="lbl" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <ActivityIcon size={13} color="var(--color-muted)" />
+            <span>Nivel de Molestia</span>
+          </span>
           <span className="val">
             {"●".repeat(course.pain_level)}{"○".repeat(5 - course.pain_level)} ({course.pain_level}/5)
           </span>
@@ -240,7 +246,7 @@ export default async function CourseDetailPage({
 
       {/* Botón de Inscripción / Seguimiento del Paciente */}
       {dbCourse && (
-        <div style={{ marginBottom: "32px", padding: "16px 20px", background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ marginBottom: "32px", padding: "16px 20px", background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
           <div>
             <h3 style={{ fontSize: "15px", fontWeight: 700, margin: 0 }}>¿Te realizaste o vas a realizarte este procedimiento?</h3>
             <p style={{ fontSize: "13px", color: "var(--color-muted)", margin: "4px 0 0" }}>

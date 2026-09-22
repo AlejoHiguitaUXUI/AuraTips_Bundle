@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { CheckCircle2Icon } from "@/components/icons";
 
 interface Profile {
   id: string;
@@ -52,7 +53,12 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   return (
     <form onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      {saved && !error && <p className="muted" style={{ color: "var(--color-brand)" }}>Cambios guardados exitosamente.</p>}
+      {saved && !error && (
+        <p className="muted" style={{ color: "var(--color-brand)", display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+          <CheckCircle2Icon size={16} />
+          <span>Cambios guardados exitosamente.</span>
+        </p>
+      )}
 
       <label htmlFor="display_name">Nombre para mostrar</label>
       <input

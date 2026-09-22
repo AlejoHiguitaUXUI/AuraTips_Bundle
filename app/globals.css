@@ -99,7 +99,7 @@
   --shadow-md:   0 4px 6px -1px rgba(17,24,39,0.07), 0 2px 4px -2px rgba(17,24,39,0.05);
   --shadow-lg:   0 10px 15px -3px rgba(17,24,39,0.08), 0 4px 6px -4px rgba(17,24,39,0.04);
   --shadow-xl:   0 20px 25px -5px rgba(17,24,39,0.08), 0 8px 10px -6px rgba(17,24,39,0.04);
-  --shadow-brand: 0 4px 14px 0 rgba(79,110,247,0.3);
+  --shadow-brand: 0 4px 14px 0 rgba(32, 80, 59, 0.22);
 
   /* Motion */
   --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
@@ -128,6 +128,7 @@
   --color-brand-soft:    #163527;
   --color-brand-border:  #25543F;
   --color-gold:          #E2C26E;
+  --color-gold-text:     #E2C26E;
   --color-gold-soft:     #2D2513;
   --color-gold-border:   #54441F;
   --color-amber:         #FBBF24;
@@ -247,7 +248,7 @@ code, kbd, pre {
   top: 0;
   z-index: 100;
   height: var(--header-height);
-  background: rgba(246, 247, 251, 0.85);
+  background: rgba(250, 248, 245, 0.88);
   backdrop-filter: blur(12px) saturate(1.5);
   -webkit-backdrop-filter: blur(12px) saturate(1.5);
   border-bottom: 1px solid var(--color-border);
@@ -256,7 +257,7 @@ code, kbd, pre {
 }
 
 [data-theme="dark"] .site-header {
-  background: rgba(10, 14, 26, 0.85);
+  background: rgba(12, 18, 15, 0.88);
 }
 
 .site-header .container {
@@ -266,6 +267,27 @@ code, kbd, pre {
   justify-content: space-between;
   gap: var(--space-4);
   padding-block: 0;
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    height: auto;
+    padding-block: var(--space-2);
+  }
+  .site-header .container {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .site-nav {
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .site-logo {
@@ -402,7 +424,7 @@ code, kbd, pre {
   background: var(--color-brand-hover);
   border-color: var(--color-brand-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(79,110,247,0.4);
+  box-shadow: 0 4px 16px rgba(32, 80, 59, 0.28);
 }
 .btn:active,
 .btn-primary:active {
@@ -524,7 +546,7 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(79,110,247,0.15);
+  box-shadow: 0 0 0 3px rgba(32, 80, 59, 0.15);
 }
 
 textarea {

@@ -114,77 +114,115 @@ export default async function CatalogPage({
       </nav>
 
       {/* Grid de Procedimientos Clínicos */}
-      <section className="catalog-grid stagger animate-slide-up" aria-label="Catálogo de procedimientos">
-        {filteredProcedures.map((proc) => {
-          const painMeter = "●".repeat(proc.pain_level) + "○".repeat(5 - proc.pain_level);
+      {filteredProcedures.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "var(--space-12) var(--space-4)",
+            background: "var(--color-surface)",
+            borderRadius: "var(--radius-xl)",
+            border: "1px solid var(--color-border)",
+            marginBlock: "var(--space-6)",
+          }}
+        >
+          <div
+            style={{
+              width: 52,
+              height: 52,
+              borderRadius: "var(--radius-full)",
+              background: "var(--color-brand-soft)",
+              color: "var(--color-brand)",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "var(--space-3)",
+            }}
+          >
+            <LeafIcon size={24} />
+          </div>
+          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, margin: "0 0 8px", color: "var(--color-text)" }}>
+            No hay procedimientos en esta categoría
+          </h3>
+          <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", maxWidth: "440px", margin: "0 auto var(--space-4)" }}>
+            Actualmente no encontramos protocolos registrados bajo la categoría &ldquo;{currentCategory}&rdquo;.
+          </p>
+          <Link href="/" className="btn secondary btn-sm" style={{ textDecoration: "none" }}>
+            Ver todos los procedimientos
+          </Link>
+        </div>
+      ) : (
+        <section className="catalog-grid stagger animate-slide-up" aria-label="Catálogo de procedimientos">
+          {filteredProcedures.map((proc) => {
+            const painMeter = "●".repeat(proc.pain_level) + "○".repeat(5 - proc.pain_level);
 
-          return (
-            <Link
-              key={proc.id}
-              href={`/courses/${proc.slug}`}
-              className="procedure-card"
-              aria-label={`Protocolo de ${proc.title}`}
-            >
-              {/* Thumbnail con Tag de Categoría */}
-              <div className="procedure-thumb-wrap">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={proc.cover_url}
-                  alt={proc.title}
-                  className="procedure-thumb"
-                  loading="lazy"
-                />
-                <span className="procedure-category-tag">{proc.category}</span>
-              </div>
+            return (
+              <Link
+                key={proc.id}
+                href={`/courses/${proc.slug}`}
+                className="procedure-card"
+                aria-label={`Protocolo de ${proc.title}`}
+              >
+                {/* Thumbnail con Tag de Categoría */}
+                <div className="procedure-thumb-wrap">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={proc.cover_url}
+                    alt={proc.title}
+                    className="procedure-thumb"
+                    loading="lazy"
+                  />
+                  <span className="procedure-category-tag">{proc.category}</span>
+                </div>
 
-              {/* Contenido de la Tarjeta */}
-              <div className="procedure-card-body">
-                <h2 className="procedure-card-title">{proc.title}</h2>
-                <p className="procedure-card-desc">{proc.description}</p>
+                {/* Contenido de la Tarjeta */}
+                <div className="procedure-card-body">
+                  <h2 className="procedure-card-title">{proc.title}</h2>
+                  <p className="procedure-card-desc">{proc.description}</p>
 
-                {/* Métricas Clínicas Clave */}
-                <div className="procedure-metrics">
-                  <div className="metric-item">
-                    <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                      <ClockIcon size={13} /> Reposo estimado
-                    </span>
-                    <span className="metric-value">{proc.recovery_time}</span>
+                  {/* Métricas Clínicas Clave */}
+                  <div className="procedure-metrics">
+                    <div className="metric-item">
+                      <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                        <ClockIcon size={13} /> Reposo estimado
+                      </span>
+                      <span className="metric-value">{proc.recovery_time}</span>
+                    </div>
+                    <div className="metric-item">
+                      <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                        <ActivityIcon size={13} /> Molestia esperada
+                      </span>
+                      <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
+                        {painMeter} <span style={{ fontSize: "10px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
+                      </span>
+                    </div>
                   </div>
-                  <div className="metric-item">
-                    <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                      <ActivityIcon size={13} /> Molestia esperada
-                    </span>
-                    <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
-                      {painMeter} <span style={{ fontSize: "10px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
+
+                  {/* Footer con Especialista y CTA */}
+                  <div className="procedure-card-footer">
+                    <div className="doctor-avatar-tag" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <StethoscopeIcon size={14} style={{ color: "var(--color-brand)" }} />
+                      <span>{proc.author_name || "Dra. Mariana Gómez"}</span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        color: "var(--color-brand)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <span>Ver Protocolo</span>
+                      <ArrowRightIcon size={13} />
                     </span>
                   </div>
                 </div>
-
-                {/* Footer con Especialista y CTA */}
-                <div className="procedure-card-footer">
-                  <div className="doctor-avatar-tag" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <StethoscopeIcon size={14} style={{ color: "var(--color-brand)" }} />
-                    <span>{proc.author_name || "Dra. Mariana Gómez"}</span>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: "var(--color-brand)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <span>Ver Protocolo</span>
-                    <ArrowRightIcon size={13} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </section>
+              </Link>
+            );
+          })}
+        </section>
+      )}
     </>
   );
 }
