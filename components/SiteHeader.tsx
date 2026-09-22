@@ -13,24 +13,27 @@ export async function SiteHeader() {
     <header className="site-header">
       <div className="container">
         {/* Logo */}
-        <Link href="/" className="site-logo" aria-label="Course Platform home">
-          <span className="site-logo-icon" aria-hidden="true">
-            C
+        <Link href="/" className="site-logo" aria-label="Aesthetica Care home">
+          <span className="site-logo-icon" aria-hidden="true" style={{ background: "linear-gradient(135deg, #20503B, #3B6E57)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            🌿
           </span>
-          <span>LearnFlow</span>
+          <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+            <span style={{ fontWeight: 700, letterSpacing: "-0.01em" }}>Aesthetica</span>
+            <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-muted)" }}>Clinical Care</span>
+          </span>
         </Link>
 
         {/* Navigation */}
         <nav className="site-nav" aria-label="Main navigation">
-          <Link href="/">Catalog</Link>
+          <Link href="/">Procedimientos</Link>
 
           {user ? (
             <>
-              <Link href="/dashboard/learning">My learning</Link>
-              <Link href="/dashboard/teaching">Teaching</Link>
+              <Link href="/dashboard/learning">Mis Cuidados</Link>
+              <Link href="/dashboard/teaching">Panel Clínico</Link>
               <span className="site-nav-divider" aria-hidden="true" />
               <Link href="/dashboard/profile" className="btn-ghost btn btn-sm">
-                Profile
+                Perfil
               </Link>
               <SignOutButton />
             </>
@@ -38,10 +41,10 @@ export async function SiteHeader() {
             <>
               <span className="site-nav-divider" aria-hidden="true" />
               <Link href="/login" className="btn-ghost btn btn-sm">
-                Log in
+                Iniciar Sesión
               </Link>
               <Link href="/register" className="btn btn-sm">
-                Sign up
+                Registrarse
               </Link>
             </>
           )}

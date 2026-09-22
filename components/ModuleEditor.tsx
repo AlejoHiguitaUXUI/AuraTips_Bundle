@@ -39,7 +39,7 @@ export function ModuleEditor({
   }
 
   async function deleteModule() {
-    if (!confirm(`Delete module "${mod.title}" and all its lessons?`)) return;
+    if (!confirm(`¿Eliminar la etapa de recuperación "${mod.title}" y todos sus protocolos?`)) return;
     const supabase = createClient();
     const { error: deleteError } = await supabase
       .from("modules")
@@ -57,17 +57,37 @@ export function ModuleEditor({
     const nextPosition = mod.lessons.length;
     const { data, error: insertError } = await supabase
       .from("lessons")
-      .insert({ module_id: mod.id, title: "New lesson", position: nextPosition })
-      .select("id, title, position")
+      .insert({
+        module_id: mod.id,
+        title: "Nueva pauta de cuidado",
+        position: nextPosition,
+        timeline_tag: "Día 0",
+        care_type: "general",
+        is_alarm: false,
+      })
+      .select("id, title, position, timeline_tag, is_alarm, care_type")
       .single();
     if (insertError || !data) {
-      setError(insertError?.message ?? "Could not add lesson.");
+      setError(insertError?.message ?? "No se pudo agregar la pauta.");
       return;
     }
-    // Content row starts empty; created on first save.
     onModuleChange({
       ...mod,
-      lessons: [...mod.lessons, { ...data, body_md: "", youtube_url: "" }],
+      lessons: [
+        ...mod.lessons,
+        {
+          ...data,
+          timeline_tag: data.timeline_tag || "Día 0",
+          is_alarm: Boolean(data.is_alarm),
+          care_type: data.care_type || "general",
+          body_md: "",
+          youtube_url: "",
+          dos: [],
+          donts: [],
+          checklist_items: [],
+          emergency_contacts: "",
+        },
+      ],
     });
   }
 
@@ -87,7 +107,7 @@ export function ModuleEditor({
       supabase.from("lessons").update({ position: a.position }).eq("id", b.id),
     ]);
     if (err1 || err2) {
-      setError((err1 ?? err2)?.message ?? "Could not reorder lessons.");
+      setError((err1 ?? err2)?.message ?? "No se pudieron reordenar las pautas.");
       return;
     }
 
@@ -99,37 +119,89 @@ export function ModuleEditor({
   }
 
   return (
-    <div className="card" style={{ marginBottom: 16 }}>
+    <div
+      className="card"
+      style={{
+        marginBottom: 20,
+        backgroundColor: "var(--color-surface, #ffffff)",
+        borderRadius: "var(--radius-lg, 12px)",
+        border: "1px solid var(--color-border, #e5e7eb)",
+        padding: "var(--space-4, 16px)",
+      }}
+    >
       {error && <div className="error">{error}</div>}
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <button
-          className="btn secondary"
-          onClick={() => onMove(-1)}
-          disabled={!canMoveUp}
-          aria-label="Move module up"
+      <div
+        style={{
+          display: "flex",
+          gap: 10,
+          alignItems: "center",
+          flexWrap: "wrap",
+          paddingBottom: "12px",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div style={{ display: "flex", gap: 4 }}>
+          <button
+            type="button"
+            className="btn secondary btn-sm"
+            onClick={() => onMove(-1)}
+            disabled={!canMoveUp}
+            aria-label="Mover etapa arriba"
+            style={{ padding: "4px 8px" }}
+          >
+            ↑
+          </button>
+          <button
+            type="button"
+            className="btn secondary btn-sm"
+            onClick={() => onMove(1)}
+            disabled={!canMoveDown}
+            aria-label="Mover etapa abajo"
+            style={{ padding: "4px 8px" }}
+          >
+            ↓
+          </button>
+        </div>
+
+        <span
+          style={{
+            fontSize: "12px",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            color: "var(--color-brand, #20503b)",
+          }}
         >
-          ↑
-        </button>
-        <button
-          className="btn secondary"
-          onClick={() => onMove(1)}
-          disabled={!canMoveDown}
-          aria-label="Move module down"
-        >
-          ↓
-        </button>
+          Etapa:
+        </span>
+
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={saveTitle}
-          style={{ marginBottom: 0, fontWeight: 600 }}
+          placeholder="ej. Fase Inmediata: Primeras 4 Horas"
+          style={{
+            flex: 1,
+            marginBottom: 0,
+            fontWeight: 700,
+            fontSize: "15px",
+            padding: "6px 12px",
+            borderRadius: "6px",
+            border: "1px solid var(--color-border)",
+          }}
         />
-        <button className="btn secondary" onClick={deleteModule}>
-          Delete module
+
+        <button
+          type="button"
+          className="btn secondary btn-sm"
+          onClick={deleteModule}
+          style={{ color: "#ef4444", fontSize: "12px" }}
+        >
+          Eliminar Etapa
         </button>
       </div>
 
-      <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 12 }}>
         {mod.lessons.map((lesson, i) => (
           <LessonEditor
             key={lesson.id}
@@ -155,8 +227,13 @@ export function ModuleEditor({
         ))}
       </div>
 
-      <button className="btn secondary" style={{ marginTop: 12 }} onClick={addLesson}>
-        + Add lesson
+      <button
+        type="button"
+        className="btn secondary btn-sm"
+        style={{ marginTop: 12, width: "100%", justifyContent: "center" }}
+        onClick={addLesson}
+      >
+        + Añadir Pauta de Cuidado a esta Etapa
       </button>
     </div>
   );

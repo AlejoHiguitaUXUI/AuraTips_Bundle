@@ -42,6 +42,13 @@ export interface Database {
           cover_url: string | null;
           status: CourseStatus;
           price: number;
+          category?: string | null;
+          recovery_time?: string | null;
+          pain_level?: number | null;
+          duration_minutes?: number | null;
+          results_duration?: string | null;
+          alarm_signs?: string[] | null;
+          anesthesia_type?: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -54,6 +61,13 @@ export interface Database {
           cover_url?: string | null;
           status?: CourseStatus;
           price?: number;
+          category?: string | null;
+          recovery_time?: string | null;
+          pain_level?: number | null;
+          duration_minutes?: number | null;
+          results_duration?: string | null;
+          alarm_signs?: string[] | null;
+          anesthesia_type?: string | null;
         };
         Update: {
           title?: string;
@@ -62,6 +76,13 @@ export interface Database {
           cover_url?: string | null;
           status?: CourseStatus;
           price?: number;
+          category?: string | null;
+          recovery_time?: string | null;
+          pain_level?: number | null;
+          duration_minutes?: number | null;
+          results_duration?: string | null;
+          alarm_signs?: string[] | null;
+          anesthesia_type?: string | null;
         };
         Relationships: [
           {
@@ -104,6 +125,9 @@ export interface Database {
           module_id: string;
           title: string;
           position: number;
+          care_type?: string | null;
+          timeline_tag?: string | null;
+          is_alarm?: boolean | null;
           created_at: string;
         };
         Insert: {
@@ -111,8 +135,17 @@ export interface Database {
           module_id: string;
           title: string;
           position: number;
+          care_type?: string | null;
+          timeline_tag?: string | null;
+          is_alarm?: boolean | null;
         };
-        Update: { title?: string; position?: number };
+        Update: {
+          title?: string;
+          position?: number;
+          care_type?: string | null;
+          timeline_tag?: string | null;
+          is_alarm?: boolean | null;
+        };
         Relationships: [
           {
             foreignKeyName: "lessons_module_id_fkey";
@@ -128,14 +161,29 @@ export interface Database {
           lesson_id: string;
           body_md: string | null;
           youtube_url: string | null;
+          checklist_items?: any | null;
+          dos?: string[] | null;
+          donts?: string[] | null;
+          emergency_contacts?: string | null;
           updated_at: string;
         };
         Insert: {
           lesson_id: string;
           body_md?: string | null;
           youtube_url?: string | null;
+          checklist_items?: any | null;
+          dos?: string[] | null;
+          donts?: string[] | null;
+          emergency_contacts?: string | null;
         };
-        Update: { body_md?: string | null; youtube_url?: string | null };
+        Update: {
+          body_md?: string | null;
+          youtube_url?: string | null;
+          checklist_items?: any | null;
+          dos?: string[] | null;
+          donts?: string[] | null;
+          emergency_contacts?: string | null;
+        };
         Relationships: [
           {
             foreignKeyName: "lesson_contents_lesson_id_fkey";

@@ -22,15 +22,15 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Course Platform — Learn at your own pace",
-    template: "%s · Course Platform",
+    default: "Aesthetica Care — Educación Médica & Cuidados Post-Procedimiento",
+    template: "%s · Aesthetica Care",
   },
   description:
-    "Publish and learn online courses with interactive video lessons, quizzes, and progress tracking.",
+    "Portal clínico especializado en medicina estética, protocolos de recuperación guiados y seguimiento médico post-tratamiento.",
   openGraph: {
     type: "website",
-    locale: "en_US",
-    siteName: "Course Platform",
+    locale: "es_ES",
+    siteName: "Aesthetica Clinical Care",
   },
 };
 

@@ -10,39 +10,42 @@
    1. DESIGN TOKENS — Light Mode (default)
    ========================================================= */
 :root {
-  /* Palette */
-  --color-base:          #F6F7FB;
-  --color-base-2:        #ECEEF5;
+  /* Palette - Luxury Clinical & Wellness */
+  --color-base:          #FAF8F5;
+  --color-base-2:        #F2EEE8;
   --color-surface:       #FFFFFF;
-  --color-surface-2:     #F0F2FA;
-  --color-brand:         #4F6EF7;
-  --color-brand-hover:   #3A57E8;
-  --color-brand-soft:    #EEF1FE;
-  --color-brand-border:  #C7D0FB;
-  --color-amber:         #F59E0B;
+  --color-surface-2:     #F5F2ED;
+  --color-brand:         #20503B;
+  --color-brand-hover:   #173C2C;
+  --color-brand-soft:    #EAF2ED;
+  --color-brand-border:  #BED3C7;
+  --color-gold:          #C29B38;
+  --color-gold-soft:     #F9F4E8;
+  --color-gold-border:   #E4D2A3;
+  --color-amber:         #D97706;
   --color-amber-soft:    #FEF3C7;
-  --color-amber-hover:   #D97706;
-  --color-success:       #10B981;
-  --color-success-soft:  #D1FAE5;
-  --color-error:         #EF4444;
-  --color-error-soft:    #FEE2E2;
-  --color-error-border:  #FECACA;
+  --color-amber-hover:   #B45309;
+  --color-success:       #1B7F53;
+  --color-success-soft:  #DCFCE7;
+  --color-error:         #BE123C;
+  --color-error-soft:    #FFE4E6;
+  --color-error-border:  #FECDD3;
 
   /* Text */
-  --color-text:          #111827;
-  --color-text-2:        #374151;
-  --color-muted:         #6B7280;
-  --color-muted-2:       #9CA3AF;
+  --color-text:          #161B18;
+  --color-text-2:        #313A35;
+  --color-muted:         #637068;
+  --color-muted-2:       #8E9C94;
   --color-inverse:       #FFFFFF;
 
   /* Borders */
-  --color-border:        #E5E7EB;
-  --color-border-2:      #D1D5DB;
+  --color-border:        #E5E0D8;
+  --color-border-2:      #D3CDC3;
 
   /* Gradients */
-  --gradient-brand:      linear-gradient(135deg, #4F6EF7 0%, #7C3AED 100%);
-  --gradient-amber:      linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
-  --gradient-surface:    linear-gradient(180deg, #FFFFFF 0%, #F6F7FB 100%);
+  --gradient-brand:      linear-gradient(135deg, #20503B 0%, #153828 100%);
+  --gradient-gold:       linear-gradient(135deg, #D4AF37 0%, #AA8221 100%);
+  --gradient-surface:    linear-gradient(180deg, #FFFFFF 0%, #FAF8F5 100%);
 
   /* Typography */
   --font-sans:    'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -115,31 +118,36 @@
    2. DESIGN TOKENS — Dark Mode
    ========================================================= */
 [data-theme="dark"] {
-  --color-base:          #0A0E1A;
-  --color-base-2:        #0F1629;
-  --color-surface:       #141B2D;
-  --color-surface-2:     #1C2540;
-  --color-brand:         #6B87FF;
-  --color-brand-hover:   #8BA3FF;
-  --color-brand-soft:    #1E2A5E;
-  --color-brand-border:  #2D3F8A;
+  --color-base:          #0C120F;
+  --color-base-2:        #121B17;
+  --color-surface:       #15201B;
+  --color-surface-2:     #1B2923;
+  --color-brand:         #44B685;
+  --color-brand-hover:   #5DCD9D;
+  --color-brand-soft:    #163527;
+  --color-brand-border:  #25543F;
+  --color-gold:          #E2C26E;
+  --color-gold-soft:     #2D2513;
+  --color-gold-border:   #54441F;
   --color-amber:         #FBBF24;
   --color-amber-soft:    #292005;
   --color-amber-hover:   #F59E0B;
   --color-success:       #34D399;
   --color-success-soft:  #022C22;
-  --color-error:         #F87171;
-  --color-error-soft:    #2D0707;
-  --color-error-border:  #7F1D1D;
-  --color-text:          #F1F5F9;
-  --color-text-2:        #CBD5E1;
-  --color-muted:         #94A3B8;
-  --color-muted-2:       #64748B;
-  --color-inverse:       #0A0E1A;
-  --color-border:        #1E293B;
-  --color-border-2:      #334155;
-  --gradient-surface:    linear-gradient(180deg, #141B2D 0%, #0F1629 100%);
-  --shadow-brand:        0 4px 14px 0 rgba(107,135,255,0.35);
+  --color-error:         #FB7185;
+  --color-error-soft:    #4C0519;
+  --color-error-border:  #881337;
+  --color-text:          #F3F7F5;
+  --color-text-2:        #D1DCD6;
+  --color-muted:         #8D9E95;
+  --color-muted-2:       #64756D;
+  --color-inverse:       #0C120F;
+  --color-border:        #23352C;
+  --color-border-2:      #334D40;
+  --gradient-brand:      linear-gradient(135deg, #44B685 0%, #20503B 100%);
+  --gradient-gold:       linear-gradient(135deg, #E2C26E 0%, #B89047 100%);
+  --gradient-surface:    linear-gradient(180deg, #15201B 0%, #0C120F 100%);
+  --shadow-brand:        0 4px 14px 0 rgba(68,182,133,0.3);
 }
 
 /* =========================================================
@@ -309,6 +317,34 @@ code, kbd, pre {
 .site-nav a.active {
   color: var(--color-brand);
   background: var(--color-brand-soft);
+}
+
+/* Specificity overrides for header buttons */
+.site-nav a.btn,
+.site-nav .btn {
+  color: #FFFFFF !important;
+  background-color: var(--color-brand) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.site-nav a.btn:hover,
+.site-nav .btn:hover {
+  color: #FFFFFF !important;
+  background-color: var(--color-brand-hover) !important;
+  transform: translateY(-1px);
+}
+
+.site-nav a.btn-ghost,
+.site-nav .btn-ghost {
+  color: var(--color-text) !important;
+  background-color: transparent !important;
+  border-color: var(--color-border) !important;
+}
+
+.site-nav a.btn-ghost:hover,
+.site-nav .btn-ghost:hover {
+  color: var(--color-text) !important;
+  background-color: var(--color-surface-2) !important;
 }
 
 .site-nav-divider {
@@ -634,11 +670,24 @@ textarea {
 /* Widget E: Progress — full width */
 .bento-progress  { grid-column: 1 / 13; grid-row: 3; }
 
+/* Clinical Patient Dashboard (Phase 6) */
+.bento-active-procedure { grid-column: 1 / 8; }
+.bento-doctor-card     { grid-column: 8 / 13; }
+.bento-checklist       { grid-column: 1 / 7; }
+.bento-symptoms        { grid-column: 7 / 13; }
+.bento-history         { grid-column: 1 / 13; }
+
 @media (max-width: 1024px) {
   .bento-resume  { grid-column: 1 / 8; }
   .bento-streak  { grid-column: 8 / 13; }
   .bento-ai      { grid-column: 1 / 7; }
   .bento-social  { grid-column: 7 / 13; }
+
+  .bento-active-procedure { grid-column: 1 / 13; }
+  .bento-doctor-card     { grid-column: 1 / 13; }
+  .bento-checklist       { grid-column: 1 / 13; }
+  .bento-symptoms        { grid-column: 1 / 13; }
+  .bento-history         { grid-column: 1 / 13; }
 }
 
 @media (max-width: 768px) {
@@ -650,7 +699,12 @@ textarea {
   .bento-streak,
   .bento-ai,
   .bento-social,
-  .bento-progress { grid-column: 1; grid-row: auto; }
+  .bento-progress,
+  .bento-active-procedure,
+  .bento-doctor-card,
+  .bento-checklist,
+  .bento-symptoms,
+  .bento-history { grid-column: 1; grid-row: auto; }
 }
 
 .bento-card {
@@ -927,75 +981,7 @@ textarea {
 }
 
 /* =========================================================
-   19. XP BURST ANIMATION
-   ========================================================= */
-.xp-burst {
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  font-family: var(--font-sans);
-  font-size: var(--text-2xl);
-  font-weight: var(--fw-extrabold);
-  color: var(--color-amber);
-  text-shadow: 0 2px 8px rgba(245,158,11,0.4);
-  animation: xpBurst 1.2s var(--ease-out) forwards;
-}
-
-@keyframes xpBurst {
-  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-  20%  { opacity: 1; transform: translateY(-20px) scale(1.1); }
-  80%  { opacity: 1; transform: translateY(-60px) scale(1); }
-  100% { opacity: 0; transform: translateY(-90px) scale(0.9); }
-}
-
-/* =========================================================
-   20. STREAK MODAL
-   ========================================================= */
-.streak-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(3px);
-  z-index: 200;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: var(--space-4);
-  animation: fadeIn var(--dur-base) var(--ease-out);
-}
-
-@media (min-width: 640px) {
-  .streak-modal-backdrop {
-    align-items: center;
-  }
-}
-
-.streak-modal {
-  background: var(--color-surface);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-8);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  box-shadow: var(--shadow-xl);
-  animation: slideUp var(--dur-slow) var(--ease-spring);
-}
-
-.streak-fire-icon {
-  font-size: 56px;
-  line-height: 1;
-  margin-bottom: var(--space-4);
-  display: block;
-  animation: pulse 2s var(--ease-in-out) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.08); }
-}
-
-/* =========================================================
-   21. GLOBAL ANIMATIONS
+   19. GLOBAL ANIMATIONS
    ========================================================= */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -1082,3 +1068,598 @@ textarea {
 .justify-between { justify-content: space-between; }
 .flex-1 { flex: 1; }
 .w-full { width: 100%; }
+
+/* =========================================================
+   CLINICAL & AESTHETIC CARE DESIGN SYSTEM
+   ========================================================= */
+
+/* Hero Especializado */
+.aesthetic-hero {
+  text-align: center;
+  padding: var(--space-12) var(--space-4) var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.aesthetic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 14px;
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand);
+  border: 1px solid var(--color-brand-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.aesthetic-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.15;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+
+.aesthetic-hero p {
+  font-size: var(--text-lg);
+  color: var(--color-muted);
+  line-height: 1.6;
+  max-width: 680px;
+  margin: 0 auto var(--space-8);
+}
+
+/* Buscador Clínico RAG */
+.clinical-search-wrapper {
+  max-width: 680px;
+  margin: 0 auto var(--space-10);
+  position: relative;
+}
+
+.clinical-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 6px 8px 6px 18px;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--dur-base) var(--ease-out);
+}
+
+.clinical-search-bar:focus-within {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-soft), var(--shadow-lg);
+}
+
+.clinical-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  outline: none;
+  padding: var(--space-2) 0;
+  font-family: var(--font-sans);
+}
+
+.clinical-search-input::placeholder {
+  color: var(--color-muted-2);
+}
+
+.clinical-search-btn {
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 10px 20px;
+  font-weight: var(--fw-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: opacity var(--dur-base) ease;
+}
+
+.clinical-search-btn:hover {
+  opacity: 0.92;
+}
+
+/* Category Filters */
+.category-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.category-chip {
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  text-decoration: none;
+}
+
+.category-chip:hover,
+.category-chip.active {
+  background-color: var(--color-brand);
+  color: #ffffff;
+  border-color: var(--color-brand);
+}
+
+/* Tarjeta de Procedimiento */
+.procedure-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  position: relative;
+}
+
+.procedure-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--color-brand-border);
+}
+
+.procedure-thumb-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: var(--color-surface-2);
+}
+
+.procedure-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.procedure-card:hover .procedure-thumb {
+  transform: scale(1.04);
+}
+
+.procedure-category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(22, 27, 24, 0.82);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.procedure-card-body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.procedure-card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  line-height: 1.3;
+  margin-bottom: var(--space-2);
+}
+
+.procedure-card-desc {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Métricas del Procedimiento (Recovery & Pain) */
+.procedure-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  color: var(--color-muted-2);
+  font-weight: var(--fw-medium);
+  margin-bottom: 2px;
+}
+
+.metric-value {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.procedure-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doctor-avatar-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+/* Hero Portada con Frosted Glass / Foreground Blur para Máximo Contraste */
+.procedure-hero-banner {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: flex-end;
+  background-color: #0C120F;
+  box-shadow: var(--shadow-lg);
+}
+
+.procedure-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.procedure-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 18, 15, 0.15) 0%,
+    rgba(12, 18, 15, 0.45) 40%,
+    rgba(12, 18, 15, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.procedure-hero-card {
+  position: relative;
+  z-index: 2;
+  margin: var(--space-6);
+  padding: var(--space-5) var(--space-6);
+  background: rgba(12, 18, 15, 0.75);
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  max-width: 820px;
+  width: calc(100% - var(--space-12));
+}
+
+@media (max-width: 640px) {
+  .procedure-hero-banner {
+    min-height: 290px;
+  }
+  .procedure-hero-card {
+    margin: var(--space-3);
+    padding: var(--space-4);
+    width: calc(100% - var(--space-6));
+  }
+}
+
+.procedure-hero-card .category-pill-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(194, 155, 56, 0.25);
+  border: 1px solid rgba(226, 194, 110, 0.45);
+  color: #F3D995 !important;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: var(--space-2);
+}
+
+.procedure-hero-card h1 {
+  color: #FFFFFF !important;
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 4px 0 8px 0;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.procedure-hero-card p {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Ribbon de Métricas en Detalle */
+.clinical-detail-ribbon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-sm);
+}
+
+.ribbon-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.ribbon-cell .lbl {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.ribbon-cell .val {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+}
+
+/* Box de Signos de Alarma / Emergencias */
+.alarm-callout {
+  background-color: var(--color-error-soft);
+  border: 1.5px solid var(--color-error-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+.alarm-callout-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-error);
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+}
+
+.alarm-callout ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  color: var(--color-text-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+/* Semáforo de Cuidados (Permitido vs Prohibido) */
+.semaphore-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin: var(--space-6) 0;
+}
+
+@media (max-width: 768px) {
+  .semaphore-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.semaphore-col {
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+
+.semaphore-col.allowed {
+  background-color: var(--color-success-soft);
+  border: 1px solid #B7EBCE;
+}
+
+.semaphore-col.allowed h4 {
+  color: var(--color-success);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.semaphore-col.prohibited {
+  background-color: var(--color-error-soft);
+  border: 1px solid var(--color-error-border);
+}
+
+.semaphore-col.prohibited h4 {
+  color: var(--color-error);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.semaphore-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.semaphore-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.semaphore-col.allowed .semaphore-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-success);
+  font-weight: bold;
+}
+
+.semaphore-col.prohibited .semaphore-list li::before {
+  content: "✕";
+  position: absolute;
+  left: 0;
+  color: var(--color-error);
+  font-weight: bold;
+}
+
+/* Checklist Interactivo del Paciente */
+.checklist-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin: var(--space-6) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.checklist-title {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.checklist-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  transition: background-color var(--dur-fast) ease;
+}
+
+.checklist-label:hover {
+  background-color: var(--color-surface-2);
+}
+
+.checklist-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-brand);
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+/* Stepper de Fases de Recuperación */
+.recovery-stage-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--dur-base) ease;
+}
+
+.recovery-stage-card:hover {
+  border-color: var(--color-brand-border);
+}
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.stage-title {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+
+.stage-tag {
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+.stage-lesson-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-2);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: var(--fw-medium);
+  font-size: var(--text-sm);
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.stage-lesson-link:hover {
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
