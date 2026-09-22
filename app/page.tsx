@@ -5,8 +5,9 @@ import { ClinicalSearchBar } from "@/components/ClinicalSearchBar";
 import { CLINICAL_PROCEDURES, getProcedureBySlug } from "@/lib/clinical-data";
 
 export const metadata = {
-  title: "Aesthetica Care | Educación Médica & Protocolos Post-Procedimiento",
-  description: "Guía médica integral y protocolos de recuperación paso a paso para procedimientos de medicina estética.",
+  title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
+  description:
+    "Protocolos médicos paso a paso para tu recuperación estética. Guía experta y supervisión médica de la Dra. Mariana Gómez: tiempos de desinflamación y pautas de cuidado.",
 };
 
 export default async function CatalogPage({
@@ -39,7 +40,7 @@ export default async function CatalogPage({
           recovery_time: spec?.recovery_time || "24 a 48 horas",
           pain_level: spec?.pain_level ?? 2,
           results_duration: spec?.results_duration || "6 a 12 meses",
-          author_name: Array.isArray(c.profiles) ? c.profiles[0]?.display_name : c.profiles?.display_name || spec?.doctor_name,
+          author_name: Array.isArray(c.profiles) ? c.profiles[0]?.display_name : c.profiles?.display_name || spec?.doctor_name || "Dra. Mariana Gómez",
         };
       })
     : CLINICAL_PROCEDURES.map((p) => ({
@@ -52,7 +53,7 @@ export default async function CatalogPage({
         recovery_time: p.recovery_time,
         pain_level: p.pain_level,
         results_duration: p.results_duration,
-        author_name: p.doctor_name,
+        author_name: p.doctor_name || "Dra. Mariana Gómez",
       }));
 
   const filteredProcedures =
@@ -64,14 +65,14 @@ export default async function CatalogPage({
 
   return (
     <>
-      {/* Hero Especializado en Medicina Estética & Cuidados */}
+      {/* Hero Especializado en Acompañamiento Clínico AuraTips */}
       <section className="aesthetic-hero animate-fade-in" aria-labelledby="hero-heading">
         <div className="aesthetic-badge">
-          <span>🌿</span> Centro de Medicina Estética & Cuidados Clínicos
+          <span>🌿</span> AuraTips · Acompañamiento Clínico de Recuperación
         </div>
-        <h1 id="hero-heading">Tu recuperación y cuidado estético, guiado con rigor médico.</h1>
+        <h1 id="hero-heading">Tu recuperación y cuidado estético, guiados con calidez y rigor médico.</h1>
         <p>
-          Protocolos paso a paso para el post-tratamiento: líneas de tiempo de desinflamación, qué hacer y evitar en las primeras 48 horas, y signos de alerta para tu máxima seguridad.
+          Protocolos personalizados bajo la dirección de la Dra. Mariana Gómez: líneas de tiempo de desinflamación, pautas recomendadas (qué hacer), acciones a evitar en las primeras 48 horas y signos de observación para tu máxima tranquilidad.
         </p>
 
         {/* Buscador Clínico RAG & Asistente Semántico */}
@@ -127,11 +128,11 @@ export default async function CatalogPage({
                 {/* Métricas Clínicas Clave */}
                 <div className="procedure-metrics">
                   <div className="metric-item">
-                    <span className="metric-label">⏱️ Recuperación</span>
+                    <span className="metric-label">⏱️ Reposo estimado</span>
                     <span className="metric-value">{proc.recovery_time}</span>
                   </div>
                   <div className="metric-item">
-                    <span className="metric-label">Molestia</span>
+                    <span className="metric-label">Molestia esperada</span>
                     <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
                       {painMeter} <span style={{ fontSize: "10px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
                     </span>
@@ -142,7 +143,7 @@ export default async function CatalogPage({
                 <div className="procedure-card-footer">
                   <div className="doctor-avatar-tag">
                     <span style={{ fontSize: "14px" }}>🩺</span>
-                    <span>{proc.author_name || "Especialista Certificado"}</span>
+                    <span>{proc.author_name || "Dra. Mariana Gómez"}</span>
                   </div>
                   <span
                     style={{
@@ -154,7 +155,7 @@ export default async function CatalogPage({
                       gap: "4px",
                     }}
                   >
-                    Ver Cuidados →
+                    Ver Protocolo de Cuidados →
                   </span>
                 </div>
               </div>

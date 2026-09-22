@@ -182,7 +182,7 @@ export default async function LessonPage({
           {dos.length > 0 && (
             <div className="semaphore-col allowed">
               <h4>
-                <span>🟢</span> Qué SÍ Debes Hacer
+                <span>🟢</span> Pautas recomendadas (Qué hacer)
               </h4>
               <ul className="semaphore-list">
                 {dos.map((item, idx) => (
@@ -195,7 +195,7 @@ export default async function LessonPage({
           {donts.length > 0 && (
             <div className="semaphore-col prohibited">
               <h4>
-                <span>🔴</span> Qué NO Debes Hacer
+                <span>🔴</span> Acciones a evitar (Qué evitar)
               </h4>
               <ul className="semaphore-list">
                 {donts.map((item, idx) => (

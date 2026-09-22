@@ -22,15 +22,18 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Aesthetica Care — Educación Médica & Cuidados Post-Procedimiento",
-    template: "%s · Aesthetica Care",
+    default: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
+    template: "%s · AuraTips",
   },
   description:
-    "Portal clínico especializado en medicina estética, protocolos de recuperación guiados y seguimiento médico post-tratamiento.",
+    "Acompañamiento clínico integral y protocolos de recuperación post-procedimiento estético por la Dra. Mariana Gómez. Cuidado médico experto, cálido y personalizado.",
   openGraph: {
     type: "website",
-    locale: "es_ES",
-    siteName: "Aesthetica Clinical Care",
+    locale: "es_CO",
+    siteName: "AuraTips · Acompañamiento Clínico de Recuperación",
+    title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
+    description:
+      "Protocolos guiados de recuperación post-tratamiento estético, tiempos de desinflamación y pautas médicas supervisadas por la Dra. Mariana Gómez.",
   },
 };
 
@@ -41,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${plusJakarta.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >

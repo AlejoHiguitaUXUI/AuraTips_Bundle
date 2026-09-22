@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getProcedureBySlug, CLINICAL_PROCEDURES } from "@/lib/clinical-data";
+import { getProcedureBySlug, CLINICAL_PROCEDURES, getPhaseForDay } from "@/lib/clinical-data";
 import { ActiveProcedureCard, ActiveProcedure } from "../_components/ActiveProcedureCard";
 import { DailyCareChecklist } from "../_components/DailyCareChecklist";
 import { SymptomSafetyWidget } from "../_components/SymptomSafetyWidget";
@@ -9,8 +9,9 @@ import { DoctorFollowUpCard } from "../_components/DoctorFollowUpCard";
 import { ClinicalAssistantDrawer } from "../_components/ClinicalAssistantDrawer";
 
 export const metadata = {
-  title: "Mis Cuidados Activos · Aesthetica Clinical Care",
-  description: "Centro clínico de seguimiento post-procedimiento, cuidados diarios y citas de control médico.",
+  title: "Mis Cuidados Activos · AuraTips",
+  description:
+    "Centro clínico de acompañamiento y recuperación post-procedimiento estético con la Dra. Mariana Gómez.",
 };
 
 interface PageProps {
@@ -70,10 +71,10 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               Mis Cuidados Activos
             </h1>
             <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", marginTop: "4px" }}>
-              Centro clínico de seguimiento post-procedimiento y evolución guiada
+              Centro clínico de acompañamiento y evolución guiada · Dra. Mariana Gómez
             </p>
           </div>
-          <span className="badge badge-brand">0 Tratamientos Activos</span>
+          <span className="badge badge-brand">0 Protocolos Activos</span>
         </div>
 
         {/* Empty State Card */}
@@ -112,7 +113,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               marginBottom: "var(--space-2)",
             }}
           >
-            Aún no tienes procedimientos en seguimiento
+            Tu espacio de recuperación clínica guiada
           </h2>
           <p
             style={{
@@ -120,12 +121,11 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               fontSize: "var(--text-base)",
               lineHeight: 1.6,
               marginBottom: "var(--space-6)",
-              maxWidth: 480,
+              maxWidth: 520,
               marginInline: "auto",
             }}
           >
-            Cuando inicies un tratamiento estético, este panel calculará automáticamente el día de tu recuperación,
-            tus tareas diarias, síntomas normales y tu fecha de control médico.
+            Aún no tienes un protocolo de recuperación activo. Al iniciar tu tratamiento con la Dra. Mariana Gómez, este panel calculará automáticamente tu día de evolución, las pautas diarias recomendadas, acciones a evitar y la fecha de tu cita de control médico.
           </p>
 
           <div
@@ -138,7 +138,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             }}
           >
             <Link href="/" className="btn">
-              Explorar Catálogo de Procedimientos →
+              Explorar Protocolos de Recuperación →
             </Link>
           </div>
 
@@ -162,7 +162,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                 textAlign: "center",
               }}
             >
-              O explora una demostración de seguimiento clínico:
+              O explora una simulación guiada de recuperación:
             </span>
 
             <div
@@ -194,7 +194,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                       {proc.title}
                     </strong>
                     <span style={{ fontSize: "11px", color: "var(--color-muted)" }}>
-                      Simular cuidados de {proc.recovery_time}
+                      Simular recuperación y cuidados diarios ({proc.recovery_time})
                     </span>
                   </div>
                 </Link>
@@ -247,7 +247,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
       anesthesia_type: course?.anesthesia_type ?? clinicalSpec?.anesthesia_type ?? "Crioterapia / Frío local",
       enrolled_at: latest.enrolled_at,
       doctor_name: clinicalSpec?.doctor_name ?? "Dra. Mariana Gómez",
-      doctor_specialty: clinicalSpec?.doctor_specialty ?? "Médica Especialista en Estética Facial",
+      doctor_specialty: clinicalSpec?.doctor_specialty ?? "Médica Especialista en Medicina Estética Facial",
     };
 
     otherEnrollments = enrollments!.slice(1);
@@ -259,11 +259,11 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
   const elapsedDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   const currentDay = Math.max(1, elapsedDays + 1);
 
-  // Extract checklist, alarms, dos, donts
-  const firstLesson = clinicalSpec?.modules?.[0]?.lessons?.[0];
-  const initialChecklist = firstLesson?.checklist;
-  const dos = firstLesson?.dos ?? [];
-  const donts = firstLesson?.donts ?? [];
+  // Extract checklist, alarms, dos, donts matching current recovery phase
+  const phaseData = clinicalSpec ? getPhaseForDay(clinicalSpec, currentDay) : null;
+  const initialChecklist = phaseData?.checklist ?? clinicalSpec?.modules?.[0]?.lessons?.[0]?.checklist;
+  const dos = phaseData?.dos ?? clinicalSpec?.modules?.[0]?.lessons?.[0]?.dos ?? [];
+  const donts = phaseData?.donts ?? clinicalSpec?.modules?.[0]?.lessons?.[0]?.donts ?? [];
   const alarmSigns = clinicalSpec?.alarm_signs ?? [];
 
   return (
@@ -305,12 +305,12 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                   border: "1px solid rgba(194, 155, 56, 0.3)",
                 }}
               >
-                Modo Demostración Clínica
+                Simulación de Acompañamiento Clínico
               </span>
             )}
           </div>
           <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", marginTop: "4px" }}>
-            Monitoreo diario de recuperación, pautas médicas y control post-procedimiento
+            Monitoreo diario de recuperación, pautas médicas y control post-procedimiento · Dra. Mariana Gómez
           </p>
         </div>
 
@@ -388,7 +388,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             }}
           >
             <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)" }}>
-              Otros Procedimientos en tu Historial
+              Otros Protocolos en tu Historial Clínico
             </h3>
             <div
               style={{
@@ -422,7 +422,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                       </span>
                     </div>
                     <Link href={`/courses/${c.slug}`} className="btn-ghost btn btn-sm" style={{ fontSize: "11px" }}>
-                      Ver Guía →
+                      Ver Protocolo →
                     </Link>
                   </div>
                 );

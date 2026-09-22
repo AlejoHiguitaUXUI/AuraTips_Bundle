@@ -10,25 +10,316 @@ interface DailyCareChecklistProps {
   donts?: string[];
 }
 
-const DEFAULT_TASKS_BY_DAY: Record<number, string[]> = {
-  1: [
-    "🧊 Aplicar frío local indirecto por 10 minutos (con gasa protectora)",
-    "🛏️ Dormir en posición boca arriba (decúbito supino)",
-    "💧 Beber mínimo 2 litros de agua para hidratación celular",
-    "🚫 Cero frotamiento o masaje en las zonas tratadas",
-    "☀️ Evitar exposición solar directa o fuentes de calor intenso",
-  ],
-  2: [
-    "🧴 Aplicar protector solar mineral SPF 50+ con toques suaves",
-    "💧 Mantener hidratación labial/facial con bálsamo reparador estéril",
-    "🏃 Prohibido ejercicio físico vigoroso o levantamiento de pesas",
-    "🪞 Observar simetría y coloración normal frente al espejo",
-  ],
-  3: [
-    "🧴 Reaplicar protector solar cada 3 a 4 horas",
-    "🧘 Mantener descanso adecuado y evitar estrés térmico (saunas/baños)",
-    "🍇 Consumir alimentos frescos ricos en antioxidantes y vitamina C",
-  ],
+interface ProcedureCareProtocol {
+  timelineTag: string;
+  phaseTitle: string;
+  tasks: string[];
+  dos: string[];
+  donts: string[];
+}
+
+const PROCEDURE_CARE_PROTOCOLS: Record<string, { day0: ProcedureCareProtocol; days1_3: ProcedureCareProtocol; days4_14: ProcedureCareProtocol }> = {
+  "toxina-botulinica-botox-facial": {
+    day0: {
+      timelineTag: "Día 0",
+      phaseTitle: "Fase Inmediata (Primeras 24 Horas)",
+      tasks: [
+        "🛏️ Permanecer con postura vertical y erguida al menos 4 horas (cero recostarse)",
+        "🛏️ Dormir en posición decúbito supino (boca arriba) con 2 almohadas (elevación de 30°)",
+        "🧊 Si hay molestia, aplicar frío seco con gasa estéril por 10 minutos sin presionar",
+        "💧 Beber al menos 2 litros de agua templada o fresca y evitar bebidas alcohólicas",
+        "🚫 Cero frotamiento, rascado o masajes en los puntos de inyección",
+        "🧴 Mantener la piel sin maquillaje ni cosméticos densos por 24 horas",
+      ],
+      dos: [
+        "Permanecer en posición erguida al menos 4 horas completas tras el procedimiento.",
+        "Dormir en posición decúbito supino (boca arriba) con 2 almohadas para favorecer el drenaje linfático.",
+        "Realizar micro-gesticulaciones suaves (sonreír, parpadear) las primeras 2 horas.",
+        "Lavar el rostro con agua fresca o templada y limpiador Syndet muy suave sin fricción.",
+        "Hidratación oral abundante con agua fresca (al menos 2 litros diarios).",
+      ],
+      donts: [
+        "No acostarse, tumbarse en el sofá ni agachar la cabeza durante las primeras 4 horas críticas.",
+        "No masajear, frotar ni presionar las zonas tratadas (frente, entrecejo, patas de gallo).",
+        "No usar gorras, vinchas apretadas, cascos ni diademas que ejerzan compresión frontal.",
+        "No aplicar maquillaje, bases cosméticas con color ni exfoliantes las primeras 24 horas.",
+        "No consumir bebidas alcohólicas ni comidas excesivamente calientes o hipercondimentadas.",
+      ],
+    },
+    days1_3: {
+      timelineTag: "Días 1–3",
+      phaseTitle: "Fase de Estabilización y Control Térmico",
+      tasks: [
+        "🧴 Aplicar protector solar 100% mineral SPF 50+ con toquecitos suaves cada mañana",
+        "🏃 Suspender entrenamientos cardiovasculares intensos, pesas y posturas de yoga invertidas",
+        "🧖 Evitar saunas, baños turcos, duchas calientes y fuentes de calor directo",
+        "🌿 Aplicar gel de árnica o vitamina K en toques delicados sobre hematomas si aparecieron",
+        "🛏️ Continuar durmiendo boca arriba con elevación para prevenir edemas periorbitarios",
+      ],
+      dos: [
+        "Aplicar protector solar mineral SPF 50+ cada mañana con suaves toques de la yema de los dedos.",
+        "Si existen pequeños hematomas, usar gel de árnica o vitamina K en capa fina 2 veces al día.",
+        "Continuar durmiendo boca arriba con cabecera ligeramente elevada las primeras 72 horas.",
+        "Reanudar maquillaje mineral suave utilizando brochas o esponjas desinfectadas.",
+        "Mantener hidratación dérmica con lociones calmantes sin fragancias ni ácidos irritantes.",
+      ],
+      donts: [
+        "Cero ejercicio cardiovascular vigoroso, levantamiento de pesas o crossfit por 48 a 72 horas.",
+        "Prohibido saunas, baños turcos, jacuzzis calientes y secadores de pelo directos al rostro.",
+        "No realizar limpiezas faciales profundas, exfoliaciones mecánicas ni masajes Gua Sha.",
+        "Evitar dormir de lado comprimiendo el rostro contra la almohada.",
+      ],
+    },
+    days4_14: {
+      timelineTag: "Días 4–14",
+      phaseTitle: "Fase de Fijación y Resultados Definitivos",
+      tasks: [
+        "🪞 Monitorear la relajación muscular progresiva frente al espejo con paciencia",
+        "🏃 Retomar de forma gradual la rutina física habitual y entrenamiento deportivo",
+        "🧴 Mantener la rutina diaria de hidratación facial profunda y fotoprotección SPF 50+",
+        "📸 Tomar fotografías de seguimiento en reposo y expresión para la ficha médica",
+        "📅 Agendar y confirmar la cita de control médico y retoque para el día 14 post-inyección",
+      ],
+      dos: [
+        "Observar la atenuación paulatina de las arrugas dinámicas entre el día 4 y 10 sin ansiedad.",
+        "Retomar progresivamente la actividad física y deportiva habitual.",
+        "Tomar fotografías de control frontal y lateral para tu historia clínica.",
+        "Acudir a la cita médica de valoración y retoque de simetría al cumplirse los 14 días.",
+        "Mantener el uso diario de fotoprotección solar para evitar el fotoenvejecimiento añadido.",
+      ],
+      donts: [
+        "No solicitar retoques ni dosis adicionales antes del día 14 (la toxina continúa acoplándose).",
+        "No someterse a tratamientos térmicos profundos (HIFU, láser) sin autorización médica.",
+        "No suspender la hidratación facial ni los cuidados básicos de la barrera cutánea.",
+      ],
+    },
+  },
+  "acido-hialuronico-labios-russian-lips": {
+    day0: {
+      timelineTag: "Día 0",
+      phaseTitle: "Fase Inmediata (Primeras 24 Horas)",
+      tasks: [
+        "🧊 Aplicar compresas frías con gasa limpia en pulsos de 10 minutos sin presionar",
+        "🛏️ Dormir semisentada o boca arriba con 2 almohadas para favorecer el drenaje linfático",
+        "🥤 Beber abundante agua en vaso abierto evitando terminantemente sorbetes o pajillas",
+        "🧴 Aplicar ungüento reparador estéril sin fragancias con un hisopo limpio",
+        "🍲 Evitar comidas muy calientes, picantes o muy saladas y consumo de tabaco o alcohol",
+        "🚫 No aplicar labiales con pigmento ni frotar labio superior contra labio inferior",
+      ],
+      dos: [
+        "Aplicar frío local indirecto con compresa envuelta en gasa en intervalos de 10 min cada 1-2h.",
+        "Dormir semisentada o boca arriba con 2 almohadas para favorecer el drenaje linfático facial.",
+        "Mantener labios humectados con bálsamo reparador emoliente neutro o vaselina estéril.",
+        "Beber abundante agua (2 a 2.5 litros) a sorbos suaves en vaso abierto o taza amplia.",
+        "Consumir alimentos frescos o templados de textura blanda que no exijan apertura bucal forzada.",
+      ],
+      donts: [
+        "PROHIBIDO el uso de sorbetes, pitillos o pajillas (la succión desplaza mecánicamente el gel).",
+        "No frotar, morder, presionar ni pellizcar los labios; evitar frotar labio contra labio.",
+        "Cero besos con presión o mordiscos, gesticulación lingual forzada o morder piezas enteras duras.",
+        "No aplicar cosméticos labiales con color, brillos voluminizadores ni delineadores en 24h.",
+        "No fumar, vapear ni consumir alcohol (empeoran el edema y dañan la microcirculación).",
+      ],
+    },
+    days1_3: {
+      timelineTag: "Días 1–3",
+      phaseTitle: "Fase de Edema Máximo y Estabilización",
+      tasks: [
+        "🧴 Hidratar los labios 4 a 6 veces al día con bálsamo cicatrizante (pantenol / ácido hialurónico)",
+        "🌿 Aplicar crema de árnica o vitamina K en toques delicados sobre hematomas peribucales",
+        "💧 Mantener ingesta de al menos 2 litros de agua diarios para alimentar el gel de hialurónico",
+        "🛏️ Continuar durmiendo boca arriba con 2 almohadas para mitigar la hinchazón matutina",
+        "🚫 Evitar masajear pequeñas induraciones y abstenerse de saunas y ejercicio vigoroso",
+      ],
+      dos: [
+        "Aplicar bálsamo reparador cicatrizante (pantenol B5, madecassoside o hialurónico) 4-6 veces al día.",
+        "Usar crema de árnica o vitamina K en toques delicados sobre hematomas peribucales.",
+        "Continuar durmiendo boca arriba con 2 almohadas para acelerar la reabsorción del edema.",
+        "Ingerir entre 2 y 2.5 litros de agua diarios para alimentar la matriz hídrica del relleno.",
+        "Realizar enjuagues orales suaves sin alcohol tras cada comida para máxima higiene.",
+      ],
+      donts: [
+        "No masajear ni intentar aplastar bultitos o irregularidades palpables (el edema es asimétrico).",
+        "Evitar la exposición solar directa, lámparas UV, saunas y baños de inmersión caliente.",
+        "No someterse a tratamientos odontológicos, limpiezas dentales ni empastes por 2 semanas.",
+        "No realizar depilación con cera o hilo en el labio superior ni peelings periorales.",
+      ],
+    },
+    days4_14: {
+      timelineTag: "Días 4–14",
+      phaseTitle: "Fase de Asentamiento, Textura Final y Revisión",
+      tasks: [
+        "🪞 Evaluar la forma real de los labios a medida que cede la inflamación transitoria",
+        "🧴 Aplicar bálsamo labial nutritivo con filtro solar a diario",
+        "💄 Reanudar cosméticos y labiales habituales con higiene adecuada",
+        "💧 Continuar con hidratación hídrica óptima para prolongar el efecto turgente",
+        "📅 Acudir a la cita de control médico a los 14 días para valorar simetría y arco de cupido",
+      ],
+      dos: [
+        "Permitir la integración biológica natural del gel hialurónico en el tejido conectivo hasta el día 14.",
+        "Reanudar con total normalidad el uso de cosméticos, barras labiales y perfiladores limpios.",
+        "Mantener hidratación externa frecuente con bálsamo nutritivo que contenga filtro solar.",
+        "Acudir a la cita de control médico a los 14 días para valorar simetría, arco de cupido y perfilado.",
+        "Continuar con ingesta adecuada de agua diaria para optimizar la durabilidad del producto.",
+      ],
+      donts: [
+        "No alarmarse por la desinflamación natural del 25-30% del volumen inicial observado los primeros días.",
+        "No apretar con fuerza manual o uñas nódulos residuales sin indicación médica.",
+        "No someterse a micropigmentación labial ni tatuajes periorales antes de 4 semanas.",
+      ],
+    },
+  },
+  "rinomodelacion-sin-cirugia-acido-hialuronico": {
+    day0: {
+      timelineTag: "Día 0",
+      phaseTitle: "Fase Crítica e Inmediata (Primeras 24 Horas)",
+      tasks: [
+        "👓 Cero apoyo de gafas o monturas sobre el dorso nasal (usar lentes de contacto o suspensión)",
+        "🛏️ Dormir en decúbito supino estricto (boca arriba) con 2 almohadas y soportes laterales",
+        "🧊 Aplicar frío indirecto con gasa por 10 minutos en zonas periféricas sin comprimir la nariz",
+        "🪞 Inspeccionar coloración cutánea de punta y dorso nasal (rosada, sin palidez ni manchas moradas)",
+        "💧 Beber al menos 2 litros de agua y consumir alimentos templados y de fácil masticación",
+        "🚫 Evitar sonarse la nariz con fuerza y mantener las manos alejadas del área tratada",
+      ],
+      dos: [
+        "Dormir en decúbito supino estricto (boca arriba) con 2 almohadas (30-45°) y soporte lateral con cojines.",
+        "Inspeccionar periódicamente la coloración de la piel nasal frente al espejo (debe estar sonrosada y cálida).",
+        "Limpiar la zona de micropunción con gasa estéril humedecida en suero fisiológico mediante toques.",
+        "Si necesitas corrección visual, usar lentes de contacto o suspender las gafas de la frente con cinta médica.",
+        "Beber abundante agua y mantener reposo relativo en casa durante las primeras 24 horas.",
+      ],
+      donts: [
+        "PROHIBIDO el uso de gafas de ver, gafas de sol o cascos apoyados sobre el dorso de la nariz.",
+        "No presionar, apretar, pellizcar ni intentar moldear la punta o el caballete nasal con los dedos.",
+        "No sonarse la nariz con fuerza explosiva ni hurgarse; usar spray salino suave si hay congestión.",
+        "No dormir de lado ni boca abajo bajo ninguna circunstancia.",
+        "No aplicar maquillaje, correctores ni cremas densas sobre la pirámide nasal las primeras 24h.",
+      ],
+    },
+    days1_3: {
+      timelineTag: "Días 1–3",
+      phaseTitle: "Fase de Consolidación y Prevención de Desplazamiento",
+      tasks: [
+        "👓 Mantener la restricción estricta de anteojos y monturas ópticas sobre la pirámide nasal",
+        "🧴 Aplicar protector solar mineral SPF 50+ con toquecitos milimétricos suaves sin fricción",
+        "🌿 Aplicar gel de árnica o vitamina K en capa fina con hisopo sobre hematomas discretos",
+        "🛏️ Dormir en posición supina con dos almohadas para drenar el edema perinasal",
+        "🏃 Evitar entrenamientos vigorosos, posturas invertidas de cabeza y fuentes de calor",
+      ],
+      dos: [
+        "Mantener la prohibición ininterrumpida de apoyar gafas o anteojos sobre el caballete nasal.",
+        "Aplicar protector solar mineral SPF 50+ mediante toques muy suaves y sin presión en las mañanas.",
+        "Si existen pequeños hematomas en puntos de entrada, usar gel con árnica o vitamina K 2 veces al día.",
+        "Continuar durmiendo boca arriba con cabecera elevada para facilitar el drenaje del edema.",
+        "Mantener reposo relativo evitando actividades que eleven bruscamente la presión facial.",
+      ],
+      donts: [
+        "No realizar deportes de contacto, tenis, natación con gafas herméticas ni pesas pesadas.",
+        "No realizarse limpiezas con extracción de poros en la nariz ni usar tiras adhesivas depilatorias.",
+        "Evitar saunas, baños turcos, duchas ardientes y vapores calientes directos al rostro.",
+        "No inclinarse súbitamente hacia el suelo con la cabeza baja (evitar presión hidrostática nasal).",
+      ],
+    },
+    days4_14: {
+      timelineTag: "Días 4–14",
+      phaseTitle: "Fase de Asentamiento Estructural y Resultados Definitivos",
+      tasks: [
+        "👃 Verificar la consolidación del dorso y la punta nasal con resolución del edema inicial",
+        "🧴 Mantener fotoprotección estricta SPF 50+ en dorso y punta para evitar manchas",
+        "👓 Mantener prudencia con monturas pesadas de pasta hasta completar los 14 días",
+        "📸 Tomar fotografías de frente y perfil comparativas para seguimiento médico",
+        "📅 Asistir a la cita de control estructural a los 14 días con el especialista",
+      ],
+      dos: [
+        "Continuar protegiendo el dorso nasal de golpes accidentales o presiones continuadas.",
+        "Retomar progresivamente la actividad aeróbica moderada evitando deportes con impacto.",
+        "Aplicar fotoprotector solar diario SPF 50+ para evitar hiperpigmentación en orificios de entrada.",
+        "Asistir a la cita de control médico a los 14 días para valorar simetría, proyección y estabilidad.",
+        "Evaluar la armonía estética mediante fotografías comparativas con tu estado previo.",
+      ],
+      donts: [
+        "No utilizar monturas pesadas de pasta o gafas de natación/buceo ajustadas antes del día 14.",
+        "No manipular con fuerza los cartílagos alares o el dorso de la nariz al sonarse o secarse.",
+        "No aplicarse radiofrecuencia ni ultrasonido focalizado en la pirámide nasal.",
+      ],
+    },
+  },
+  "peeling-quimico-medico-facial": {
+    day0: {
+      timelineTag: "Día 0",
+      phaseTitle: "Fase Inmediata y Neutralización (Primeras 24 Horas)",
+      tasks: [
+        "🧴 Aplicar bálsamo reparador calmante (pantenol / madecassoside) en capa generosa ante la tirantez",
+        "🧊 Utilizar compresas con gasa estéril y agua termal fría por 10 minutos para calmar el calor",
+        "🛏️ Dormir boca arriba con 2 almohadas y funda de almohada limpia de algodón suave",
+        "💧 Beber 2.5 litros de agua fresca y evitar comidas calientes, picantes o bebidas alcohólicas",
+        "🚫 Cero maquillaje, exfoliantes, ácidos activos y cero exposición directa a la radiación solar",
+      ],
+      dos: [
+        "Aplicar bálsamo reparador epitelizante (con pantenol B5 o madecassoside) de 3 a 5 veces al día.",
+        "Rociar agua termal fresca o compresas con gasa fría en pulsos de 10 min para calmar ardor.",
+        "Dormir boca arriba con 2 almohadas y funda limpia para minimizar el roce mecánico nocturno.",
+        "Permanecer en interiores protegidos de la radiación solar directa y fuentes de calor.",
+        "Hidratación oral intensiva con abundante agua fresca (mínimo 2.5 litros diarios).",
+      ],
+      donts: [
+        "PROHIBIDO arrancar, pellizcar o frotar la piel aunque empiece a sentirse acartonada.",
+        "No lavar el rostro con jabones comunes, esponjas exfoliantes ni agua caliente.",
+        "PROHIBIDO aplicar bases de maquillaje, correctores, polvos o iluminadores en 24h.",
+        "No usar productos cosméticos con retinol, ácido glicólico, salicílico ni vitamina C ácida.",
+        "No exponerse al sol directo ni consumir comidas picantes, muy calientes o alcohol.",
+      ],
+    },
+    days1_3: {
+      timelineTag: "Días 1–3",
+      phaseTitle: "Fase de Descamación Activa y Reepitelización",
+      tasks: [
+        "🚫 REGLA DE ORO: No arrancar ni tirar de ninguna piel; dejar que se desprendan en el lavado",
+        "🧴 Aplicar crema cicatrizante y reparadora 4 a 6 veces al día ante cada sensación de sequedad",
+        "☀️ Aplicar y reaplicar protector solar 100% mineral SPF 50+ cada 2 a 3 horas religiosamente",
+        "🧼 Lavar el rostro con limpiador Syndet suave y agua tibia, secando con toques de toalla limpia",
+        "🧢 Usar sombrero de ala ancha y evitar por completo el sol directo y el sudor intenso",
+      ],
+      dos: [
+        "REGLA DE ORO: Dejar que las pieles descamadas caigan por sí solas en el lavado suave.",
+        "Aplicar crema hidratante reparadora (Cicaplast B5, Cicalfate o equivalente) 4 a 6 veces al día.",
+        "Aplicar fotoprotector 100% mineral SPF 50+ cada 2 a 3 horas religiosamente desde la mañana.",
+        "Lavar suavemente con limpiador Syndet sin jabón y agua tibia, secando con toques suaves.",
+        "Utilizar sombrero de ala ancha y gafas oscuras de alta protección al salir al exterior.",
+        "Si alguna piel cuelga en exceso, recortar con tijeritas limpias el borde libre sin jalar la raíz.",
+      ],
+      donts: [
+        "JAMÁS jalar, pelar ni raspar las escamas de piel seca (riesgo severo de mancha o cicatriz).",
+        "No aplicar maquillaje cosmético sobre las áreas que se encuentran activamente pelándose.",
+        "Cero ejercicio vigoroso que produzca sudoración profusa (las sales del sudor irritan la dermis).",
+        "Prohibido entrar a piscinas con cloro, jacuzzis, saunas y playas.",
+        "No utilizar toallitas desmaquillantes, tónicos con alcohol ni cepillos mecánicos.",
+      ],
+    },
+    days4_14: {
+      timelineTag: "Días 4–14",
+      phaseTitle: "Fase de Regeneración de Barrera Cutánea y Fotoprotección",
+      tasks: [
+        "☀️ Mantener la reaplicación de fotoprotector SPF 50+ cada 3 a 4 horas sin excepción",
+        "🧴 Nutrir la barrera cutánea con sueros de ácido hialurónico puro y ceramidas",
+        "💄 Reanudar maquillaje hipoalergénico solo tras haber finalizado la descamación al 100%",
+        "🚫 Posponer el uso de exfoliantes, retinoides y depilación facial hasta después del día 14",
+        "📅 Agendar y acudir a la cita de control dermatológico post-peeling",
+      ],
+      dos: [
+        "Reaplicar protector solar SPF 50+ de amplio espectro cada 3 a 4 horas los próximos 30 días.",
+        "Nutrir la nueva epidermis con ácido hialurónico puro y cremas con ceramidas y niacinamida.",
+        "Reanudar el maquillaje cosmético mineral hipoalergénico solo al cesar la descamación.",
+        "Monitorear la uniformidad del tono de piel e informar oportunamente cualquier pigmentación.",
+        "Asistir a la revisión dermatológica de control o sesión complementaria programada.",
+      ],
+      donts: [
+        "No exponerse deliberadamente al sol en playas, piscinas o terrazas por al menos 30 días.",
+        "No reintroducir retinoides, ácido glicólico, salicílico ni exfoliantes físicos antes del día 14.",
+        "No realizarse depilación facial con cera, hilo, láser o luz pulsada durante al menos 4 semanas.",
+      ],
+    },
+  },
 };
 
 export function DailyCareChecklist({
@@ -38,18 +329,40 @@ export function DailyCareChecklist({
   dos = [],
   donts = [],
 }: DailyCareChecklistProps) {
-  // Determine tasks: use passed items if available, or day-specific defaults
-  const dayKey = currentDay in DEFAULT_TASKS_BY_DAY ? currentDay : 3;
-  const items = initialItems && initialItems.length > 0 ? initialItems : DEFAULT_TASKS_BY_DAY[dayKey] || DEFAULT_TASKS_BY_DAY[1];
+  // Determine clinical protocol according to slug and day
+  const protocol = PROCEDURE_CARE_PROTOCOLS[procedureSlug];
+  let phaseData: ProcedureCareProtocol | null = null;
+  if (protocol) {
+    if (currentDay >= 4) {
+      phaseData = protocol.days4_14;
+    } else if (currentDay >= 2) {
+      phaseData = protocol.days1_3;
+    } else {
+      phaseData = protocol.day0;
+    }
+  }
 
-  const storageKey = `aesthetica_daily_checklist_${procedureSlug}_day_${currentDay}`;
+  // Active items, dos, and donts
+  const items = initialItems && initialItems.length > 0 ? initialItems : phaseData?.tasks || [
+    "🛏️ Dormir boca arriba (decúbito supino) con 2 almohadas para favorecer drenaje linfático",
+    "🧊 Aplicar frío local seguro (gasa estéril limpia, pulsos de 10 minutos, sin presionar)",
+    "🧴 Aplicar bálsamo reparador o protector solar mineral según la fase",
+    "💧 Beber al menos 2 litros de agua fresca y evitar comidas calientes, picantes o saladas",
+    "🚫 Cero frotamiento, rascado o compresión en la zona tratada",
+  ];
+
+  const activeDos = dos.length > 0 ? dos : phaseData?.dos || [];
+  const activeDonts = donts.length > 0 ? donts : phaseData?.donts || [];
+
+  const storageKey = `auratips_daily_checklist_${procedureSlug}_day_${currentDay}`;
+  const legacyStorageKey = `aesthetica_daily_checklist_${procedureSlug}_day_${currentDay}`;
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
-  const [showGuidelines, setShowGuidelines] = useState(false);
+  const [showGuidelines, setShowGuidelines] = useState(true);
 
   // Load persisted state
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(storageKey);
+      const saved = localStorage.getItem(storageKey) || localStorage.getItem(legacyStorageKey);
       if (saved) {
         setCheckedItems(JSON.parse(saved));
       } else {
@@ -58,7 +371,7 @@ export function DailyCareChecklist({
     } catch {
       // ignore storage access errors
     }
-  }, [storageKey]);
+  }, [storageKey, legacyStorageKey]);
 
   const toggleItem = (index: number) => {
     const updated = { ...checkedItems, [index]: !checkedItems[index] };
@@ -72,6 +385,7 @@ export function DailyCareChecklist({
 
   const completedCount = items.filter((_, idx) => checkedItems[idx]).length;
   const progressPercent = items.length > 0 ? Math.round((completedCount / items.length) * 100) : 0;
+  const isAllCompleted = items.length > 0 && completedCount === items.length;
 
   return (
     <div
@@ -82,6 +396,9 @@ export function DailyCareChecklist({
         justifyContent: "space-between",
         gap: "var(--space-4)",
         background: "var(--color-surface)",
+        borderRadius: "var(--radius-lg)",
+        border: "1px solid var(--color-border)",
+        padding: "var(--space-4)",
       }}
     >
       {/* Header */}
@@ -97,28 +414,49 @@ export function DailyCareChecklist({
           }}
         >
           <div>
-            <span
-              style={{
-                fontSize: "10px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--color-brand)",
-              }}
-            >
-              Checklist Diario
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: "var(--color-brand)",
+                }}
+              >
+                Checklist Diario Clínico
+              </span>
+              {phaseData?.timelineTag && (
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    padding: "2px 6px",
+                    borderRadius: "4px",
+                    background: "rgba(32, 80, 59, 0.12)",
+                    color: "var(--color-brand)",
+                  }}
+                >
+                  {phaseData.timelineTag}
+                </span>
+              )}
+            </div>
             <h3
               style={{
                 fontSize: "var(--text-lg)",
                 fontWeight: 700,
                 color: "var(--color-text)",
                 lineHeight: 1.2,
-                marginTop: "2px",
+                marginTop: "3px",
               }}
             >
               Cuidados Clave de Hoy (Día {currentDay})
             </h3>
+            {phaseData?.phaseTitle && (
+              <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--color-muted)" }}>
+                {phaseData.phaseTitle}
+              </p>
+            )}
           </div>
 
           <span
@@ -127,6 +465,9 @@ export function DailyCareChecklist({
               fontWeight: 700,
               fontSize: "11px",
               padding: "4px 10px",
+              borderRadius: "999px",
+              background: isAllCompleted ? "var(--color-success-soft)" : "rgba(32, 80, 59, 0.1)",
+              color: isAllCompleted ? "var(--color-success)" : "var(--color-brand)",
             }}
           >
             {completedCount} de {items.length} completados
@@ -147,10 +488,34 @@ export function DailyCareChecklist({
             style={{
               height: "100%",
               width: `${progressPercent}%`,
-              background: progressPercent === 100 ? "#22c55e" : "var(--color-brand)",
+              background: isAllCompleted ? "#22c55e" : "var(--color-brand)",
               transition: "width 0.3s ease, background 0.3s ease",
             }}
           />
+        </div>
+
+        {/* Pilares clínicos rápidos */}
+        <div
+          style={{
+            display: "flex",
+            gap: "6px",
+            flexWrap: "wrap",
+            marginBlock: "6px 12px",
+            fontSize: "11px",
+          }}
+        >
+          <span style={{ padding: "2px 6px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+            🛏️ Postura (boca arriba + 2 almohadas)
+          </span>
+          <span style={{ padding: "2px 6px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+            🧊 Frío seguro (gasa, 10 min, sin presionar)
+          </span>
+          <span style={{ padding: "2px 6px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+            🧴 Skincare (reparador / SPF mineral)
+          </span>
+          <span style={{ padding: "2px 6px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+            💧 Hidratación (&gt;2L, sin picantes)
+          </span>
         </div>
       </div>
 
@@ -203,8 +568,25 @@ export function DailyCareChecklist({
         })}
       </div>
 
-      {/* Toggle Guidelines Drawer */}
-      {(dos.length > 0 || donts.length > 0) && (
+      {isAllCompleted && (
+        <div
+          style={{
+            padding: "8px 12px",
+            backgroundColor: "var(--color-success-soft)",
+            border: "1px solid #B7EBCE",
+            borderRadius: "var(--radius-md)",
+            fontSize: "12px",
+            color: "var(--color-success)",
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+        >
+          🎉 ¡Excelente! Has completado todas las pautas de cuidado de hoy.
+        </div>
+      )}
+
+      {/* Toggle Guidelines Drawer: Estricta estructura médica */}
+      {(activeDos.length > 0 || activeDonts.length > 0) && (
         <div style={{ marginTop: "var(--space-2)" }}>
           <button
             type="button"
@@ -215,9 +597,11 @@ export function DailyCareChecklist({
               justifyContent: "space-between",
               fontSize: "12px",
               padding: "6px 12px",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--color-border)",
             }}
           >
-            <span>{showGuidelines ? "Ocultar pautas médicas" : "Ver pautas y restricciones recomendadas"}</span>
+            <span>{showGuidelines ? "Ocultar pautas médicas detalladas" : "Ver pautas recomendadas y restricciones"}</span>
             <span>{showGuidelines ? "▲" : "▼"}</span>
           </button>
 
@@ -231,16 +615,17 @@ export function DailyCareChecklist({
                 padding: "var(--space-3)",
                 background: "var(--color-surface-2)",
                 borderRadius: "var(--radius-md)",
+                border: "1px solid var(--color-border)",
                 fontSize: "12px",
               }}
             >
               <div>
-                <strong style={{ color: "#22c55e", display: "block", marginBottom: "4px" }}>
-                  ✓ Pautas recomendadas (Qué hacer)
+                <strong style={{ color: "#22c55e", display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
+                  <span>🟢</span> Pautas recomendadas (Qué hacer)
                 </strong>
-                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>
-                  {dos.slice(0, 3).map((d, i) => (
-                    <li key={i} style={{ marginBottom: "2px" }}>
+                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.45 }}>
+                  {activeDos.map((d, i) => (
+                    <li key={i} style={{ marginBottom: "6px" }}>
                       {d}
                     </li>
                   ))}
@@ -248,12 +633,12 @@ export function DailyCareChecklist({
               </div>
 
               <div>
-                <strong style={{ color: "#ef4444", display: "block", marginBottom: "4px" }}>
-                  ✕ Acciones a evitar (Qué evitar)
+                <strong style={{ color: "#ef4444", display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
+                  <span>🔴</span> Acciones a evitar (Qué evitar)
                 </strong>
-                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>
-                  {donts.slice(0, 3).map((d, i) => (
-                    <li key={i} style={{ marginBottom: "2px" }}>
+                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.45 }}>
+                  {activeDonts.map((d, i) => (
+                    <li key={i} style={{ marginBottom: "6px" }}>
                       {d}
                     </li>
                   ))}

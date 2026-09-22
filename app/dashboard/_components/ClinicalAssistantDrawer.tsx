@@ -28,6 +28,7 @@ export function ClinicalAssistantDrawer({
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showCallout, setShowCallout] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -45,7 +46,7 @@ export function ClinicalAssistantDrawer({
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, loading]);
 
   async function handleSend(textToSend?: string) {
     const text = (textToSend || input).trim();
@@ -61,6 +62,8 @@ export function ClinicalAssistantDrawer({
     setMessages((prev) => [...prev, userMessage]);
     if (!textToSend) setInput("");
     setLoading(true);
+
+    const startTime = Date.now();
 
     try {
       const res = await fetch("/api/chat", {
@@ -78,6 +81,13 @@ export function ClinicalAssistantDrawer({
       });
 
       const data = await res.json();
+
+      // Cadencia y pausa humana realista: emula el tiempo de lectura y redacción médica
+      const elapsed = Date.now() - startTime;
+      const naturalDelay = Math.min(Math.max((data.reply?.length || 100) * 3, 1400), 2200);
+      if (elapsed < naturalDelay) {
+        await new Promise((resolve) => setTimeout(resolve, naturalDelay - elapsed));
+      }
 
       if (data.success) {
         const assistantMessage: Message = {
@@ -116,51 +126,274 @@ export function ClinicalAssistantDrawer({
 
   return (
     <>
-      {/* Botón flotante en la esquina inferior */}
+      {/* Botón flotante y Callout en la esquina inferior */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
+        <div
           style={{
             position: "fixed",
             bottom: "24px",
             right: "24px",
             zIndex: 990,
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            alignItems: "flex-end",
             gap: "10px",
-            padding: "12px 20px",
-            backgroundColor: "var(--color-primary, #20503B)",
-            color: "#FFFFFF",
-            borderRadius: "9999px",
-            border: "1px solid rgba(194, 155, 56, 0.4)",
-            boxShadow: "0 8px 24px rgba(32, 80, 59, 0.35)",
-            cursor: "pointer",
-            fontFamily: "var(--font-sans)",
-            fontSize: "14px",
-            fontWeight: 600,
-            transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-            e.currentTarget.style.boxShadow = "0 12px 28px rgba(32, 80, 59, 0.45)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "none";
-            e.currentTarget.style.boxShadow = "0 8px 24px rgba(32, 80, 59, 0.35)";
           }}
         >
-          <span style={{ fontSize: "18px" }}>🩺</span>
-          <span>AuraTips • Recuperación</span>
-          <span
+          {/* Globo de Invitación Proactivo (Callout) */}
+          {showCallout && (
+            <div
+              onClick={() => setIsOpen(true)}
+              style={{
+                position: "relative",
+                width: "min(320px, calc(100vw - 48px))",
+                padding: "12px 14px",
+                backgroundColor: "var(--color-surface)",
+                borderRadius: "16px 16px 4px 16px",
+                border: "1px solid var(--color-gold-border, rgba(194, 155, 56, 0.4))",
+                boxShadow: "0 12px 30px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.12)",
+                cursor: "pointer",
+                animation: "calloutFloat 4s ease-in-out infinite",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 16px 36px rgba(0, 0, 0, 0.35)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "none";
+                e.currentTarget.style.boxShadow = "0 12px 30px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.12)";
+              }}
+            >
+              {/* Puntero / colita de bocadillo de chat */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "-6px",
+                  right: "36px",
+                  width: "11px",
+                  height: "11px",
+                  backgroundColor: "var(--color-surface)",
+                  borderRight: "1px solid var(--color-gold-border, rgba(194, 155, 56, 0.4))",
+                  borderBottom: "1px solid var(--color-gold-border, rgba(194, 155, 56, 0.4))",
+                  transform: "rotate(45deg)",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "6px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span
+                    style={{
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      backgroundColor: "#22C55E",
+                      animation: "pulseHalo 2s infinite",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      color: "var(--color-brand)",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    Dra. Mariana Gómez · Chat Clínico
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowCallout(false);
+                  }}
+                  aria-label="Cerrar sugerencia de chat"
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "var(--color-muted)",
+                    fontSize: "14px",
+                    lineHeight: 1,
+                    cursor: "pointer",
+                    padding: "2px 4px",
+                    borderRadius: "4px",
+                  }}
+                  title="Cerrar invitación"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <p
+                style={{
+                  margin: "0 0 8px 0",
+                  fontSize: "12.5px",
+                  lineHeight: 1.5,
+                  color: "var(--color-text)",
+                  fontWeight: 400,
+                }}
+              >
+                {procedureTitle
+                  ? `¿Tienes dudas sobre inflamación, cuidados o medicamentos en tu Día ${recoveryDay} de ${procedureTitle}?`
+                  : `¿Tienes dudas sobre inflamación o analgésicos en tu Día ${recoveryDay}? Escríbeme aquí.`}
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "11.5px",
+                  fontWeight: 700,
+                  color: "var(--color-brand)",
+                }}
+              >
+                <span>💬 Haz tu consulta clínica ahora</span>
+                <span style={{ fontSize: "12px" }}>→</span>
+              </div>
+            </div>
+          )}
+
+          {/* Botón flotante de Chat (Launcher Window Trigger) */}
+          <button
+            onClick={() => setIsOpen(true)}
+            aria-label="Abrir ventana de chat clínico con Dra. Mariana Gómez"
             style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              backgroundColor: "#10B981",
-              boxShadow: "0 0 8px #10B981",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "10px 18px 10px 12px",
+              backgroundColor: "var(--color-primary, #20503B)",
+              backgroundImage: "linear-gradient(135deg, #183C2C 0%, #20503B 100%)",
+              color: "#FFFFFF",
+              borderRadius: "9999px",
+              border: "1.5px solid var(--color-gold, #C29B38)",
+              boxShadow: "0 10px 28px rgba(0, 0, 0, 0.35)",
+              cursor: "pointer",
+              fontFamily: "var(--font-sans)",
+              transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
-          />
-        </button>
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
+              e.currentTarget.style.boxShadow = "0 14px 34px rgba(0, 0, 0, 0.45)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "none";
+              e.currentTarget.style.boxShadow = "0 10px 28px rgba(0, 0, 0, 0.35)";
+            }}
+          >
+            {/* Avatar médico con indicador pulsante y SVG de alto contraste */}
+            <div
+              style={{
+                position: "relative",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 255, 255, 0.16)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "1.5px solid var(--color-gold, #C29B38)",
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FAF8F5"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4.5 3v5a4.5 4.5 0 0 0 9 0V3" />
+                <path d="M9 12.5v2.5a4 4 0 0 0 4 4h1" />
+                <circle cx="18" cy="19" r="3" />
+              </svg>
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: "-1px",
+                  right: "-1px",
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  backgroundColor: "#22C55E",
+                  border: "2px solid #183C2C",
+                  boxShadow: "0 0 8px #22C55E",
+                  animation: "pulseHalo 2s infinite",
+                }}
+              />
+            </div>
+
+            {/* Identidad y texto invitante */}
+            <div style={{ display: "flex", flexDirection: "column", textAlign: "left", lineHeight: 1.25 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF" }}>
+                  Chat de Recuperación
+                </span>
+                <span
+                  style={{
+                    backgroundColor: "rgba(194, 155, 56, 0.25)",
+                    color: "var(--color-gold, #FDE68A)",
+                    padding: "1px 6px",
+                    borderRadius: "9999px",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    border: "1px solid var(--color-gold-border, rgba(194, 155, 56, 0.4))",
+                  }}
+                >
+                  En vivo
+                </span>
+              </div>
+              <span style={{ fontSize: "11.5px", color: "rgba(255, 255, 255, 0.9)", marginTop: "2px" }}>
+                ¿Dudas hoy? Habla con la Dra. Mariana
+              </span>
+            </div>
+
+            {/* Ícono explícito de burbuja de chat SVG */}
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 255, 255, 0.18)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#FFFFFF",
+                marginLeft: "4px",
+                flexShrink: 0,
+              }}
+              title="Abrir chat"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <circle cx="9" cy="10" r="1" fill="currentColor" />
+                <circle cx="12" cy="10" r="1" fill="currentColor" />
+                <circle cx="15" cy="10" r="1" fill="currentColor" />
+              </svg>
+            </div>
+          </button>
+        </div>
       )}
 
       {/* Ventana / Drawer de Chat */}
@@ -206,11 +439,25 @@ export function ClinicalAssistantDrawer({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "20px",
                   border: "1px solid rgba(194, 155, 56, 0.5)",
+                  flexShrink: 0,
                 }}
               >
-                🩺
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#FAF8F5"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4.5 3v5a4.5 4.5 0 0 0 9 0V3" />
+                  <path d="M9 12.5v2.5a4 4 0 0 0 4 4h1" />
+                  <circle cx="18" cy="19" r="3" />
+                </svg>
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#FAF8F5" }}>
@@ -256,7 +503,7 @@ export function ClinicalAssistantDrawer({
                 backgroundColor: "var(--color-brand-soft)",
                 borderBottom: "1px solid var(--color-border)",
                 fontSize: "12px",
-                color: "var(--color-brand)",
+                color: "var(--color-text)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -266,11 +513,11 @@ export function ClinicalAssistantDrawer({
               <span
                 style={{
                   backgroundColor: "var(--color-brand)",
-                  color: "#FFFFFF",
+                  color: "var(--color-inverse)",
                   padding: "2px 8px",
                   borderRadius: "9999px",
                   fontSize: "10px",
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
                 Fase Día {recoveryDay}
@@ -312,7 +559,7 @@ export function ClinicalAssistantDrawer({
                         : "var(--color-surface)",
                     color:
                       m.role === "user"
-                        ? "#FFFFFF"
+                        ? "var(--color-inverse)"
                         : "var(--color-text)",
                     border: m.isEmergency
                       ? "1px solid var(--color-error)"
@@ -419,11 +666,113 @@ export function ClinicalAssistantDrawer({
             ))}
 
             {loading && (
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 12px" }}>
-                <span style={{ fontSize: "14px", animation: "pulse 1.5s infinite" }}>🩺</span>
-                <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
-                  Consultando pautas médicas en Supabase RAG...
-                </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "10px",
+                  padding: "4px 0",
+                  animation: "fadeIn 0.2s ease-out",
+                }}
+              >
+                {/* Mini avatar clínico de la Dra. Mariana Gómez */}
+                <div
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, #183C2C 0%, #20503B 100%)",
+                    color: "#FAF8F5",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid rgba(194, 155, 56, 0.5)",
+                    flexShrink: 0,
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#FAF8F5"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4.5 3v5a4.5 4.5 0 0 0 9 0V3" />
+                    <path d="M9 12.5v2.5a4 4 0 0 0 4 4h1" />
+                    <circle cx="18" cy="19" r="3" />
+                  </svg>
+                </div>
+
+                {/* Burbuja de respuesta humana en redacción */}
+                <div>
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "10px 16px",
+                      borderRadius: "16px 16px 16px 4px",
+                      backgroundColor: "var(--color-surface)",
+                      border: "1px solid var(--color-border)",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    <span style={{ fontSize: "12.5px", color: "var(--color-text)", fontWeight: 600 }}>
+                      Dra. Mariana Gómez está escribiendo
+                    </span>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: "4px", marginLeft: "2px" }}>
+                      <span
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          backgroundColor: "var(--color-brand)",
+                          animation: "typingDot 1.4s infinite ease-in-out",
+                          animationDelay: "0ms",
+                          display: "inline-block",
+                        }}
+                      />
+                      <span
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          backgroundColor: "var(--color-brand)",
+                          animation: "typingDot 1.4s infinite ease-in-out",
+                          animationDelay: "200ms",
+                          display: "inline-block",
+                        }}
+                      />
+                      <span
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          backgroundColor: "var(--color-brand)",
+                          animation: "typingDot 1.4s infinite ease-in-out",
+                          animationDelay: "400ms",
+                          display: "inline-block",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: "10px",
+                      color: "var(--color-muted)",
+                      marginTop: "4px",
+                      paddingLeft: "4px",
+                    }}
+                  >
+                    Revisando protocolos de tu Día {recoveryDay}...
+                  </span>
+                </div>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -498,16 +847,16 @@ export function ClinicalAssistantDrawer({
               type="submit"
               disabled={loading || !input.trim()}
               style={{
-                padding: "0 16px",
+                padding: "0 18px",
                 backgroundColor: "var(--color-brand)",
-                color: "#FFFFFF",
+                color: "var(--color-inverse)",
                 border: "none",
                 borderRadius: "10px",
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: "13px",
                 cursor: loading || !input.trim() ? "not-allowed" : "pointer",
                 opacity: loading || !input.trim() ? 0.6 : 1,
-                transition: "background-color 0.2s",
+                transition: "opacity 0.2s",
               }}
             >
               Enviar

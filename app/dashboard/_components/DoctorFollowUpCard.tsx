@@ -129,7 +129,7 @@ export function DoctorFollowUpCard({
                 marginTop: "2px",
               }}
             >
-              Aesthetica Medical Center
+              AuraTips · Centro Clínico
             </p>
           </div>
         </div>
@@ -211,7 +211,7 @@ export function DoctorFollowUpCard({
         )}
 
         <a
-          href="https://wa.me/?text=Hola%2C+tengo+una+consulta+sobre+mi+procedimiento+en+Aesthetica"
+          href="https://wa.me/?text=Hola%2C+tengo+una+consulta+sobre+mi+protocolo+en+AuraTips"
           target="_blank"
           rel="noopener noreferrer"
           className="btn-ghost btn btn-sm"
