@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useRef, useEffect, useTransition } from "react";
 import Link from "next/link";
+import { SearchIcon, XIcon, ClockIcon } from "@/components/icons";
 
 interface SearchResult {
   id: string;
@@ -18,6 +19,26 @@ export function ClinicalSearchBar() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleSearch = async (val: string) => {
     setQuery(val);
@@ -46,10 +67,10 @@ export function ClinicalSearchBar() {
   };
 
   return (
-    <div className="clinical-search-wrapper">
+    <div className="clinical-search-wrapper" ref={wrapperRef}>
       <div className="clinical-search-bar">
-        <span style={{ fontSize: "1.2rem", marginRight: "10px" }} aria-hidden="true">
-          🔍
+        <span style={{ display: "inline-flex", alignItems: "center", marginRight: "10px", color: "var(--color-brand)" }} aria-hidden="true">
+          <SearchIcon size={18} />
         </span>
         <input
           type="text"
@@ -70,16 +91,19 @@ export function ClinicalSearchBar() {
               setResults([]);
               setIsOpen(false);
             }}
+            aria-label="Limpiar búsqueda"
             style={{
               background: "none",
               border: "none",
               cursor: "pointer",
               color: "var(--color-muted)",
               marginRight: "8px",
-              fontSize: "14px",
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "4px",
             }}
           >
-            ✕
+            <XIcon size={14} />
           </button>
         )}
         <button type="button" className="clinical-search-btn">
@@ -108,13 +132,15 @@ export function ClinicalSearchBar() {
               type="button"
               onClick={() => handleQuickTag(tag)}
               style={{
-                background: "var(--color-surface-2)",
+                background: "var(--color-surface)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "12px",
-                padding: "2px 10px",
-                fontSize: "11px",
+                borderRadius: "var(--radius-full)",
+                padding: "6px 14px",
+                fontSize: "12px",
                 cursor: "pointer",
                 color: "var(--color-text)",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                transition: "all var(--dur-fast) ease",
               }}
             >
               {tag}
@@ -227,8 +253,9 @@ export function ClinicalSearchBar() {
                     </p>
                   )}
                   {r.recovery_time && (
-                    <span style={{ fontSize: "11px", color: "var(--color-brand)", marginTop: "6px" }}>
-                      ⏱️ Recuperación estimada: <strong>{r.recovery_time}</strong>
+                    <span style={{ fontSize: "11px", color: "var(--color-brand)", marginTop: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      <ClockIcon size={12} />
+                      <span>Recuperación estimada: <strong>{r.recovery_time}</strong></span>
                     </span>
                   )}
                 </Link>

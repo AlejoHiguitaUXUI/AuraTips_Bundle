@@ -20,6 +20,7 @@
   --color-brand-soft:    #EAF2ED;
   --color-brand-border:  #BED3C7;
   --color-gold:          #C29B38;
+  --color-gold-text:     #997316;
   --color-gold-soft:     #F9F4E8;
   --color-gold-border:   #E4D2A3;
   --color-amber:         #D97706;
@@ -1230,6 +1231,89 @@ textarea {
   background-color: var(--color-brand);
   color: #ffffff;
   border-color: var(--color-brand);
+}
+
+/* =========================================================
+   Mangomint Clinical Pills & Action Cards
+   ========================================================= */
+.clinical-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 16px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(12, 18, 15, 0.04);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--dur-fast) cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  user-select: none;
+}
+
+.clinical-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-brand-border);
+  box-shadow: 0 6px 18px rgba(32, 80, 59, 0.08);
+}
+
+.clinical-pill.active {
+  background-color: var(--color-brand-soft);
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+.clinical-pill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.clinical-pill.active .clinical-pill-icon {
+  color: var(--color-brand);
+}
+
+.clinical-pill-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.clinical-pill-label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: inherit;
+}
+
+.clinical-pill-sub {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  font-weight: var(--fw-normal);
+  margin-top: 2px;
+}
+
+.clinical-pill-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  margin-left: auto;
+}
+
+.clinical-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-3);
+  width: 100%;
 }
 
 /* Tarjeta de Procedimiento */

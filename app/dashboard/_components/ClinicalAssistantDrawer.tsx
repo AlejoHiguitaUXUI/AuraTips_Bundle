@@ -2,6 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import {
+  MessageCircleIcon,
+  ShieldAlertIcon,
+  SparklesIcon,
+  ArrowRightIcon,
+} from "@/components/icons";
 
 interface Message {
   id: string;
@@ -108,7 +114,7 @@ export function ClinicalAssistantDrawer({
       const errorMessage: Message = {
         id: "err-" + Date.now(),
         role: "assistant",
-        content: `⚠️ Hubo una dificultad de conexión con los protocolos: ${err.message || "Inténtalo de nuevo."}`,
+        content: `Hubo una dificultad de conexión con los protocolos: ${err.message || "Inténtalo de nuevo."}`,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -255,8 +261,9 @@ export function ClinicalAssistantDrawer({
                   color: "var(--color-brand)",
                 }}
               >
-                <span>💬 Haz tu consulta clínica ahora</span>
-                <span style={{ fontSize: "12px" }}>→</span>
+                <MessageCircleIcon size={13} />
+                <span>Haz tu consulta clínica ahora</span>
+                <ArrowRightIcon size={12} />
               </div>
             </div>
           )}
@@ -644,10 +651,11 @@ export function ClinicalAssistantDrawer({
                           transition: "all 0.2s ease",
                         }}
                       >
-                        🚨 Contactar a la Dra. Mariana Gómez (Atención Prioritaria)
+                        <ShieldAlertIcon size={14} color="#FFFFFF" />
+                        <span>Contactar a la Dra. Mariana Gómez (Atención Prioritaria)</span>
                       </a>
                       <p style={{ margin: "6px 0 0", fontSize: "11px", color: "var(--color-muted)" }}>
-                        💡 Atención prioritaria activada por coincidencia de 3 o más criterios de valoración.
+                        Atención prioritaria activada por coincidencia de 3 o más criterios de valoración médica.
                       </p>
                     </div>
                   )}

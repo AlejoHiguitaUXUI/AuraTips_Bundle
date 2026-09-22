@@ -90,12 +90,12 @@ Durante las primeras 4 horas, las moléculas de neurotoxina botulínica se unen 
               "No consumir bebidas alcohólicas ni comidas excesivamente calientes, picantes o hipercalóricas."
             ],
             checklist: [
-              "🛏️ Permanecí con la cabeza erguida durante las primeras 4 horas sin recostarme",
-              "🛏️ Preparé 2 almohadas para dormir boca arriba y evitar apoyar el rostro",
-              "🧊 Apliqué frío indirecto con gasa limpia por 10 minutos sin ejercer presión",
-              "💧 Bebí al menos 2 litros de agua y evité alcohol y comidas hirviendo/picantes",
-              "🚫 Mantuve mis manos alejadas de los puntos de inyección sin masajear",
-              "🧴 Dejé el rostro limpio sin maquillaje ni cosméticos densos por hoy"
+              "Permanecí con la cabeza erguida durante las primeras 4 horas sin recostarme",
+              "Preparé 2 almohadas para dormir boca arriba y evitar apoyar el rostro",
+              "Apliqué frío indirecto con gasa limpia por 10 minutos sin ejercer presión",
+              "Bebí al menos 2 litros de agua y evité alcohol y comidas hirviendo/picantes",
+              "Mantuve mis manos alejadas de los puntos de inyección sin masajear",
+              "Dejé el rostro limpio sin maquillaje ni cosméticos densos por hoy"
             ]
           }
         ]
@@ -133,11 +133,11 @@ Durante los días 1 a 3, la toxina se internaliza en las terminaciones nerviosas
               "Evitar dormir de lado aplastando el rostro o frotando las cejas contra las sábanas."
             ],
             checklist: [
-              "🧴 Apliqué protector solar mineral SPF 50+ con toques ligeros sin frotar",
-              "🏃 Pospuse entrenamientos pesados de pesas y cardio intenso por 48-72h",
-              "🧖 Evité saunas, baños calientes y ambientes sofocantes",
-              "🌿 Apliqué árnica/vitamina K en toquecitos sobre hematomas si aparecieron",
-              "🛏️ Continué durmiendo boca arriba con elevación para drenaje óptimo"
+              "Apliqué protector solar mineral SPF 50+ con toques ligeros sin frotar",
+              "Pospuse entrenamientos pesados de pesas y cardio intenso por 48-72h",
+              "Evité saunas, baños calientes y ambientes sofocantes",
+              "Apliqué árnica/vitamina K en toquecitos sobre hematomas si aparecieron",
+              "Continué durmiendo boca arriba con elevación para drenaje óptimo"
             ]
           }
         ]
@@ -175,11 +175,11 @@ La denervación química reversible progresa de forma paulatina:
               "No suspender la hidratación facial ni los cuidados generales de la barrera cutánea."
             ],
             checklist: [
-              "🪞 Monitoreé la relajación muscular gradual frente al espejo sin ansiedad",
-              "🏃 Reanudé mi entrenamiento deportivo habitual de forma progresiva",
-              "🧴 Mantuve mi rutina dermocosmética habitual y fotoprotección diaria",
-              "📸 Tomé fotografías de frente y perfil para documentar mi evolución",
-              "📅 Agendé la cita de revisión médica para el día 14 post-tratamiento"
+              "Monitoreé la relajación muscular gradual frente al espejo sin ansiedad",
+              "Reanudé mi entrenamiento deportivo habitual de forma progresiva",
+              "Mantuve mi rutina dermocosmética habitual y fotoprotección diaria",
+              "Tomé fotografías de frente y perfil para documentar mi evolución",
+              "Agendé la cita de revisión médica para el día 14 post-tratamiento"
             ]
           }
         ]
@@ -242,12 +242,12 @@ El bermellón labial es una mucosa ricamente vascularizada e inervada. Tras la t
               "No fumar, vapear ni consumir bebidas alcohólicas (empeoran el edema y dañan la microcirculación)."
             ],
             checklist: [
-              "🧊 Apliqué compresas frías envueltas en gasa limpia en pulsos de 10 minutos sin presionar",
-              "🛏️ Dormí boca arriba o semisentada con 2 almohadas para favorecer el drenaje linfático",
-              "🥤 Bebí abundante agua en vaso abierto y evité terminantemente sorbetes o pajillas",
-              "🧴 Apliqué ungüento reparador estéril sin fragancias con bastoncillo limpio",
-              "🍲 Evité comidas muy calientes, picantes o muy saladas y consumo de tabaco o alcohol",
-              "🚫 Me abstuve de aplicar cosméticos labiales con color y de frotar los labios"
+              "Apliqué compresas frías envueltas en gasa limpia en pulsos de 10 minutos sin presionar",
+              "Dormí boca arriba o semisentada con 2 almohadas para favorecer el drenaje linfático",
+              "Bebí abundante agua en vaso abierto y evité terminantemente sorbetes o pajillas",
+              "Apliqué ungüento reparador estéril sin fragancias con bastoncillo limpio",
+              "Evité comidas muy calientes, picantes o muy saladas y consumo de tabaco o alcohol",
+              "Me abstuve de aplicar cosméticos labiales con color y de frotar los labios"
             ]
           }
         ]
@@ -285,11 +285,11 @@ Entre las 24 y 72 horas post-inyección se experimenta el pico máximo de inflam
               "No realizar depilación con cera o hilo en el labio superior (área del bozo) ni peelings periorales."
             ],
             checklist: [
-              "🧴 Hidraté los labios 4-6 veces al día con bálsamo reparador emoliente neutro",
-              "🌿 Apliqué crema de árnica o vitamina K sobre hematomas peribucales en toques suaves",
-              "💧 Mantuve la ingesta de más de 2 litros de agua diarios para nutrir el gel de hialurónico",
-              "🛏️ Dormí boca arriba con 2 almohadas para evitar presión lateral sobre los labios",
-              "🚫 Evité masajear los nódulos transitorios y me abstuve de saunas y ejercicio vigoroso"
+              "Hidraté los labios 4-6 veces al día con bálsamo reparador emoliente neutro",
+              "Apliqué crema de árnica o vitamina K sobre hematomas peribucales en toques suaves",
+              "Mantuve la ingesta de más de 2 litros de agua diarios para nutrir el gel de hialurónico",
+              "Dormí boca arriba con 2 almohadas para evitar presión lateral sobre los labios",
+              "Evité masajear los nódulos transitorios y me abstuve de saunas y ejercicio vigoroso"
             ]
           }
         ]
@@ -325,11 +325,11 @@ A partir del día 5 al 7, el edema agudo cede casi en su totalidad. El producto 
               "No someterse a micropigmentación labial ni tatuaje perioral antes de cumplirse 4 semanas."
             ],
             checklist: [
-              "🪞 Evalué la forma real de mis labios con la desinflamación natural progresiva",
-              "🧴 Apliqué bálsamo protector labial con filtro solar a diario",
-              "💄 Reanudé cosméticos y labiales con higiene adecuada",
-              "💧 Continué con mi consumo habitual de agua para mantener la hidrofilia del hialurónico",
-              "📅 Confirmé la cita de revisión y control con mi especialista a los 14 días"
+              "Evalué la forma real de mis labios con la desinflamación natural progresiva",
+              "Apliqué bálsamo protector labial con filtro solar a diario",
+              "Reanudé cosméticos y labiales con higiene adecuada",
+              "Continué con mi consumo habitual de agua para mantener la hidrofilia del hialurónico",
+              "Confirmé la cita de revisión y control con mi especialista a los 14 días"
             ]
           }
         ]
@@ -393,12 +393,12 @@ La rinomodelación deposita depósitos de alta precisión de ácido hialurónico
               "No aplicar maquillaje, correctores ni cremas densas sobre la pirámide nasal en las primeras 24 horas."
             ],
             checklist: [
-              "👓 Cero apoyo de gafas o monturas sobre el dorso nasal (usé lentes de contacto o suspensión frontal)",
-              "🛏️ Dormí boca arriba con 2 almohadas y soportes laterales para no girar la cabeza",
-              "🧊 Apliqué frío indirecto con gasa por 10 minutos en zonas periféricas sin comprimir la nariz",
-              "🪞 Inspeccioné la coloración cutánea de la punta y dorso nasal (rosada, sin palidez ni manchas moradas)",
-              "💧 Bebí al menos 2 litros de agua y consumí alimentos templados y suaves",
-              "🚫 Evité sonarme la nariz bruscamente y mantuve mis manos alejadas de la zona tratada"
+              "Cero apoyo de gafas o monturas sobre el dorso nasal (usé lentes de contacto o suspensión frontal)",
+              "Dormí boca arriba con 2 almohadas y soportes laterales para no girar la cabeza",
+              "Apliqué frío indirecto con gasa por 10 minutos en zonas periféricas sin comprimir la nariz",
+              "Inspeccioné la coloración cutánea de la punta y dorso nasal (rosada, sin palidez ni manchas moradas)",
+              "Bebí al menos 2 litros de agua y consumí alimentos templados y suaves",
+              "Evité sonarme la nariz bruscamente y mantuve mis manos alejadas de la zona tratada"
             ]
           }
         ]
@@ -435,11 +435,11 @@ Durante los días 1 a 3, el ácido hialurónico comienza a interactuar con los g
               "No inclinarse súbitamente hacia el suelo con la cabeza baja (evitar aumento de presión hidrostática nasal)."
             ],
             checklist: [
-              "👓 Mantuve la restricción estricta de anteojos y gafas sobre la pirámide nasal",
-              "🧴 Apliqué protector solar mineral SPF 50+ mediante toques muy ligeros sin compresión",
-              "🌿 Apliqué gel de árnica o vitamina K sobre hematomas discretos en puntos de acceso",
-              "🛏️ Dormí en posición supina con dos almohadas durante toda la noche",
-              "🏃 Evité entrenamientos vigorosos, levantamiento de cargas y fuentes de calor"
+              "Mantuve la restricción estricta de anteojos y gafas sobre la pirámide nasal",
+              "Apliqué protector solar mineral SPF 50+ mediante toques muy ligeros sin compresión",
+              "Apliqué gel de árnica o vitamina K sobre hematomas discretos en puntos de acceso",
+              "Dormí en posición supina con dos almohadas durante toda la noche",
+              "Evité entrenamientos vigorosos, levantamiento de cargas y fuentes de calor"
             ]
           }
         ]
@@ -475,11 +475,11 @@ A partir del día 5 a 7, el edema transitorio en el dorso y la punta nasal desap
               "No aplicarse aparatología facial focalizada en la nariz (radiofrecuencia o ultrasonido focalizado)."
             ],
             checklist: [
-              "👃 Verifiqué la fijación del dorso y la punta nasal con resolución del edema inicial",
-              "🧴 Mantuve fotoprotección SPF 50+ estricta en el dorso y punta nasal a diario",
-              "👓 Mantuve prudencia con monturas pesadas hasta cumplir los 14 días reglamentarios",
-              "📸 Tomé fotografías de perfil y frente para mi seguimiento clínico",
-              "📅 Acudí o confirmé mi cita médica de control estructural a los 14 días"
+              "Verifiqué la fijación del dorso y la punta nasal con resolución del edema inicial",
+              "Mantuve fotoprotección SPF 50+ estricta en el dorso y punta nasal a diario",
+              "Mantuve prudencia con monturas pesadas hasta cumplir los 14 días reglamentarios",
+              "Tomé fotografías de perfil y frente para mi seguimiento clínico",
+              "Acudí o confirmé mi cita médica de control estructural a los 14 días"
             ]
           }
         ]
@@ -543,11 +543,11 @@ En las primeras 24 horas tras el peeling médico, los agentes químicos (ácido 
               "No exponerse al sol directo ni consumir comidas picantes, muy calientes o bebidas alcohólicas."
             ],
             checklist: [
-              "🧴 Apliqué crema barrera reparadora calmante (pantenol/madecassoside) en capa generosa",
-              "🧊 Usé compresas de gasa con agua termal fría por 10 minutos para calmar el ardor",
-              "🛏️ Dormí boca arriba con 2 almohadas y funda limpia para evitar fricción facial",
-              "💧 Bebí 2.5 litros de agua fresca y evité comidas calientes, picantes o alcohol",
-              "🚫 Cero maquillaje, exfoliantes, ácidos y cero exposición directa a la radiación solar"
+              "Apliqué crema barrera reparadora calmante (pantenol/madecassoside) en capa generosa",
+              "Usé compresas de gasa con agua termal fría por 10 minutos para calmar el ardor",
+              "Dormí boca arriba con 2 almohadas y funda limpia para evitar fricción facial",
+              "Bebí 2.5 litros de agua fresca y evité comidas calientes, picantes o alcohol",
+              "Cero maquillaje, exfoliantes, ácidos y cero exposición directa a la radiación solar"
             ]
           }
         ]
@@ -587,11 +587,11 @@ Entre el día 2 y el día 4 comenzará la fase de descamación activa ("pelado")
               "No utilizar toallitas desmaquillantes, tónicos astringentes con alcohol ni cepillos mecánicos de limpieza."
             ],
             checklist: [
-              "🚫 REGLA DE ORO: No arranqué ni tiré de ninguna piel; dejé que se desprendan naturalmente",
-              "🧴 Apliqué bálsamo cicatrizante y reparador 4 a 6 veces al día ante cada sensación de tirantez",
-              "☀️ Apliqué y reapliqué protector solar mineral SPF 50+ cada 2 a 3 horas religiosamente",
-              "🧼 Lavé mi rostro con limpiador Syndet suave con agua tibia y secado por toques",
-              "🧢 Usé sombrero de ala ancha y evité por completo el sol directo y el sudor intenso"
+              "REGLA DE ORO: No arranqué ni tiré de ninguna piel; dejé que se desprendan naturalmente",
+              "Apliqué bálsamo cicatrizante y reparador 4 a 6 veces al día ante cada sensación de tirantez",
+              "Apliqué y reapliqué protector solar mineral SPF 50+ cada 2 a 3 horas religiosamente",
+              "Lavé mi rostro con limpiador Syndet suave con agua tibia y secado por toques",
+              "Usé sombrero de ala ancha y evité por completo el sol directo y el sudor intenso"
             ]
           }
         ]
@@ -628,11 +628,11 @@ Hacia el día 5 al 7, la descamación concluye. La nueva capa epidérmica está 
               "No realizarse depilación facial con cera, hilo, láser o luz pulsada durante al menos 4 semanas."
             ],
             checklist: [
-              "☀️ Mantuve la reaplicación de fotoprotector SPF 50+ cada 3-4 horas sin excepción",
-              "🧴 Nutrí la barrera cutánea con ácido hialurónico y ceramidas reconstituyentes",
-              "💄 Reanudé maquillaje hipoalergénico solo tras haber finalizado la descamación al 100%",
-              "🚫 Pospuse el uso de ácidos exfoliantes, retinoides y depilación facial hasta el día 14+",
-              "📅 Agendé la cita de valoración dermatológica de control post-peeling"
+              "Mantuve la reaplicación de fotoprotector SPF 50+ cada 3-4 horas sin excepción",
+              "Nutrí la barrera cutánea con ácido hialurónico y ceramidas reconstituyentes",
+              "Reanudé maquillaje hipoalergénico solo tras haber finalizado la descamación al 100%",
+              "Pospuse el uso de ácidos exfoliantes, retinoides y depilación facial hasta el día 14+",
+              "Agendé la cita de valoración dermatológica de control post-peeling"
             ]
           }
         ]

@@ -1,6 +1,9 @@
 export interface ClinicalFewShotExample {
   id: string;
   category:
+    | "agendamiento"
+    | "llamada_humana"
+    | "pregunta_concisa"
     | "panico_estetico"
     | "asimetria"
     | "nodulos_textura"
@@ -16,257 +19,267 @@ export interface ClinicalFewShotExample {
 }
 
 export const AURA_TIPS_FEW_SHOT_EXAMPLES: ClinicalFewShotExample[] = [
-  // Caso 1: Pánico o Arrepentimiento Estético Inmediato ("Shock del Espejo")
+  // Caso 1: Agendamiento y Cita de Control
+  {
+    id: "fs-agendamiento-citas",
+    category: "agendamiento",
+    userQuery: "¿Puedo adelantar mi cita de control? No quiero esperar hasta el día 14",
+    recoveryDay: 3,
+    procedureTitle: "Relleno y Perfilado de Labios con Ácido Hialurónico",
+    auraTipsResponse: `### Gestión de Cita de Control • AuraTips
+
+¡Hola! Bienvenido(a) a AuraTips. Tu cita de revisión y control clínico está programada para el **Día 14 con la Dra. Mariana Gómez**.
+
+En tu Día 3, no es clínicamente aconsejable adelantar la cita antes del Día 14 porque los tejidos aún se encuentran en pleno proceso de desinflamación y el ácido hialurónico tarda dos semanas en estabilizarse e integrarse de forma definitiva. Sin embargo, si experimentas alguna molestia imprevista o inquietud puntual, podemos coordinar una revisión prioritaria.
+
+Para consultar disponibilidad o solicitar un cambio en tu agenda, comunícate directamente con recepción médica aquí: [Contactar a Recepción Médica](https://wa.me/573009123456?text=Hola,%20deseo%20consultar%20sobre%20mi%20cita%20de%20control%20Dra%20Mariana%20Gomez) o llamando al [+57 300 912 3456](tel:+573009123456).`,
+    clinicalPrinciples: [
+      "Reconocer la cita oficial programada del Día 14 con la Dra. Mariana Gómez",
+      "Explicar en 1 frase la razón biológica de no adelantar el control (desinflamación y biointegración)",
+      "Proporcionar enlace y teléfono directo con recepción para reprogramar",
+      "Regla estricta: NO incluir listas de pautas recomendadas ni qué evitar",
+    ],
+  },
+
+  // Caso 2: Handoff a Humano / Deseo de Llamada Telefónica
+  {
+    id: "fs-llamada-handoff",
+    category: "llamada_humana",
+    userQuery: "No me gusta este chat, prefiero que me llame una persona real de la clínica",
+    recoveryDay: 2,
+    procedureTitle: "Atención Médica y Acompañamiento",
+    auraTipsResponse: `¡Hola! Comprendo totalmente que prefieras hablar directamente por teléfono con nuestro equipo humano en lugar de interactuar por chat.
+
+Puedes comunicarte ahora mismo de forma directa haciendo clic aquí: [Llamar a Recepción Médica (+57 300 912 3456)](tel:+573009123456) o escribirnos a nuestro [WhatsApp de Recepción](https://wa.me/573009123456?text=Hola,%20solicito%20atenci%C3%B3n%20telef%C3%B3nica%20directa%20por%20favor) para devolverte la llamada a la brevedad.`,
+    clinicalPrinciples: [
+      "Cero justificaciones ni disculpas artificiales sobre el asistente",
+      "Máxima empatía en 2 líneas directas",
+      "Enlace telefónico tel: y WhatsApp directo de recepción",
+      "Regla estricta: Cero pautas clínicas o bloques de qué hacer/evitar",
+    ],
+  },
+
+  // Caso 3: Pregunta Concisa (Maquillaje temprano)
+  {
+    id: "fs-pregunta-concisa-maquillaje",
+    category: "pregunta_concisa",
+    userQuery: "¿Hoy me puedo maquillar?",
+    recoveryDay: 1,
+    procedureTitle: "Relleno Facial / Toxina Botulínica",
+    auraTipsResponse: `### Pauta de Maquillaje Facial • AuraTips
+
+¡Hola! Bienvenido(a) a AuraTips. Durante las primeras 24 a 48 horas rige una pausa de cosméticos sobre los puntos de punción, ya que los microorificios de la piel tardan ese lapso en completar su sellado y aplicar bases o correctores puede introducir bacterias en las capas profundas.
+
+#### Pautas recomendadas (Qué hacer):
+* Puedes maquillar con total libertad ojos, cejas y pestañas para resaltar tu mirada.
+* Mantén la piel tratada limpia e hidratada solo con bálsamo estéril o protector solar mineral en toques suaves.
+* Cumplidas las 48 horas podrás reanudar tu base o labial habitual utilizando brochas o esponjas limpias.
+
+*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+    clinicalPrinciples: [
+      "Explicación fisiológica concisa (2-3 líneas) del sellado de microorificios",
+      "2-3 pautas recomendadas directas y aplicables sin texto superfluo",
+      "Alternativa práctica positiva (maquillaje de ojos)",
+    ],
+  },
+
+  // Caso 4: Pánico o Arrepentimiento Estético Inmediato
   {
     id: "fs-panico-arrepentimiento",
     category: "panico_estetico",
     userQuery: "Siento la boca deforme y me veo horrible, me arrepiento muchísimo de haberme hecho esto...",
     recoveryDay: 1,
     procedureTitle: "Relleno y Perfilado de Labios con Ácido Hialurónico",
-    auraTipsResponse: `### Acompañamiento AuraTips: Relleno y Perfilado de Labios con Ácido Hialurónico
+    auraTipsResponse: `### Acompañamiento AuraTips: Relleno y Perfilado de Labios
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Comprendo profundamente lo angustiante que resulta mirarte al espejo en este momento y no reconocerte como esperabas. Por favor respira con tranquilidad: no estás solo(a) y desde este instante te acompaño junto al equipo médico de la Dra. Mariana Gómez.
+¡Hola! Bienvenido(a) a AuraTips. Comprendo profundamente lo angustiante que resulta mirarte y sentir que no te reconoces. Por favor ten total serenidad: no estás solo(a) y te acompañamos paso a paso.
 
-Queremos darte absoluta serenidad explicándote con claridad lo que está ocurriendo en tu piel: en tus **primeras 24 a 48 horas**, los labios acaban de atravesar el estímulo de las microagujas o microcánulas. 
+En tus primeras 24 a 48 horas, los labios presentan un **edema inflamatorio agudo** defensivo sumado a la **alta capacidad hidrófila del ácido hialurónico**, que retiene agua para asentarse. Esto produce una **sobredimensión temporal de hasta un 30%** que no corresponde al resultado final. Juzgar el tratamiento hoy genera alarma innecesaria porque los tejidos aún no han drenado.
 
-La respuesta biológica inmediata del cuerpo es generar un **edema inflamatorio agudo** (una hinchazón defensiva natural para proteger y reparar el área tratada). A esto se suma una característica propia del **ácido hialurónico: su alta capacidad hidrófila**, lo que significa que atrae y retiene moléculas de agua para hidratarse y asentarse en los tejidos. 
+#### Pautas recomendadas (Qué hacer):
+* Aplica frío seco local (hielo envuelto en toalla limpia) 10 minutos cada 2 horas para desinflamar.
+* Descansa con la cabeza elevada para facilitar el drenaje linfático por gravedad.
+* Haz una pausa activa del espejo y fotos de primer plano durante estas 48 horas.
 
-Esta combinación produce un **volumen temporal sobredimensionado de hasta un 30%** por encima del resultado real que planificamos en consulta.
-
-Lo que hoy ves **no es tu resultado definitivo**; es únicamente la fase inflamatoria aguda en su punto más visible. Evaluar el tratamiento en este momento genera una alarma innecesaria, ya que los tejidos aún no han drenado los líquidos retenidos. Como pauta de cuidado emocional y estético, te recomendamos hacer una pausa activa de espejos y fotos de primer plano durante estas primeras 48 horas mientras el volumen desciende de forma natural.
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Aplicar frío seco local (hielo envuelto en una toalla limpia o gasa, nunca directo) durante 10 minutos cada 2 horas para calmar el edema (la hinchazón).
-* Descansar con la cabeza elevada (usar dos almohadas) para facilitar el drenaje linfático por gravedad.
-* Pausar la revisión constante en el espejo y fotos de primer plano durante las primeras 48 horas.
-* Recordar que la Dra. Mariana Gómez y todo su equipo médico estamos atentos a tu evolución.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* No intentar apretar, comprimir ni "empujar" los labios buscando acomodar la forma.
-* No juzgar el resultado definitivo ni tomar decisiones precipitadas durante el pico inflamatorio agudo.
-* No gesticular de manera forzada ni morderte los labios.
-* No aplicar calor local ni realizar ejercicio físico que eleve la temperatura corporal.
+#### Acciones a evitar (Qué evitar):
+* No aprietes, pellizques ni intentes amoldar los labios con los dedos.
+* No evalúes el resultado final durante el pico inflamatorio inicial.
 
 *Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
     clinicalPrinciples: [
-      "Validación empática profunda de la angustia visual y shock del espejo",
-      "Explicación fisiológica directa del edema reactivo y la capacidad hidrófila del ácido hialurónico (sobredimensión temporal de hasta el 30%)",
-      "Desescalar la alarma con rigor biológico, enfocándose en la retención transitoria de líquidos",
-      "Acompañamiento constante y regla de pausar el chequeo compulsivo al espejo durante 48h",
-      "Prohibición estricta de manipular o comprimir los tejidos",
+      "Validación empática de la angustia visual",
+      "Explicación concisa del edema reactivo y retención hidrófila (+30% temporal)",
+      "Pausa de espejos y prohibición de manipulación",
     ],
   },
 
-  // Caso 2: Situaciones Sociales de la Vida Real (Alcohol, Eventos, Maquillaje)
-  {
-    id: "fs-vida-social-alcohol-maquillaje",
-    category: "vida_social",
-    userQuery: "Hoy tengo una cena/boda, ¿puedo tomarme una copa de vino o ponerme base de maquillaje?",
-    recoveryDay: 1,
-    procedureTitle: "Relleno Facial / Toxina Botulínica",
-    auraTipsResponse: `### Acompañamiento AuraTips: Protocolo de Cuidado Post-Procedimiento
-
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Es completamente comprensible que desees lucir radiante y disfrutar al máximo de tu compromiso social, pero nuestra prioridad médica es blindar tu seguridad y garantizar el resultado armónico que planificó la Dra. Mariana Gómez.
-
-**Criterio médico esencial:** Durante las **primeras 48 horas** rige una **restricción estricta de alcohol, tabaco y cosméticos directos sobre los puntos de punción**:
-
-1. **Microorificios de punción y barrera dérmica:** Cada punto donde ingresó la aguja o microcánula genera una interrupción temporal de la barrera cutánea que tarda entre 24 y 48 horas en completar su sellado y cicatrización natural. Aplicar bases, correctores, labiales o deslizar brochas y esponjas usadas introduce bacterias e impurezas directamente hacia las capas dérmicas profundas, creando un riesgo directo de infección o inflamación tisular.
-2. **Vasodilatación capilar por alcohol:** El consumo de alcohol y tabaco produce una **vasodilatación capilar inmediata** (dilata los vasos sanguíneos y acelera el flujo de sangre en la zona tratada). Esta presión circulatoria reactiva la hinchazón y puede detonar la aparición de morados evidentes en puntos que ya estaban estabilizados.
-
-**Estrategia de cuidado y alternativas para brillar en tu evento:**
-No necesitas aislarte de tu compromiso. Te sugerimos destacar el tercio superior de tu rostro mediante un maquillaje impecable de ojos, sombras y delineado, un peinado sofisticado y tu mejor vestimenta, manteniendo la piel de la zona tratada completamente limpia y protegida con su bálsamo reparador estéril. En el brindis, opta por exquisitos mocktails hidratantes (cócteles sin alcohol a base de frutas frescas o agua con gas y menta).
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Mantener la piel tratada limpia con limpiador syndet suave y aplicar tu bálsamo estéril o protector solar mineral sin fricción.
-* Resaltar tu mirada con maquillaje de ojos y cejas, manteniendo la zona tratada libre de cosméticos.
-* Brindar con mocktails o agua fresca para mantener la hidratación tisular que tu piel necesita.
-* Informar con tranquilidad a tus conocidos que estás en un protocolo de cuidado dérmico si te preguntan.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* Cero consumo de bebidas alcohólicas o cigarrillo durante las primeras 48 horas.
-* No aplicar bases, correctores, polvos compactos ni labiales sobre los puntos donde ingresó la aguja.
-* No acudir a saunas, baños turcos ni permanecer junto a fuentes de calor intenso (calentadores o chimeneas) en el evento.
-
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
-    clinicalPrinciples: [
-      "Firmeza médica rigurosa con las 48h de restricción en puntos de punción",
-      "Explicación anatómica clara del sellado de los microorificios de punción (24-48h) y riesgo de colonización bacteriana",
-      "Fundamento fisiológico de la vasodilatación capilar inducida por alcohol",
-      "Reducción de daños práctica y positiva: destacar mirada, peinado y brindar con mocktails hidratantes",
-    ],
-  },
-
-  // Caso 3: Asimetría en los Primeros 3 Días y Regla del Día 14
+  // Caso 5: Asimetría y Regla del Día 14
   {
     id: "fs-asimetria-desigual",
     category: "asimetria",
-    userQuery: "Siento que me quedó un lado más hinchado y torcido, ¿es normal o me quedó mal puesto?",
+    userQuery: "Me veo un lado más hinchado que el otro, siento que me quedó torcido",
     recoveryDay: 2,
     procedureTitle: "Relleno y Perfilado de Labios con Ácido Hialurónico",
-    auraTipsResponse: `### Acompañamiento AuraTips: Relleno y Perfilado de Labios con Ácido Hialurónico
+    auraTipsResponse: `### Acompañamiento AuraTips: Simetría y Evolución
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Comprendo perfectamente tu preocupación al mirarte y percibir que un lado luce con más volumen o altura que el otro; es una de las dudas más frecuentes y queremos darte absoluta tranquilidad.
+¡Hola! Bienvenido(a) a AuraTips. Comprendo perfectamente tu inquietud; es muy común percibir que un lado luce con más volumen o altura que el otro en los primeros días.
 
-En tu **Día 2 post-procedimiento**, cada lado de tu rostro responde a su propia dinámica anatómica y circulatoria:
+Cada mitad del rostro tiene su propia red independiente de microcirculación y drenaje linfático, por lo que un lado desinflama más rápido que el otro. Además, la postura al dormir hace que el lado apoyado retenga más líquido por gravedad. El ácido hialurónico requiere **14 días para integrarse y estabilizarse**: la simetría real se evalúa en tu control del Día 14 con la Dra. Mariana Gómez.
 
-Cada mitad facial cuenta con una red independiente de microcirculación sanguínea y canales de **drenaje linfático**. Es totalmente habitual que un hemisferio drene los líquidos de la inflamación más rápido que el otro. Además, la postura al dormir influye de forma directa: el lado sobre el que apoyas la cara al descansar retiene temporalmente mayor volumen debido al efecto de la gravedad y la presión continua de la almohada.
+#### Pautas recomendadas (Qué hacer):
+* Aplica frío seco local intermitente (10 minutos con paño limpio) en el lado de mayor tensión.
+* Duerme boca arriba con dos almohadas para favorecer un drenaje simétrico.
+* Mantén la calma: permite que el producto complete su asentamiento natural.
 
-**El "Pacto de Paciencia del Día 14":**
-El ácido hialurónico requiere exactamente **14 días para estabilizarse, absorber agua de manera uniforme e integrarse** en la arquitectura de los tejidos. La simetría real y el resultado estético armónico definitivo únicamente se valoran en tu **control del Día 14 con la Dra. Mariana Gómez**. Si para ese momento se necesitara cualquier microajuste o compensación milimétrica, se realiza en esa cita con total precisión clínica.
-
-Respecto al alivio de molestias: si notas mayor tensión en el lado con más volumen, el frío seco intermitente te ayudará a equilibrar la zona. Por favor realiza **únicamente la maniobra de masaje que la Dra. Mariana Gómez te haya enseñado en consulta**, solo si te la indicó expresamente. Queda categóricamente prohibido realizar automasajes, presiones fuertes o pellizcos por tu cuenta, ya que podrías desplazar el producto del plano anatómico adecuado.
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Aplicar frío seco local (con toalla limpia de por medio) por periodos de 10 minutos en el lado con mayor tensión.
-* Dormir boca arriba con la cabeza ligeramente elevada para favorecer un drenaje linfático simétrico.
-* Realizar exclusivamente las maniobras suaves pautadas por la Dra. Mariana Gómez, únicamente si te fueron recetadas.
-* Mantener el pacto de paciencia hasta tu valoración formal del Día 14.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* No presionar con fuerza, no pellizcar ni intentar "empujar" o moldear la zona asimétrica por tu cuenta.
-* No dormir de lado apoyando el peso sobre la zona tratada.
-* No juzgar la simetría ni el resultado final antes de cumplir la ventana de 14 días.
+#### Acciones a evitar (Qué evitar):
+* Cero manipulación: no empujes, pellizques ni intentes masajear la zona por tu cuenta.
+* No saques conclusiones definitivas antes de cumplir las dos semanas de evolución.
 
 *Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
     clinicalPrinciples: [
-      "Validación empática de la asimetría visual en fase temprana",
-      "Explicación anatómica precisa de la red linfática independiente por mitad facial y el efecto postural al dormir",
-      "Pacto de paciencia del Día 14 fundamentado en la estabilización biológica del producto",
-      "Enfoque sintomático con frío seco y prohibición rigurosa de automasajes o presiones no pautadas",
+      "Validación empática de la asimetría temprana",
+      "Explicación anatómica de drenaje linfático asimétrico y efecto gravitacional al dormir",
+      "Pacto del Día 14 y Cero Manipulación mecánica",
     ],
   },
 
-  // Caso 4: Sensación de Dureza o "Bolita" (Nódulos Transitorios)
+  // Caso 6: Nódulos o Sensación de Bolita
   {
     id: "fs-nodulo-bolita",
     category: "nodulos_textura",
     userQuery: "Me toco una bolita dura por dentro del labio, ¿se me encapsuló el relleno?",
     recoveryDay: 3,
     procedureTitle: "Relleno y Perfilado de Labios con Ácido Hialurónico",
-    auraTipsResponse: `### Acompañamiento AuraTips: Relleno y Perfilado de Labios con Ácido Hialurónico
+    auraTipsResponse: `### Acompañamiento AuraTips: Textura y Biointegración
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Comprendo la alarma que genera sentir una pequeña bolita o dureza al pasar la lengua o los dedos, y el temor inmediato a que el producto se haya "encapsulado". Queremos darte total serenidad médica.
+¡Hola! Bienvenido(a) a AuraTips. Entiendo la preocupación que produce tocar una pequeña dureza y pensar en un encapsulamiento. Puedes tener absoluta tranquilidad médica.
 
-**Desmitificando el encapsulamiento con base clínica:**
-El ácido hialurónico **no se encapsula en pocos días**. En este momento inicial, el gel inyectado se encuentra en un depósito concentrado en el plano dérmico o submucoso donde fue depositado, por lo que puede sentirse firme al tacto.
+El ácido hialurónico **no se encapsula en pocos días**. En este momento inicial se encuentra en un depósito concentrado en el plano donde fue colocado. El proceso normal se llama **biointegración tisular** (tarda entre 14 y 21 días en ablandarse y entretejerse con tus propios tejidos).
 
-El proceso médico normal se denomina **biointegración tisular**: a lo largo de **14 a 21 días**, las moléculas del gel van captando agua de forma progresiva, se ablandan y se entretejen de manera natural con las fibras de tu propia piel y mucosa, volviéndose completamente imperceptibles y homogéneas.
+#### Pautas recomendadas (Qué hacer):
+* Mantén una buena hidratación bebiendo al menos 2 litros de agua al día para facilitar la biointegración.
+* Aplica bálsamo hidratante en toques suaves superficiales, sin frotar.
+* Si persiste al Día 14, la Dra. Mariana Gómez la evaluará en tu cita de control.
 
-**Regla de oro: CERO MANIPULACIÓN.** Es fundamental que no pellizques, no exprimas ni intentes aplastar la bolita con los dedos. La manipulación mecánica ejerce una fricción traumática sobre un tejido que está en proceso de adaptación; esto reactiva la inflamación, puede romper pequeños capilares y genera el riesgo de desplazar el gel del plano exacto donde la doctora lo colocó. Permite que el producto repose y se integre de forma natural.
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Mantener una óptima hidratación bebiendo al menos 2 litros de agua al día para favorecer la biointegración del producto.
-* Aplicar bálsamo labial hidratante estéril mediante suaves toques superficiales, sin frotar.
-* Anotar la localización de la bolita para que la Dra. Mariana Gómez la palpe y revise en tu control del Día 14.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* NO pellizcar, apretar, exprimir ni masajear con fuerza la bolita bajo ninguna circunstancia.
-* No morder la zona tratada ni pasar la lengua ejerciendo presión constante.
-* No aplicar compresas calientes sobre el punto de dureza.
+#### Acciones a evitar (Qué evitar):
+* CERO MANIPULACIÓN: no pellizques, aprietes ni intentes aplastar la bolita (la fricción inflama el tejido y puede desplazar el producto).
+* No pases la lengua ejerciendo presión constante sobre el bulto.
 
 *Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
     clinicalPrinciples: [
-      "Desmitificación rotunda del 'encapsulamiento' temprano explicando el depósito inicial concentrado",
-      "Explicación médica de la biointegración tisular progresiva de 14 a 21 días",
-      "Fundamentación clara de la CERO MANIPULACIÓN: evitar fricción traumática y desplazamiento del gel",
-      "Hidratación oral para facilitar la adaptación molecular del producto",
+      "Desmitificar el encapsulamiento temprano",
+      "Explicar biointegración tisular (14-21 días) del depósito concentrado",
+      "Firmeza en regla de CERO manipulación para evitar desplazamiento",
     ],
   },
 
-  // Caso 5: Presencia de Hematomas (Morados / Moretones)
+  // Caso 7: Hematomas / Moretones
   {
     id: "fs-hematomas-morados",
     category: "hematomas",
     userQuery: "Me salió un morado oscuro en el punto donde me pincharon y se ve muy feo, ¿es peligroso y qué me puedo aplicar?",
     recoveryDay: 2,
     procedureTitle: "Relleno Facial / Inyectables",
-    auraTipsResponse: `### Acompañamiento AuraTips: Manejo de Hematomas y Cuidado Dérmico
+    auraTipsResponse: `### Manejo de Hematomas • AuraTips
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Entiendo completamente que notar un morado o mancha oscura genere inquietud y frustración visual. Queremos darte total tranquilidad: se trata de una reacción habitual e inofensiva en los tratamientos inyectables.
+¡Hola! Bienvenido(a) a AuraTips. Comprendo tu inquietud visual; los moretones son una reacción habitual e inofensiva en los tratamientos inyectables.
 
-**Explicación médica de lo que ocurre:**
-Un hematoma (moretón) se produce cuando la aguja o microcánula entra en contacto con un capilar sanguíneo diminuto de la dermis durante el procedimiento. Esto genera una pequeña salida de sangre bajo la piel (**extravasación capilar**).
+Ocurren cuando la aguja roza un capilar diminuto, produciendo una micro-salida de sangre bajo la piel (**extravasación capilar**). El cuerpo la reabsorbe de forma natural en un lapso de 5 a 10 días, pasando de un tono violáceo a verdoso y amarillo hasta desaparecer.
 
-El cuerpo activa de inmediato sus mecanismos celulares para descomponer y reabsorber esa sangre. Durante los próximos **5 a 10 días**, notarás una transición de color completamente esperable: pasa de un tono violáceo o azulado inicial, a matices verdosos y finalmente a un tono amarillo claro hasta desaparecer por completo.
+#### Pautas recomendadas (Qué hacer):
+* Aplica crema de árnica o vitamina K tópica en toquecitos suaves, sin frotar ni masajear.
+* Usa protector solar mineral FPS 50+ continuo para evitar que la luz pigmente la zona.
+* Aplica frío seco local las primeras 48 horas para calmar los capilares.
 
-Para apoyar su reabsorción, aplica la crema con árnica o gel de vitamina K tópica **mediante toquecitos superficiales muy suaves, sin presionar ni frotar**, de modo que no se estimulen mecánicamente los capilares que se están reparando. Además, el uso continuo de protector solar FPS 50+ mineral es indispensable para evitar que la radiación solar pigmente la piel en la zona del hematoma.
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Aplicar crema con árnica o gel de vitamina K tópica mediante toquecitos muy suaves, sin friccionar ni sobar con fuerza.
-* Usar protector solar mineral FPS 50+ de forma continua durante el día para evitar que la luz solar pigmente la zona.
-* En las primeras 24 a 48 horas, aplicar frío seco local (10 minutos cubierto en paño limpio) para favorecer la vasoconstricción y calmar la zona.
-* Mantener reposo de actividades físicas de alto impacto que aumenten la presión sanguínea en la cabeza.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* No frotar ni masajear con fuerza sobre el hematoma.
-* No tomar medicamentos antiinflamatorios como Aspirina, Ibuprofeno o Naproxeno en las primeras 48 horas (consulta tu fórmula oficial de Acetaminofén entregada en clínica).
-* No exponer el área a luz solar directa, lámparas UV ni fuentes térmicas (saunas o agua muy caliente).
+#### Acciones a evitar (Qué evitar):
+* No frotes ni masajees con fuerza sobre el hematoma.
+* No tomes Aspirina o Ibuprofeno (favorecen el sangrado; consulta tu fórmula de Acetaminofén).
+* Evita la exposición a fuentes de calor directo como saunas o sol intenso.
 
 *Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
     clinicalPrinciples: [
-      "Validación de la incomodidad estética y desmitificación de la gravedad del moretón",
-      "Explicación médica de la extravasación capilar y la transición cromática natural de reabsorción (5 a 10 días)",
-      "Técnica de aplicación de árnica/vitamina K mediante toquecitos sin fricción para no irritar capilares",
-      "Fotoprotección estricta para prevenir pigmentación residual",
+      "Normalización y desmitificación médica de la extravasación capilar",
+      "Ciclo cromático de reabsorción (5 a 10 días)",
+      "Aplicación en toques suaves y fotoprotección estricta",
     ],
   },
 
-  // Caso 6: Manejo de Dolor y Analgésicos
+  // Caso 8: Analgésicos y Manejo de Molestias
   {
     id: "fs-dolor-analgesia",
     category: "analgesia",
     userQuery: "Me duele un poco la cabeza y siento molestia en la zona tratada, ¿puedo tomar Ibuprofeno?",
     recoveryDay: 1,
     procedureTitle: "Toxina Botulínica / Rellenos Dérmicos",
-    auraTipsResponse: `### Acompañamiento AuraTips: Manejo de Sensibilidad y Molestias
+    auraTipsResponse: `### Manejo de Molestias y Analgesia • AuraTips
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Sentir cierta pesadez de cabeza o sensibilidad localizada en los puntos de aplicación durante las primeras 24 a 48 horas es una respuesta esperable mientras los tejidos asimilan el procedimiento.
+¡Hola! Bienvenido(a) a AuraTips. Experimentar cierta pesadez o sensibilidad en las primeras 24 a 48 horas es esperable mientras los tejidos asimilan el tratamiento.
 
-**Indicación farmacológica esencial:** Por favor **revisa en primer lugar la fórmula médica** que te fue entregada por la clínica al culminar tu sesión con la Dra. Mariana Gómez.
+Por favor **revisa en primer lugar la fórmula médica entregada en tu consulta**. Evita automedicarte con Ibuprofeno, Aspirina o Naproxeno: estos fármacos tienen efecto **antiagregante plaquetario**, lo que dificulta la coagulación en los microvasos intervenidos y aumenta el riesgo de moretones. El **Acetaminofén** es la alternativa segura pautada por la clínica para aliviar el dolor sin alterar la coagulación.
 
-**¿Por qué debemos evitar el Ibuprofeno, Aspirina o Naproxeno en estas 48 horas?**
-En medicina explicamos que estos fármacos tienen un **efecto antiagregante plaquetario**: disminuyen temporalmente la capacidad de coagulación de las plaquetas encargadas de sellar los microvasos sanguíneos intervenidos, lo que facilita que la sangre fluya bajo la piel y aumenta notoriamente la formación o extensión de morados.
+#### Pautas recomendadas (Qué hacer):
+* Toma únicamente el analgésico prescrito en tu fórmula médica oficial (Acetaminofén).
+* Reposa en un ambiente fresco, con luz tenue y buena hidratación.
+* Si el dolor persiste o es intenso, comunícate directamente con la clínica.
 
-En cambio, si tu fórmula médica incluye **Acetaminofén / Paracetamol**, esa es la opción analgésica segura recomendada por el equipo médico, ya que alivia el dolor actuando directamente sobre la sensibilidad sin interferir en los mecanismos de coagulación ni en la función de las plaquetas.
+#### Acciones a evitar (Qué evitar):
+* NO tomar Ibuprofeno, Aspirina ni derivados AINEs en las primeras 48 horas.
+* No presionar los puntos de inyección para aliviar la molestia.
 
-Si notas que la molestia es persistente, no cede con la medicación prescrita o incrementa su intensidad, comunícate directamente con nosotros para que la **Dra. Mariana Gómez** evalúe y ajuste tu pauta.
-
-#### 🟢 Pautas recomendadas (Qué hacer):
-* Consultar la fórmula médica oficial entregada en tu consulta.
-* Tomar únicamente el analgésico indicado por la clínica (ej. Acetaminofén según pauta médica).
-* Reposar en un ambiente fresco, ventilado y con luz tenue para aliviar la pesadez de cabeza.
-* Hidratarte adecuadamente con agua a temperatura ambiente.
-
-#### 🔴 Acciones a evitar (Qué evitar):
-* NO tomar Ibuprofeno, Aspirina ni derivados antiinflamatorios (AINEs) durante las primeras 48 horas.
-* No automedicarte con fármacos no contemplados en tu prescripción médica.
-* No presionar los puntos de inyección con la intención de aliviar la molestia.
-
-*Si la molestia no cede con tu fórmula médica, contacta de inmediato al equipo de la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
     clinicalPrinciples: [
-      "Priorizar la fórmula médica oficial entregada por la clínica",
-      "Explicación médica clara del efecto antiagregante plaquetario de los AINEs para prevenir hematomas",
-      "Enseñar la seguridad del Acetaminofén sobre los mecanismos de coagulación",
-      "Instar a contactar al equipo médico si la molestia no remite",
+      "Priorizar la fórmula médica de la clínica",
+      "Explicación médica concisa del efecto antiagregante de AINEs y riesgo de hematomas",
+      "Seguridad del Acetaminofén y reposo",
     ],
   },
 
-  // Caso 7: Regla de los 3 Criterios de Alarma Simultáneos
+  // Caso 9: Eventos Sociales, Alcohol y Salidas
+  {
+    id: "fs-vida-social-alcohol",
+    category: "vida_social",
+    userQuery: "Hoy tengo una cena/boda, ¿puedo tomarme una copa de vino?",
+    recoveryDay: 1,
+    procedureTitle: "Relleno Facial / Toxina Botulínica",
+    auraTipsResponse: `### Recomendación Social y Cuidados • AuraTips
+
+¡Hola! Bienvenido(a) a AuraTips. Comprendo que desees disfrutar de tu compromiso, pero durante las **primeras 48 horas** rige una restricción de bebidas alcohólicas.
+
+El alcohol produce **vasodilatación capilar inmediata** (dilata los vasos sanguíneos y acelera el flujo circulatorio en el rostro), lo que reactiva la inflamación y puede detonar la aparición de morados notorios en zonas recién tratadas.
+
+#### Pautas recomendadas (Qué hacer):
+* Disfruta de tu evento brindando con mocktails frescos o agua con gas y menta.
+* Mantén una hidratación abundante durante toda la velada.
+* Cumplidas las 48 horas podrás retomar el consumo moderado de alcohol.
+
+#### Acciones a evitar (Qué evitar):
+* Cero consumo de vino, cerveza o licores durante las primeras 48 horas.
+* Evita acercarte a fuentes de calor intenso (calentadores o fogones).
+
+*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+    clinicalPrinciples: [
+      "Explicación fisiológica concisa de la vasodilatación capilar inducida por alcohol",
+      "Restricción estricta durante 48 horas",
+      "Alternativa positiva: mocktails hidratantes",
+    ],
+  },
+
+  // Caso 10: Alarma de 3 Criterios de Triaje
   {
     id: "fs-alarma-3-criterios",
     category: "alarma_3_criterios",
-    userQuery: "Tengo dolor muy fuerte que no me pasa, veo la piel blanquecina y fría, y además me salieron unas ampollitas",
+    userQuery: "Siento la piel muy pálida y fría, ampollitas y me duele mucho",
     recoveryDay: 2,
-    procedureTitle: "Relleno Dérmico",
+    procedureTitle: "Atención Médica Prioritaria",
     auraTipsResponse: `### Atención Médica Prioritaria Recomendada
 
-¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Comprendo completamente que notar estos cambios te cause inquietud y queremos brindarte total acompañamiento, serenidad y soporte médico directo.
+¡Hola! Bienvenido(a) a AuraTips. Comprendo plenamente que notar estos cambios te cause inquietud y queremos brindarte total acompañamiento y soporte médico directo.
 
-En **AuraTips**, por protocolo clínico preventivo, cuando coinciden **3 o más criterios de observación simultáneos** (como molestia persistente, cambio marcado de coloración o temperatura dérmica y reacción vesicular), lo más prudente y seguro para tu bienestar es que la **Dra. Mariana Gómez** realice una valoración médica prioritaria directa.
+En **AuraTips**, por protocolo clínico preventivo, cuando coinciden **3 o más criterios de observación simultáneos** (como cambio marcado de coloración o temperatura dérmica, molestia persistente y reacción vesicular), lo más prudente y seguro para tu bienestar es que la **Dra. Mariana Gómez** realice una valoración médica prioritaria directa.
 
-**Instrucciones inmediatas de cuidado preventivo:**
-* Mantén la calma: nuestro equipo médico está disponible para asistirte de inmediato.
-* **No masajees** la zona ni apliques presión, frío o calor.
+#### Instrucciones inmediatas:
+* Mantén la calma: nuestro equipo médico está listo para asistirte.
+* **No masajees** la zona ni apliques compresas calientes, frío extremo o ungüentos.
 * Comunícate ahora mismo con la **Dra. Mariana Gómez** pulsando el botón de atención médica prioritaria a continuación.
 
 *Tu salud, tranquilidad y cuidado son nuestra prioridad absoluta.*`,
@@ -279,9 +292,63 @@ En **AuraTips**, por protocolo clínico preventivo, cuando coinciden **3 o más 
 ];
 
 export function findMatchingFewShot(query: string): ClinicalFewShotExample | null {
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-  // Pánico / arrepentimiento estético inmediato
+  // 1. Agendamiento y Citas
+  if (
+    q.includes("adelantar mi cita") ||
+    q.includes("adelantar la cita") ||
+    q.includes("adelantar cita") ||
+    q.includes("cambiar fecha") ||
+    q.includes("cambiar la fecha") ||
+    q.includes("cambiar mi cita") ||
+    q.includes("cambiar el dia") ||
+    q.includes("puedo ir antes") ||
+    q.includes("podria ir antes") ||
+    q.includes("es posible ir antes") ||
+    q.includes("reprogramar") ||
+    q.includes("mover mi cita") ||
+    q.includes("pasar antes") ||
+    q.includes("no quiero esperar hasta el dia 14") ||
+    q.includes("no quiero esperar al dia 14") ||
+    (q.includes("cita") && (q.includes("adelantar") || q.includes("cambiar") || q.includes("antes")))
+  ) {
+    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "agendamiento") || null;
+  }
+
+  // 2. Handoff a Humano / Deseo de Llamada
+  if (
+    q.includes("no me gusta este chat") ||
+    q.includes("persona real") ||
+    q.includes("hablar con un humano") ||
+    q.includes("hablar con una persona") ||
+    q.includes("llamenme") ||
+    q.includes("que me llamen") ||
+    q.includes("prefiero llamada") ||
+    q.includes("prefiero una llamada") ||
+    q.includes("no quiero chatear") ||
+    q.includes("hablar por telefono") ||
+    q.includes("llamada telefonica") ||
+    q.includes("comunicarme con alguien") ||
+    q.includes("atencion telefonica")
+  ) {
+    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "llamada_humana") || null;
+  }
+
+  // 3. Pregunta concisa: Maquillaje
+  if (
+    q.includes("hoy me puedo maquillar") ||
+    q.includes("me puedo maquillar hoy") ||
+    q.includes("me puedo maquillar") ||
+    q.includes("puedo maquillarme") ||
+    q.includes("usar maquillaje") ||
+    q.includes("base de maquillaje") ||
+    q.includes("me maquillo")
+  ) {
+    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "pregunta_concisa") || null;
+  }
+
+  // 4. Pánico / arrepentimiento estético inmediato
   if (
     q.includes("deforme") ||
     q.includes("horrible") ||
@@ -297,19 +364,7 @@ export function findMatchingFewShot(query: string): ClinicalFewShotExample | nul
     return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "panico_estetico") || null;
   }
 
-  // Hematomas / morados
-  if (
-    q.includes("morad") ||
-    q.includes("hematoma") ||
-    q.includes("moret") ||
-    q.includes("cardenal") ||
-    q.includes("mancha morada") ||
-    q.includes("mancha oscura")
-  ) {
-    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "hematomas") || null;
-  }
-
-  // Asimetría / torcido / desigual
+  // 5. Asimetría / torcido / desigual
   if (
     q.includes("asimetr") ||
     q.includes("torcid") ||
@@ -317,12 +372,13 @@ export function findMatchingFewShot(query: string): ClinicalFewShotExample | nul
     q.includes("un lado mas") ||
     q.includes("chuec") ||
     q.includes("quedo mal") ||
-    q.includes("un lado hinchado")
+    q.includes("un lado hinchado") ||
+    q.includes("lado mas hinchado")
   ) {
     return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "asimetria") || null;
   }
 
-  // Nódulos, durezas, bolitas
+  // 6. Nódulos, durezas, bolitas
   if (
     q.includes("bolita") ||
     q.includes("pelota") ||
@@ -334,25 +390,19 @@ export function findMatchingFewShot(query: string): ClinicalFewShotExample | nul
     return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "nodulos_textura") || null;
   }
 
-  // Vida social, eventos, alcohol, maquillaje
+  // 7. Hematomas / morados
   if (
-    q.includes("alcohol") ||
-    q.includes("vino") ||
-    q.includes("cerveza") ||
-    q.includes("fiesta") ||
-    q.includes("evento") ||
-    q.includes("boda") ||
-    q.includes("cena") ||
-    q.includes("maquill") ||
-    q.includes("base") ||
-    q.includes("labial") ||
-    q.includes("tabaco") ||
-    q.includes("fumar")
+    q.includes("morad") ||
+    q.includes("hematoma") ||
+    q.includes("moret") ||
+    q.includes("cardenal") ||
+    q.includes("mancha morada") ||
+    q.includes("mancha oscura")
   ) {
-    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "vida_social") || null;
+    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "hematomas") || null;
   }
 
-  // Analgesia, dolor de cabeza, medicamentos
+  // 8. Analgesia, dolor de cabeza, medicamentos
   if (
     q.includes("ibuprofeno") ||
     q.includes("aspirina") ||
@@ -362,6 +412,21 @@ export function findMatchingFewShot(query: string): ClinicalFewShotExample | nul
     q.includes("naproxeno")
   ) {
     return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "analgesia") || null;
+  }
+
+  // 9. Vida social, eventos, alcohol
+  if (
+    q.includes("alcohol") ||
+    q.includes("vino") ||
+    q.includes("cerveza") ||
+    q.includes("fiesta") ||
+    q.includes("evento") ||
+    q.includes("boda") ||
+    q.includes("cena") ||
+    q.includes("tabaco") ||
+    q.includes("fumar")
+  ) {
+    return AURA_TIPS_FEW_SHOT_EXAMPLES.find((e) => e.category === "vida_social") || null;
   }
 
   return null;

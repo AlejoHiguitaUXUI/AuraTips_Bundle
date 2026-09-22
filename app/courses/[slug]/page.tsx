@@ -6,6 +6,14 @@ import { EnrollButton } from "@/components/EnrollButton";
 import { ReviewList } from "@/components/ReviewList";
 import { ReviewForm } from "@/components/ReviewForm";
 import { getProcedureBySlug } from "@/lib/clinical-data";
+import {
+  ClockIcon,
+  SyringeIcon,
+  ShieldAlertIcon,
+  CalendarIcon,
+  ClipboardCheckIcon,
+  ArrowRightIcon,
+} from "@/components/icons";
 
 export default async function CourseDetailPage({
   params,
@@ -175,7 +183,10 @@ export default async function CourseDetailPage({
       {/* Ribbon de Métricas Clínicas */}
       <div className="clinical-detail-ribbon">
         <div className="ribbon-cell">
-          <span className="lbl">⏱️ Tiempo de Recuperación</span>
+          <span className="lbl" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <ClockIcon size={13} color="var(--color-muted)" />
+            <span>Tiempo de Recuperación</span>
+          </span>
           <span className="val">{course.recovery_time}</span>
         </div>
         <div className="ribbon-cell">
@@ -185,11 +196,17 @@ export default async function CourseDetailPage({
           </span>
         </div>
         <div className="ribbon-cell">
-          <span className="lbl">⏳ Duración de Resultados</span>
+          <span className="lbl" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <ClockIcon size={13} color="var(--color-muted)" />
+            <span>Duración de Resultados</span>
+          </span>
           <span className="val">{course.results_duration}</span>
         </div>
         <div className="ribbon-cell">
-          <span className="lbl">💉 Tipo de Anestesia</span>
+          <span className="lbl" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <SyringeIcon size={13} color="var(--color-muted)" />
+            <span>Tipo de Anestesia</span>
+          </span>
           <span className="val">{course.anesthesia_type}</span>
         </div>
       </div>
@@ -205,7 +222,7 @@ export default async function CourseDetailPage({
       {course.alarm_signs && course.alarm_signs.length > 0 && (
         <section className="alarm-callout" aria-labelledby="alarm-heading">
           <div className="alarm-callout-header">
-            <span style={{ fontSize: "20px" }}>🚨</span>
+            <ShieldAlertIcon size={20} color="var(--color-error)" />
             <h2 id="alarm-heading" style={{ fontSize: "16px", margin: 0, color: "var(--color-error)" }}>
               Signos de Alarma — Cuándo contactar a tu médico de inmediato
             </h2>
@@ -243,7 +260,21 @@ export default async function CourseDetailPage({
       {/* Línea de Tiempo de Recuperación & Protocolos */}
       <section aria-labelledby="timeline-heading" style={{ marginBottom: "48px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-          <span style={{ fontSize: "22px" }}>🗓️</span>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "var(--radius-md)",
+              background: "rgba(32, 80, 59, 0.08)",
+              color: "var(--color-brand)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <CalendarIcon size={20} />
+          </div>
           <div>
             <h2 id="timeline-heading" style={{ fontSize: "1.4rem", fontWeight: 700, margin: 0 }}>
               Línea de Tiempo & Fases de Cuidados
@@ -276,11 +307,12 @@ export default async function CourseDetailPage({
                         className="stage-lesson-link"
                       >
                         <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span>📋</span>
+                          <ClipboardCheckIcon size={15} color="var(--color-brand)" />
                           <span>{l.title}</span>
                         </span>
-                        <span style={{ fontSize: "12px", color: "var(--color-brand)", fontWeight: 600 }}>
-                          Ver Pauta y Checklist →
+                        <span style={{ fontSize: "12px", color: "var(--color-brand)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                          <span>Ver Pauta y Checklist</span>
+                          <ArrowRightIcon size={12} />
                         </span>
                       </Link>
                     ))}

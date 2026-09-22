@@ -13,13 +13,13 @@ export const CLINICAL_ALARM_CRITERIA = [
   {
     id: "color_temp",
     name: "Cambio inusual de coloración o temperatura",
-    regex: /(palidez|piel blanca|mancha blanca|piel fr[ií]a|fr[ií]o al tacto|azul viol[aá]ceo|moteado)/i,
+    regex: /(palidez|p[aá]lid[ao]|piel blanca|mancha blanca|piel fr[ií]a|fr[ií][ao] al tacto|azul viol[aá]ceo|moteado|fr[ií][ao])/i,
     description: "Tono blanquecino o frialdad marcada en la zona",
   },
   {
     id: "severe_pain",
     name: "Molestia pulsátil persistente",
-    regex: /(dolor (insoportable|extremo|desproporcionado|puls[aá]til intenso)|no aguanto el dolor|dolor que no cede)/i,
+    regex: /(dolor (insoportable|extremo|desproporcionado|puls[aá]til intenso|fuerte|intenso)|no aguanto el dolor|dolor que no cede|me duele mucho|mucho dolor)/i,
     description: "Dolor intenso que no se alivia con la analgesia habitual",
   },
   {
@@ -31,7 +31,7 @@ export const CLINICAL_ALARM_CRITERIA = [
   {
     id: "vesicles_fever",
     name: "Reacción vesicular o febrícula",
-    regex: /(ampollas|racimo de ves[ií]culas|secreci[oó]n amarillenta|fiebre alta|calor excesivo localizado)/i,
+    regex: /(ampoll(as|itas)|racimo de ves[ií]culas|ves[ií]culas|secreci[oó]n amarillenta|fiebre alta|calor excesivo localizado)/i,
     description: "Aparición de pequeñas vesículas o temperatura elevada",
   },
   {

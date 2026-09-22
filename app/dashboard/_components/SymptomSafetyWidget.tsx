@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import {
+  CheckCircle2Icon,
+  ShieldAlertIcon,
+  MessageCircleIcon,
+} from "@/components/icons";
 
 interface SymptomSafetyWidgetProps {
   alarmSigns?: string[];
@@ -76,13 +81,23 @@ export function SymptomSafetyWidget({
             style={{
               fontSize: "11px",
               fontWeight: 600,
-              color: activeTab === "normal" ? "#22c55e" : "#ef4444",
+              color: activeTab === "normal" ? "#16a34a" : "#dc2626",
               display: "flex",
               alignItems: "center",
-              gap: "4px",
+              gap: "5px",
             }}
           >
-            {activeTab === "normal" ? "🟢 Evolución Esperada" : "🚨 Filtro de Urgencias"}
+            {activeTab === "normal" ? (
+              <>
+                <CheckCircle2Icon size={12} color="#16a34a" />
+                <span>Evolución Esperada</span>
+              </>
+            ) : (
+              <>
+                <ShieldAlertIcon size={12} color="#dc2626" />
+                <span>Criterios de Observación</span>
+              </>
+            )}
           </span>
         </div>
 
@@ -118,15 +133,20 @@ export function SymptomSafetyWidget({
               borderRadius: "var(--radius-sm)",
               border: "none",
               background: activeTab === "normal" ? "var(--color-surface)" : "transparent",
-              color: activeTab === "normal" ? "#22c55e" : "var(--color-muted)",
+              color: activeTab === "normal" ? "#16a34a" : "var(--color-muted)",
               fontWeight: 700,
               fontSize: "12px",
               cursor: "pointer",
               boxShadow: activeTab === "normal" ? "var(--shadow-sm)" : "none",
               transition: "all var(--dur-fast) ease",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
             }}
           >
-            ✓ Lo que es Normal
+            <CheckCircle2Icon size={13} color={activeTab === "normal" ? "#16a34a" : "currentColor"} />
+            <span>Lo que es Normal</span>
           </button>
 
           <button
@@ -137,15 +157,20 @@ export function SymptomSafetyWidget({
               borderRadius: "var(--radius-sm)",
               border: "none",
               background: activeTab === "alarm" ? "rgba(239, 68, 68, 0.12)" : "transparent",
-              color: activeTab === "alarm" ? "#ef4444" : "var(--color-muted)",
+              color: activeTab === "alarm" ? "#dc2626" : "var(--color-muted)",
               fontWeight: 700,
               fontSize: "12px",
               cursor: "pointer",
               boxShadow: activeTab === "alarm" ? "var(--shadow-sm)" : "none",
               transition: "all var(--dur-fast) ease",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
             }}
           >
-            🚨 Signos de Alerta ({displayAlarms.length})
+            <ShieldAlertIcon size={13} color={activeTab === "alarm" ? "#dc2626" : "currentColor"} />
+            <span>Criterios de Alerta ({displayAlarms.length})</span>
           </button>
         </div>
       </div>
@@ -168,7 +193,7 @@ export function SymptomSafetyWidget({
                 lineHeight: 1.4,
               }}
             >
-              <span style={{ color: "#22c55e", fontWeight: 700, flexShrink: 0 }}>✓</span>
+              <CheckCircle2Icon size={13} color="#16a34a" style={{ flexShrink: 0, marginTop: "2px" }} />
               <span>{symptom}</span>
             </div>
           ))}
@@ -207,7 +232,7 @@ export function SymptomSafetyWidget({
                 lineHeight: 1.35,
               }}
             >
-              <span style={{ color: "#ef4444", fontWeight: 700, flexShrink: 0 }}>!</span>
+              <ShieldAlertIcon size={13} color="#dc2626" style={{ flexShrink: 0, marginTop: "2px" }} />
               <span>{alarm}</span>
             </div>
           ))}
@@ -225,20 +250,27 @@ export function SymptomSafetyWidget({
         }}
       >
         <span style={{ fontSize: "11px", color: "var(--color-muted)" }}>
-          Urgencias clínicas 24/7
+          Soporte clínico directo
         </span>
         <a
-          href="tel:+18005551234"
+          href="https://wa.me/?text=Hola%20Dra.%20Mariana%2C%20tengo%20una%20consulta%20m%C3%A9dica%20sobre%20mi%20recuperaci%C3%B3n"
+          target="_blank"
+          rel="noopener noreferrer"
           className="btn btn-sm"
           style={{
             background: "transparent",
-            color: "#ef4444",
+            color: "#dc2626",
             border: "1px solid rgba(239, 68, 68, 0.3)",
             fontSize: "11px",
             padding: "4px 10px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "5px",
+            textDecoration: "none",
           }}
         >
-          📞 Línea Médica de Urgencia
+          <MessageCircleIcon size={13} color="#dc2626" />
+          <span>Contactar a la Dra. Mariana Gómez</span>
         </a>
       </div>
     </div>

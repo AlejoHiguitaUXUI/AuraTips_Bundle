@@ -7,6 +7,14 @@ import { DailyCareChecklist } from "../_components/DailyCareChecklist";
 import { SymptomSafetyWidget } from "../_components/SymptomSafetyWidget";
 import { DoctorFollowUpCard } from "../_components/DoctorFollowUpCard";
 import { ClinicalAssistantDrawer } from "../_components/ClinicalAssistantDrawer";
+import {
+  LeafIcon,
+  SyringeIcon,
+  SmileIcon,
+  SparklesIcon,
+  ArrowRightIcon,
+  ClipboardCheckIcon,
+} from "@/components/icons";
 
 export const metadata = {
   title: "Mis Cuidados Activos · AuraTips",
@@ -97,12 +105,12 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 32,
+              color: "var(--color-brand)",
               marginInline: "auto",
               marginBottom: "var(--space-4)",
             }}
           >
-            🌿
+            <LeafIcon size={32} />
           </div>
 
           <h2
@@ -137,8 +145,9 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               marginBottom: "var(--space-8)",
             }}
           >
-            <Link href="/" className="btn">
-              Explorar Protocolos de Recuperación →
+            <Link href="/" className="btn" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <span>Explorar Protocolos de Recuperación</span>
+              <ArrowRightIcon size={14} />
             </Link>
           </div>
 
@@ -188,7 +197,25 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                     transition: "all var(--dur-fast) ease",
                   }}
                 >
-                  <span style={{ fontSize: "24px" }}>💉</span>
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "var(--radius-md)",
+                      background: "rgba(32, 80, 59, 0.08)",
+                      color: "var(--color-brand)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {proc.category === "Inyectables" ? (
+                      <SyringeIcon size={18} />
+                    ) : (
+                      <SparklesIcon size={18} />
+                    )}
+                  </div>
                   <div>
                     <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
                       {proc.title}
@@ -327,24 +354,39 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
           )}
 
           {/* Quick switch between clinical procedures */}
-          <div style={{ display: "flex", gap: "4px" }}>
-            {CLINICAL_PROCEDURES.map((p) => (
-              <Link
-                key={p.id}
-                href={`/dashboard/learning?demo=${p.slug}`}
-                className="btn-ghost btn btn-sm"
-                style={{
-                  fontSize: "11px",
-                  padding: "4px 8px",
-                  border: activeProcedure.slug === p.slug ? "1px solid var(--color-brand)" : undefined,
-                  background: activeProcedure.slug === p.slug ? "rgba(32, 80, 59, 0.08)" : undefined,
-                }}
-                title={`Ver cuidados de ${p.title}`}
-              >
-                {p.category === "Inyectables" ? "💉" : p.category === "Dermoestética" ? "✨" : "👃"}{" "}
-                {p.title.split(" ")[0]}
-              </Link>
-            ))}
+          <div style={{ display: "flex", gap: "6px" }}>
+            {CLINICAL_PROCEDURES.map((p) => {
+              const isActive = activeProcedure.slug === p.slug;
+              return (
+                <Link
+                  key={p.id}
+                  href={`/dashboard/learning?demo=${p.slug}`}
+                  className="btn-ghost btn btn-sm"
+                  style={{
+                    fontSize: "11px",
+                    padding: "4px 10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    borderRadius: "var(--radius-full)",
+                    border: isActive ? "1px solid var(--color-brand)" : "1px solid var(--color-border)",
+                    background: isActive ? "rgba(32, 80, 59, 0.1)" : "var(--color-surface)",
+                    color: isActive ? "var(--color-brand)" : "var(--color-text)",
+                    fontWeight: isActive ? 700 : 500,
+                  }}
+                  title={`Ver cuidados de ${p.title}`}
+                >
+                  {p.category === "Inyectables" ? (
+                    <SyringeIcon size={12} />
+                  ) : p.category === "Dermoestética" ? (
+                    <SparklesIcon size={12} />
+                  ) : (
+                    <SmileIcon size={12} />
+                  )}
+                  <span>{p.title.split(" ")[0]}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -387,9 +429,12 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               gap: "var(--space-3)",
             }}
           >
-            <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)" }}>
-              Otros Protocolos en tu Historial Clínico
-            </h3>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ClipboardCheckIcon size={18} color="var(--color-brand)" />
+              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)", margin: 0 }}>
+                Otros Protocolos en tu Historial Clínico
+              </h3>
+            </div>
             <div
               style={{
                 display: "grid",
@@ -421,8 +466,13 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                         Registrado el {new Date(enr.enrolled_at).toLocaleDateString("es-ES")}
                       </span>
                     </div>
-                    <Link href={`/courses/${c.slug}`} className="btn-ghost btn btn-sm" style={{ fontSize: "11px" }}>
-                      Ver Protocolo →
+                    <Link
+                      href={`/courses/${c.slug}`}
+                      className="btn-ghost btn btn-sm"
+                      style={{ fontSize: "11px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                    >
+                      <span>Ver Protocolo</span>
+                      <ArrowRightIcon size={12} />
                     </Link>
                   </div>
                 );

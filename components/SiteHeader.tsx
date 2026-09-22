@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LeafIcon, StethoscopeIcon, UserCheckIcon } from "@/components/icons";
 
 export async function SiteHeader() {
   const supabase = await createClient();
@@ -57,7 +58,7 @@ export async function SiteHeader() {
               boxShadow: "0 2px 8px rgba(32, 80, 59, 0.15)",
             }}
           >
-            🌿
+            <LeafIcon size={16} />
           </span>
           <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
             <span style={{ fontWeight: 800, letterSpacing: "-0.02em", color: "var(--color-text)", fontSize: "1.05rem" }}>
@@ -92,11 +93,11 @@ export async function SiteHeader() {
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "5px",
-                    padding: "3px 10px",
+                    gap: "6px",
+                    padding: "4px 10px",
                     borderRadius: "var(--radius-full)",
                     background: "rgba(194, 155, 56, 0.14)",
-                    color: "#997316",
+                    color: "var(--color-gold-text, #997316)",
                     border: "1px solid rgba(194, 155, 56, 0.35)",
                     fontSize: "11px",
                     fontWeight: 700,
@@ -104,15 +105,16 @@ export async function SiteHeader() {
                   }}
                   title="Dirección de Protocolos Clínicos"
                 >
-                  <span aria-hidden="true">🩺</span> {clinicalRoleLabel}
+                  <StethoscopeIcon size={13} />
+                  <span>{clinicalRoleLabel}</span>
                 </span>
               ) : (
                 <span
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "5px",
-                    padding: "3px 10px",
+                    gap: "6px",
+                    padding: "4px 10px",
                     borderRadius: "var(--radius-full)",
                     background: "var(--color-brand-soft)",
                     color: "var(--color-brand)",
@@ -122,7 +124,8 @@ export async function SiteHeader() {
                   }}
                   title="Paciente en seguimiento clínico activo"
                 >
-                  <span aria-hidden="true">🌿</span> {clinicalRoleLabel}
+                  <UserCheckIcon size={13} />
+                  <span>{clinicalRoleLabel}</span>
                 </span>
               )}
 

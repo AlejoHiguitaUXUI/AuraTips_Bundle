@@ -42,7 +42,7 @@ export function ReviewForm({
       } = await supabase.auth.getUser();
       if (!user) {
         setPending(false);
-        setError("You must be signed in to review.");
+        setError("Debes iniciar sesión para compartir tu testimonio.");
         return;
       }
       ({ error: saveError } = await supabase
@@ -60,7 +60,7 @@ export function ReviewForm({
 
   async function handleDelete() {
     if (!existingReview) return;
-    if (!confirm("Delete your review?")) return;
+    if (!confirm("¿Deseas eliminar tu testimonio?")) return;
     setPending(true);
     setError(null);
     const supabase = createClient();
@@ -80,30 +80,37 @@ export function ReviewForm({
   if (deleted) return null;
 
   return (
-    <form onSubmit={handleSubmit} className="card" style={{ marginBottom: 16 }}>
-      <h3>{existingReview ? "Edit your review" : "Leave a review"}</h3>
+    <form onSubmit={handleSubmit} className="card" style={{ marginBottom: 24, padding: "20px" }}>
+      <h3 style={{ fontSize: "16px", fontWeight: 700, margin: "0 0 12px 0" }}>
+        {existingReview ? "Editar tu experiencia de recuperación" : "Compartir tu experiencia clínica"}
+      </h3>
       {error && <div className="error">{error}</div>}
 
-      <label htmlFor="rating">Rating</label>
+      <label htmlFor="rating">Calificación de la recuperación</label>
       <select
         id="rating"
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
       >
-        {[5, 4, 3, 2, 1].map((n) => (
-          <option key={n} value={n}>
-            {n} — {"★".repeat(n)}
-            {"☆".repeat(5 - n)}
-          </option>
-        ))}
+        <option value={5}>5 estrellas — Excelente acompañamiento</option>
+        <option value={4}>4 estrellas — Muy buen acompañamiento</option>
+        <option value={3}>3 estrellas — Acompañamiento adecuado</option>
+        <option value={2}>2 estrellas — Regular</option>
+        <option value={1}>1 estrella — Insatisfecho</option>
       </select>
 
-      <label htmlFor="body">Review (optional)</label>
-      <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} />
+      <label htmlFor="body">Testimonio o comentario sobre tu proceso (opcional)</label>
+      <textarea
+        id="body"
+        value={body}
+        placeholder="Cuéntanos cómo fue tu evolución, inflamación y atención de la Dra. Mariana Gómez..."
+        onChange={(e) => setBody(e.target.value)}
+        rows={3}
+      />
 
-      <div style={{ display: "flex", gap: 8 }}>
+      <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
         <button className="btn" type="submit" disabled={pending}>
-          {pending ? "Saving…" : existingReview ? "Update review" : "Submit review"}
+          {pending ? "Guardando…" : existingReview ? "Actualizar testimonio" : "Publicar testimonio"}
         </button>
         {existingReview && (
           <button
@@ -112,7 +119,7 @@ export function ReviewForm({
             onClick={handleDelete}
             disabled={pending}
           >
-            Delete review
+            Eliminar testimonio
           </button>
         )}
       </div>

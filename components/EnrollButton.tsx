@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CheckCircle2Icon } from "@/components/icons";
 
 export function EnrollButton({
   courseId,
@@ -23,21 +24,26 @@ export function EnrollButton({
   const [enrolled, setEnrolled] = useState(isEnrolled);
 
   if (isOwner) {
-    return <p className="muted">This is your course — you can preview all lessons.</p>;
+    return <p className="muted">Eres el especialista médico a cargo de este protocolo.</p>;
   }
 
   if (!isSignedIn) {
     return (
       <p>
         <Link href={`/login?next=/courses/${courseSlug}`} className="btn">
-          Sign in to enroll
+          Iniciar sesión para activar
         </Link>
       </p>
     );
   }
 
   if (enrolled) {
-    return <p><strong>✓ You&apos;re enrolled</strong></p>;
+    return (
+      <p style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-brand)", fontWeight: 700 }}>
+        <CheckCircle2Icon size={16} />
+        <span>Protocolo activo en tu seguimiento</span>
+      </p>
+    );
   }
 
   async function enroll() {
@@ -49,7 +55,7 @@ export function EnrollButton({
     setPending(false);
     if (!res.ok) {
       const json = await res.json().catch(() => ({}));
-      setError(json.error ?? "Could not enroll.");
+      setError(json.error ?? "No se pudo activar el protocolo.");
       return;
     }
     setEnrolled(true);
@@ -60,7 +66,7 @@ export function EnrollButton({
     <div>
       {error && <div className="error">{error}</div>}
       <button className="btn" onClick={enroll} disabled={pending}>
-        {pending ? "Enrolling…" : "Enroll for free"}
+        {pending ? "Activando…" : "Activar Acompañamiento Clínico"}
       </button>
     </div>
   );

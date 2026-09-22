@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { isValidYouTubeUrl } from "@/lib/youtube";
 import type { EditableLesson } from "@/components/CourseEditor";
+import { ShieldAlertIcon, CheckCircle2Icon } from "@/components/icons";
 
 export function LessonEditor({
   lesson,
@@ -205,9 +206,13 @@ export function LessonEditor({
                 background: "rgba(239, 68, 68, 0.12)",
                 color: "#ef4444",
                 fontWeight: 700,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
               }}
             >
-              🚨 Alerta Crítica
+              <ShieldAlertIcon size={12} color="#ef4444" />
+              <span>Alerta Crítica</span>
             </span>
           )}
         </div>
@@ -260,9 +265,13 @@ export function LessonEditor({
             fontSize: "12px",
             marginBottom: "12px",
             fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
           }}
         >
-          ✓ Protocolo guardado y sincronizado con Supabase.
+          <CheckCircle2Icon size={14} color="#15803d" />
+          <span>Protocolo guardado y sincronizado con Supabase.</span>
         </div>
       )}
 
@@ -330,7 +339,7 @@ export function LessonEditor({
                   marginBottom: "4px",
                 }}
               >
-                🟢 Pautas recomendadas (Qué hacer) — Una por línea
+                Pautas recomendadas (Qué hacer) — Una por línea
               </label>
               <textarea
                 rows={3}
@@ -358,7 +367,7 @@ export function LessonEditor({
                   marginBottom: "4px",
                 }}
               >
-                🔴 Acciones a evitar (Qué evitar) — Una por línea
+                Acciones a evitar (Qué evitar) — Una por línea
               </label>
               <textarea
                 rows={3}
@@ -373,7 +382,7 @@ export function LessonEditor({
           {/* Fila 3: Checklist Diario del Paciente */}
           <div>
             <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
-              📋 Lista de Verificación del Paciente (Checklist diario) — Una tarea por línea
+              Lista de Verificación del Paciente (Checklist diario) — Una tarea por línea
             </label>
             <textarea
               rows={2}
@@ -405,7 +414,7 @@ export function LessonEditor({
                 style={{ width: "16px", height: "16px", accentColor: "#ef4444" }}
               />
               <span style={{ fontWeight: 600, color: isAlarm ? "#b91c1c" : "inherit" }}>
-                🚨 Criterio de Alarma Médica (Si el paciente cumple al menos 3 criterios simultáneos, se activa atención prioritaria)
+                Criterio de Alarma Médica (Si el paciente cumple al menos 3 criterios simultáneos, se activa atención prioritaria)
               </span>
             </label>
 

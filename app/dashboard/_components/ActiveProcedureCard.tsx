@@ -1,4 +1,11 @@
 import Link from "next/link";
+import {
+  LeafIcon,
+  ClockIcon,
+  SnowflakeIcon,
+  ShieldCheckIcon,
+  ArrowRightIcon,
+} from "@/components/icons";
 
 export interface ActiveProcedure {
   id: string;
@@ -31,12 +38,24 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
           textAlign: "center",
           padding: "var(--space-8)",
           background: "var(--color-surface)",
-          border: "1px dashed var(--color-border-hover)",
+          border: "1px solid var(--color-border)",
         }}
       >
-        <span style={{ fontSize: 44, marginBottom: "var(--space-3)" }} role="img" aria-label="Sin procedimientos">
-          🌿
-        </span>
+        <div
+          style={{
+            width: 64,
+            height: 64,
+            borderRadius: "50%",
+            background: "rgba(32, 80, 59, 0.08)",
+            color: "var(--color-brand)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "var(--space-3)",
+          }}
+        >
+          <LeafIcon size={32} />
+        </div>
         <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "var(--space-2)" }}>
           No tienes procedimientos activos
         </h3>
@@ -51,8 +70,9 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
         >
           Explora los protocolos de medicina estética y activa el seguimiento clínico de tus cuidados post-tratamiento.
         </p>
-        <Link href="/" className="btn">
-          Explorar Procedimientos →
+        <Link href="/" className="btn" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+          <span>Explorar Procedimientos</span>
+          <ArrowRightIcon size={14} />
         </Link>
       </div>
     );
@@ -244,28 +264,36 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
               <span
                 style={{
                   fontSize: "11px",
-                  padding: "2px 8px",
+                  padding: "4px 8px",
                   borderRadius: "var(--radius-sm)",
                   background: "var(--color-surface-2)",
                   color: "var(--color-text)",
                   border: "1px solid var(--color-border)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "5px",
                 }}
               >
-                ⏱️ Recuperación: {procedure.recovery_time}
+                <ClockIcon size={12} color="var(--color-muted)" />
+                <span>Recuperación: {procedure.recovery_time}</span>
               </span>
             )}
             {procedure.anesthesia_type && (
               <span
                 style={{
                   fontSize: "11px",
-                  padding: "2px 8px",
+                  padding: "4px 8px",
                   borderRadius: "var(--radius-sm)",
                   background: "var(--color-surface-2)",
                   color: "var(--color-text)",
                   border: "1px solid var(--color-border)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "5px",
                 }}
               >
-                🧊 {procedure.anesthesia_type}
+                <SnowflakeIcon size={12} color="var(--color-muted)" />
+                <span>{procedure.anesthesia_type}</span>
               </span>
             )}
           </div>
@@ -388,9 +416,13 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
           style={{
             padding: "8px 18px",
             fontSize: "var(--text-sm)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          Ver Protocolo Completo →
+          <span>Ver Protocolo Completo</span>
+          <ArrowRightIcon size={14} />
         </Link>
 
         <span
@@ -399,10 +431,11 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
             color: "var(--color-muted)",
             display: "flex",
             alignItems: "center",
-            gap: "4px",
+            gap: "6px",
           }}
         >
-          🔒 Protocolo médico verificado
+          <ShieldCheckIcon size={14} color="var(--color-brand)" />
+          <span>Protocolo médico verificado</span>
         </span>
       </div>
     </div>

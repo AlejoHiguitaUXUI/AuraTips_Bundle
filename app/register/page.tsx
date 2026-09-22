@@ -17,7 +17,7 @@ export default function RegisterPage() {
     setError(null);
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      setError("La contraseña debe tener al menos 8 caracteres.");
       return;
     }
 
@@ -35,48 +35,52 @@ export default function RegisterPage() {
         signUpError.message.toLowerCase().includes("already exists") ||
         signUpError.status === 422
       ) {
-        setError("This email is already in use.");
+        setError("Este correo electrónico ya está registrado.");
       } else {
         setError(signUpError.message);
       }
       return;
     }
 
-    router.push("/dashboard/teaching");
+    router.push("/dashboard/learning");
     router.refresh();
   }
 
   return (
-    <section style={{ maxWidth: 400 }}>
-      <h1>Create your account</h1>
-      <p className="muted">
-        One account lets you both publish courses and enroll in others.
+    <section style={{ maxWidth: 400, margin: "0 auto", padding: "40px 16px" }}>
+      <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "8px" }}>
+        Crear Cuenta Clínica
+      </h1>
+      <p className="muted" style={{ fontSize: "var(--text-sm)", marginBottom: "20px" }}>
+        Crea tu cuenta para acceder a tus pautas de cuidado post-tratamiento, seguimiento diario y contacto clínico con la Dra. Mariana Gómez.
       </p>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Correo electrónico</label>
         <input
           id="email"
           type="email"
           required
+          placeholder="tu@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Contraseña (mínimo 8 caracteres)</label>
         <input
           id="password"
           type="password"
           required
           minLength={8}
+          placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="btn" type="submit" disabled={pending}>
-          {pending ? "Creating…" : "Sign up"}
+        <button className="btn" type="submit" disabled={pending} style={{ width: "100%", marginTop: "8px" }}>
+          {pending ? "Creando cuenta…" : "Registrarme"}
         </button>
       </form>
-      <p className="muted">
-        Already have an account? <Link href="/login">Log in</Link>
+      <p className="muted" style={{ marginTop: "16px", textAlign: "center" }}>
+        ¿Ya tienes una cuenta? <Link href="/login">Iniciar sesión</Link>
       </p>
     </section>
   );

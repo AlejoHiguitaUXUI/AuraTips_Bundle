@@ -1,6 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  CheckCircle2Icon,
+  BanIcon,
+  MoonIcon,
+  SnowflakeIcon,
+  SunIcon,
+  DropletIcon,
+  ChevronRightIcon,
+} from "@/components/icons";
+
+function cleanTaskText(text: string): string {
+  return text.replace(/^[\p{Emoji}\uFE0F\u200D\s]+/u, "").trim();
+}
 
 interface PatientChecklistProps {
   lessonId: string;
@@ -40,6 +53,7 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
   const totalCount = items.length;
   const isAllCompleted = totalCount > 0 && completedCount === totalCount;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const cleanItems = items.map(cleanTaskText);
 
   if (!items || items.length === 0) {
     return null;
@@ -49,8 +63,9 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
     <div className="checklist-card animate-fade-in" aria-label="Lista de verificación de cuidados">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
         <div>
-          <h3 className="checklist-title" style={{ margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
-            <span>✅</span> Tu Lista de Verificación Diaria
+          <h3 className="checklist-title" style={{ margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+            <CheckCircle2Icon size={18} color="var(--color-brand)" />
+            <span>Tu Lista de Verificación Diaria</span>
           </h3>
           <p style={{ fontSize: "12px", color: "var(--color-muted)", margin: "4px 0 0" }}>
             Pautas prácticas de la vida real para asegurar una recuperación óptima y prevenir complicaciones.
@@ -101,23 +116,27 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
           fontSize: "11px",
         }}
       >
-        <span style={{ padding: "3px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
-          🛏️ Postura: Boca arriba + 2 almohadas
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+          <MoonIcon size={12} color="var(--color-muted)" />
+          <span>Postura: Boca arriba + 2 almohadas</span>
         </span>
-        <span style={{ padding: "3px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
-          🧊 Frío local: Con gasa, pulsos 10 min
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+          <SnowflakeIcon size={12} color="var(--color-muted)" />
+          <span>Frío local: Con gasa, pulsos 10 min</span>
         </span>
-        <span style={{ padding: "3px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
-          🧴 Skincare: Reparador y SPF mineral
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+          <SunIcon size={12} color="var(--color-muted)" />
+          <span>Skincare: Reparador y SPF mineral</span>
         </span>
-        <span style={{ padding: "3px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
-          💧 Dieta: &gt;2L agua, sin picantes/calientes
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
+          <DropletIcon size={12} color="var(--color-muted)" />
+          <span>Dieta: &gt;2L agua, sin picantes/calientes</span>
         </span>
       </div>
 
       {/* Checklist Tasks */}
       <div className="checklist-items">
-        {items.map((item, idx) => {
+        {cleanItems.map((item, idx) => {
           const isChecked = !!checkedState[idx];
           return (
             <label
@@ -171,10 +190,14 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
             fontSize: "13px",
             color: "var(--color-success)",
             fontWeight: 600,
-            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
-          🎉 ¡Excelente! Has completado todas las pautas de esta fase para el día de hoy.
+          <CheckCircle2Icon size={16} />
+          <span>¡Excelente! Has completado todas las pautas de esta fase para el día de hoy.</span>
         </div>
       )}
 
@@ -195,7 +218,13 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
             }}
           >
             <span>{showGuidelines ? "Ocultar pautas médicas resumidas" : "Ver pautas recomendadas y restricciones"}</span>
-            <span>{showGuidelines ? "▲" : "▼"}</span>
+            <ChevronRightIcon
+              size={14}
+              style={{
+                transform: showGuidelines ? "rotate(-90deg)" : "rotate(90deg)",
+                transition: "transform 0.2s ease",
+              }}
+            />
           </button>
 
           {showGuidelines && (
@@ -213,8 +242,9 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
               }}
             >
               <div>
-                <strong style={{ color: "#22c55e", display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
-                  <span>🟢</span> Pautas recomendadas (Qué hacer)
+                <strong style={{ color: "#16a34a", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                  <CheckCircle2Icon size={14} color="#16a34a" />
+                  <span>Pautas recomendadas (Qué hacer)</span>
                 </strong>
                 <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>
                   {dos.map((d, i) => (
@@ -226,8 +256,9 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
               </div>
 
               <div>
-                <strong style={{ color: "#ef4444", display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
-                  <span>🔴</span> Acciones a evitar (Qué evitar)
+                <strong style={{ color: "#dc2626", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                  <BanIcon size={14} color="#dc2626" />
+                  <span>Acciones a evitar (Qué evitar)</span>
                 </strong>
                 <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>
                   {donts.map((d, i) => (

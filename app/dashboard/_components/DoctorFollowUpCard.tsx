@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import {
+  CalendarIcon,
+  CheckCircle2Icon,
+  MessageCircleIcon,
+} from "@/components/icons";
 
 interface DoctorFollowUpCardProps {
   doctorName?: string;
@@ -145,7 +150,7 @@ export function DoctorFollowUpCard({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "4px" }}>
-          <span style={{ fontSize: "14px" }}>📅</span>
+          <CalendarIcon size={14} color="var(--color-brand)" />
           <span
             style={{
               fontSize: "var(--text-xs)",
@@ -197,7 +202,8 @@ export function DoctorFollowUpCard({
               gap: "6px",
             }}
           >
-            ✓ Solicitud de cita enviada a recepción
+            <CheckCircle2Icon size={14} />
+            <span>Solicitud de cita enviada a recepción</span>
           </div>
         ) : (
           <button
@@ -215,9 +221,18 @@ export function DoctorFollowUpCard({
           target="_blank"
           rel="noopener noreferrer"
           className="btn-ghost btn btn-sm"
-          style={{ width: "100%", justifyContent: "center", fontSize: "12px", textDecoration: "none" }}
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            fontSize: "12px",
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
         >
-          💬 Asistencia por WhatsApp
+          <MessageCircleIcon size={14} />
+          <span>Asistencia por WhatsApp</span>
         </a>
       </div>
     </div>

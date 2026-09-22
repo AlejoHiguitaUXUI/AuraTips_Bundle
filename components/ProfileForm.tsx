@@ -52,9 +52,9 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   return (
     <form onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      {saved && !error && <p className="muted">Saved.</p>}
+      {saved && !error && <p className="muted" style={{ color: "var(--color-brand)" }}>Cambios guardados exitosamente.</p>}
 
-      <label htmlFor="display_name">Display name</label>
+      <label htmlFor="display_name">Nombre para mostrar</label>
       <input
         id="display_name"
         required
@@ -62,14 +62,14 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         onChange={(e) => setDisplayName(e.target.value)}
       />
 
-      <label htmlFor="bio">Bio</label>
+      <label htmlFor="bio">Biografía / Notas de atención médica</label>
       <textarea
         id="bio"
         value={bio}
         onChange={(e) => setBio(e.target.value)}
       />
 
-      <label htmlFor="avatar_url">Avatar URL</label>
+      <label htmlFor="avatar_url">Fotografía de perfil (URL)</label>
       <input
         id="avatar_url"
         type="url"
@@ -78,7 +78,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
       />
 
       <button className="btn" type="submit" disabled={pending}>
-        {pending ? "Saving…" : "Save profile"}
+        {pending ? "Guardando…" : "Guardar Perfil"}
       </button>
     </form>
   );

@@ -3,6 +3,17 @@ import { createClient } from "@/lib/supabase/server";
 import { RatingBadge } from "@/components/RatingBadge";
 import { ClinicalSearchBar } from "@/components/ClinicalSearchBar";
 import { CLINICAL_PROCEDURES, getProcedureBySlug } from "@/lib/clinical-data";
+import { ClinicalPill } from "@/components/ClinicalPill";
+import {
+  LeafIcon,
+  ClockIcon,
+  ActivityIcon,
+  StethoscopeIcon,
+  ArrowRightIcon,
+  SparklesIcon,
+  SyringeIcon,
+  SmileIcon,
+} from "@/components/icons";
 
 export const metadata = {
   title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
@@ -61,14 +72,20 @@ export default async function CatalogPage({
       ? procedures
       : procedures.filter((p) => p.category.toLowerCase() === currentCategory.toLowerCase());
 
-  const categories = ["Todos", "Inyectables", "Armonización Facial", "Dermoestética", "Bioestimulación"];
+  const categories = [
+    { name: "Todos", icon: <SparklesIcon size={16} /> },
+    { name: "Inyectables", icon: <SyringeIcon size={16} /> },
+    { name: "Armonización Facial", icon: <SmileIcon size={16} /> },
+    { name: "Dermoestética", icon: <SparklesIcon size={16} /> },
+    { name: "Bioestimulación", icon: <ActivityIcon size={16} /> },
+  ];
 
   return (
     <>
       {/* Hero Especializado en Acompañamiento Clínico AuraTips */}
       <section className="aesthetic-hero animate-fade-in" aria-labelledby="hero-heading">
         <div className="aesthetic-badge">
-          <span>🌿</span> AuraTips · Acompañamiento Clínico de Recuperación
+          <LeafIcon size={14} /> AuraTips · Acompañamiento Clínico de Recuperación
         </div>
         <h1 id="hero-heading">Tu recuperación y cuidado estético, guiados con calidez y rigor médico.</h1>
         <p>
@@ -79,19 +96,19 @@ export default async function CatalogPage({
         <ClinicalSearchBar />
       </section>
 
-      {/* Selector de Categorías */}
+      {/* Selector de Categorías Estilo Mangomint */}
       <nav className="category-filter-bar" aria-label="Filtrar por categoría médica">
         {categories.map((cat) => {
-          const isActive = currentCategory.toLowerCase() === cat.toLowerCase();
-          const href = cat === "Todos" ? "/" : `/?category=${encodeURIComponent(cat)}`;
+          const isActive = currentCategory.toLowerCase() === cat.name.toLowerCase();
+          const href = cat.name === "Todos" ? "/" : `/?category=${encodeURIComponent(cat.name)}`;
           return (
-            <Link
-              key={cat}
+            <ClinicalPill
+              key={cat.name}
               href={href}
-              className={`category-chip ${isActive ? "active" : ""}`}
-            >
-              {cat}
-            </Link>
+              icon={cat.icon}
+              label={cat.name}
+              isActive={isActive}
+            />
           );
         })}
       </nav>
@@ -128,11 +145,15 @@ export default async function CatalogPage({
                 {/* Métricas Clínicas Clave */}
                 <div className="procedure-metrics">
                   <div className="metric-item">
-                    <span className="metric-label">⏱️ Reposo estimado</span>
+                    <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                      <ClockIcon size={13} /> Reposo estimado
+                    </span>
                     <span className="metric-value">{proc.recovery_time}</span>
                   </div>
                   <div className="metric-item">
-                    <span className="metric-label">Molestia esperada</span>
+                    <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                      <ActivityIcon size={13} /> Molestia esperada
+                    </span>
                     <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
                       {painMeter} <span style={{ fontSize: "10px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
                     </span>
@@ -141,8 +162,8 @@ export default async function CatalogPage({
 
                 {/* Footer con Especialista y CTA */}
                 <div className="procedure-card-footer">
-                  <div className="doctor-avatar-tag">
-                    <span style={{ fontSize: "14px" }}>🩺</span>
+                  <div className="doctor-avatar-tag" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <StethoscopeIcon size={14} style={{ color: "var(--color-brand)" }} />
                     <span>{proc.author_name || "Dra. Mariana Gómez"}</span>
                   </div>
                   <span
@@ -155,7 +176,8 @@ export default async function CatalogPage({
                       gap: "4px",
                     }}
                   >
-                    Ver Protocolo de Cuidados →
+                    <span>Ver Protocolo</span>
+                    <ArrowRightIcon size={13} />
                   </span>
                 </div>
               </div>

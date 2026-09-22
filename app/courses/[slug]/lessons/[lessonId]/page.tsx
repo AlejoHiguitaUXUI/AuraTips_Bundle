@@ -6,6 +6,12 @@ import { youTubeEmbedUrl } from "@/lib/youtube";
 import { PatientChecklist } from "@/components/PatientChecklist";
 import { getProcedureBySlug } from "@/lib/clinical-data";
 import { ClinicalAssistantDrawer } from "@/app/dashboard/_components/ClinicalAssistantDrawer";
+import {
+  ClockIcon,
+  CheckCircle2Icon,
+  BanIcon,
+  ShieldCheckIcon,
+} from "@/components/icons";
 
 export default async function LessonPage({
   params,
@@ -143,9 +149,13 @@ export default async function LessonPage({
                 color: "var(--color-brand)",
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
               }}
             >
-              ⏱️ {timelineTag}
+              <ClockIcon size={12} color="var(--color-brand)" />
+              <span>{timelineTag}</span>
             </span>
           )}
           <span
@@ -181,8 +191,9 @@ export default async function LessonPage({
         <section className="semaphore-grid" aria-label="Semáforo de indicaciones y contraindicaciones">
           {dos.length > 0 && (
             <div className="semaphore-col allowed">
-              <h4>
-                <span>🟢</span> Pautas recomendadas (Qué hacer)
+              <h4 style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <CheckCircle2Icon size={14} color="#16a34a" />
+                <span>Pautas recomendadas (Qué hacer)</span>
               </h4>
               <ul className="semaphore-list">
                 {dos.map((item, idx) => (
@@ -194,8 +205,9 @@ export default async function LessonPage({
 
           {donts.length > 0 && (
             <div className="semaphore-col prohibited">
-              <h4>
-                <span>🔴</span> Acciones a evitar (Qué evitar)
+              <h4 style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <BanIcon size={14} color="#dc2626" />
+                <span>Acciones a evitar (Qué evitar)</span>
               </h4>
               <ul className="semaphore-list">
                 {donts.map((item, idx) => (
@@ -244,7 +256,7 @@ export default async function LessonPage({
           color: "var(--color-muted)",
         }}
       >
-        <span style={{ fontSize: "20px" }}>🛡️</span>
+        <ShieldCheckIcon size={22} color="var(--color-brand)" style={{ flexShrink: 0 }} />
         <span>
           <strong>Nota de Responsabilidad Médica:</strong> Este protocolo ofrece pautas estandarizadas de post-cuidado. En caso de dudas agudas o asimetrías súbitas, comunícate con tu especialista tratante.
         </span>

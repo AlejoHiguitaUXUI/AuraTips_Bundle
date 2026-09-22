@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import {
+  StethoscopeIcon,
+  ClockIcon,
+  ChevronRightIcon,
+} from "@/components/icons";
 
 export const metadata = {
   title: "Dirección de Protocolos Clínicos · AuraTips | Dra. Mariana Gómez",
@@ -55,11 +60,11 @@ export default async function TeachingDashboard() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "28px",
+              color: "#FAF8F5",
               border: "2px solid rgba(194, 155, 56, 0.6)",
             }}
           >
-            👩‍⚕️
+            <StethoscopeIcon size={26} />
           </div>
           <div>
             <span
@@ -196,8 +201,11 @@ export default async function TeachingDashboard() {
                     {c.category || "Inyectables"}
                   </span>
                 </div>
-                <div style={{ display: "flex", gap: "16px", fontSize: "12px", color: "var(--color-muted)" }}>
-                  <span>⏱ Reposo estimado: {c.recovery_time || "24 a 48h"}</span>
+                <div style={{ display: "flex", gap: "16px", fontSize: "12px", color: "var(--color-muted)", alignItems: "center" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                    <ClockIcon size={12} color="var(--color-muted)" />
+                    <span>Reposo estimado: {c.recovery_time || "24 a 48h"}</span>
+                  </span>
                   <span>ID: <code style={{ color: "var(--color-brand)" }}>{c.slug}</code></span>
                 </div>
               </div>
@@ -216,7 +224,7 @@ export default async function TeachingDashboard() {
                 >
                   {c.status === "published" ? "● Activo en AuraTips" : "○ En Borrador"}
                 </span>
-                <span style={{ color: "var(--color-muted)", fontSize: "14px" }}>→</span>
+                <ChevronRightIcon size={16} color="var(--color-muted)" />
               </div>
             </Link>
           ))}
