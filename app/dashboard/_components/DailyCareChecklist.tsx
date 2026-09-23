@@ -16,8 +16,9 @@ import {
 } from "@/components/icons";
 
 interface FormattedGuideline {
-  headline: string;
-  detail: string;
+  lead: string;
+  body: string;
+  fullText: string;
   iconType: "sun" | "moon" | "snowflake" | "droplet" | "dumbbell" | "ban" | "check" | "sparkles";
 }
 
@@ -27,7 +28,7 @@ function cleanTaskText(text: string): string {
 }
 
 function formatClinicalGuideline(text: string, isRestriction: boolean): FormattedGuideline {
-  const clean = text.replace(/^[\p{Emoji}\uFE0F\u200D\s]+/u, "").trim();
+  const clean = cleanTaskText(text);
   const lower = clean.toLowerCase();
 
   let iconType: FormattedGuideline["iconType"] = isRestriction ? "ban" : "check";
@@ -48,63 +49,41 @@ function formatClinicalGuideline(text: string, isRestriction: boolean): Formatte
     iconType = "ban";
   }
 
-  let headline = "";
-  let detail = "";
+  let lead = "";
+  let body = "";
 
-  // 1. Explicit prohibition formats
-  if (clean.toUpperCase().startsWith("PROHIBIDO") || clean.toUpperCase().startsWith("CERO ") || clean.toUpperCase().startsWith("NO ")) {
-    const parenMatch = clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/);
-    if (parenMatch) {
-      headline = parenMatch[1].trim();
-      detail = parenMatch[2].trim();
+  // 1. Colon split (e.g. "REGLA DE ORO: Dejar que las pieles...")
+  if (clean.includes(":")) {
+    const colonIdx = clean.indexOf(":");
+    lead = clean.slice(0, colonIdx).trim();
+    body = clean.slice(colonIdx + 1).trim();
+  }
+  // 2. Parenthesized detail (e.g. "PROHIBIDO el uso de sorbetes (la succión...)")
+  else if (clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/)) {
+    const match = clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/)!;
+    lead = match[1].trim();
+    body = `(${match[2].trim()})`;
+  }
+  // 3. Natural punctuation split (comma or semicolon) if within reasonable title length
+  else {
+    const punctIdx = clean.search(/[,;]/);
+    if (punctIdx > 14 && punctIdx < 48) {
+      lead = clean.slice(0, punctIdx).trim();
+      body = clean.slice(punctIdx + 1).trim();
     } else {
-      const splitIdx = clean.search(/[,;:]/);
-      if (splitIdx > 12 && splitIdx < 55) {
-        headline = clean.slice(0, splitIdx).trim();
-        detail = clean.slice(splitIdx + 1).trim();
+      // 4. Word boundary: take first 4 words as lead if sentence has enough length
+      const words = clean.split(" ");
+      if (words.length > 5) {
+        lead = words.slice(0, 4).join(" ");
+        body = words.slice(4).join(" ");
       } else {
-        const words = clean.split(" ");
-        if (words.length > 5) {
-          headline = words.slice(0, 5).join(" ");
-          detail = words.slice(5).join(" ");
-        } else {
-          headline = clean;
-          detail = "Medida restrictiva obligatoria para garantizar la simetría y estabilidad del tratamiento.";
-        }
-      }
-    }
-  } else {
-    // 2. Recommendation formats
-    const parenMatch = clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/);
-    if (parenMatch && parenMatch[1].length < 50) {
-      headline = parenMatch[1].trim();
-      detail = `(${parenMatch[2].trim()})`;
-    } else {
-      const splitIdx = clean.search(/[,;:]/);
-      if (splitIdx > 14 && splitIdx < 55) {
-        headline = clean.slice(0, splitIdx).trim();
-        detail = clean.slice(splitIdx + 1).trim();
-      } else {
-        const words = clean.split(" ");
-        if (words.length > 5) {
-          headline = words.slice(0, 5).join(" ");
-          detail = words.slice(5).join(" ");
-        } else {
-          headline = clean;
-          detail = "Indicación médica protocolizada para favorecer una recuperación óptima.";
-        }
+        lead = clean;
+        body = "";
       }
     }
   }
 
-  if (detail.length > 0) {
-    detail = detail.charAt(0).toUpperCase() + detail.slice(1);
-    if (!detail.endsWith(".")) {
-      detail += ".";
-    }
-  }
-
-  return { headline, detail, iconType };
+  return { lead, body, fullText: clean, iconType };
 }
 
 interface DailyCareChecklistProps {
@@ -815,61 +794,81 @@ export function DailyCareChecklist({
                 </button>
               </div>
 
-              {/* Grilla de Micro-Tarjetas Clínicas */}
-              <div className={`guidelines-grid ${guidelineFilter === "all" ? "comparative" : ""}`}>
-                {/* Columna / Tarjetas de Qué Hacer */}
+              {/* Lista Desplegable de Directrices Clínicas Sin Contenedor de Cajas */}
+              <div className={`guidelines-unboxed-grid ${guidelineFilter === "all" ? "comparative" : ""}`}>
+                {/* Columna / Pautas de Qué Hacer */}
                 {(guidelineFilter === "all" || guidelineFilter === "dos") && activeDos.length > 0 && (
-                  <div className="guidelines-column">
-                    <div className="guidelines-column-header dos">
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <CheckCircle2Icon size={14} color="#15803d" />
-                        <span>Pautas Recomendadas (Protocolo Activo)</span>
+                  <div className="guidelines-group">
+                    <div className="guidelines-group-header">
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span className="guidelines-status-dot do" aria-hidden="true" />
+                        <h4 style={{ margin: 0, fontSize: "13.5px", fontWeight: 700, color: "var(--color-text)", letterSpacing: "-0.01em" }}>
+                          Pautas Recomendadas
+                        </h4>
                       </div>
-                      <span>{activeDos.length} pautas</span>
+                      <span className="guideline-count-tag do">{activeDos.length} pautas</span>
                     </div>
 
-                    {activeDos.map((raw, idx) => {
-                      const item = formatClinicalGuideline(raw, false);
-                      return (
-                        <div className="guideline-card do" key={`do-${idx}`}>
-                          <div className="guideline-icon-badge do" aria-hidden="true">
-                            {renderGuidelineIcon(item.iconType, false)}
-                          </div>
-                          <div className="guideline-body">
-                            <span className="guideline-headline">{item.headline}</span>
-                            <p className="guideline-detail">{item.detail}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <ul className="guidelines-bullet-list">
+                      {activeDos.map((raw, idx) => {
+                        const item = formatClinicalGuideline(raw, false);
+                        return (
+                          <li className="guideline-bullet-item do" key={`do-${idx}`}>
+                            <div className="guideline-bullet-icon do" aria-hidden="true">
+                              {renderGuidelineIcon(item.iconType, false)}
+                            </div>
+                            <div className="guideline-bullet-content">
+                              <p className="guideline-bullet-text">
+                                <strong className="guideline-bullet-lead">{item.lead}</strong>
+                                {item.body && (
+                                  <span className="guideline-bullet-desc">
+                                    {item.lead.endsWith(":") ? ` ${item.body}` : `: ${item.body}`}
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 )}
 
-                {/* Columna / Tarjetas de Qué Evitar */}
+                {/* Columna / Restricciones de Qué Evitar */}
                 {(guidelineFilter === "all" || guidelineFilter === "donts") && activeDonts.length > 0 && (
-                  <div className="guidelines-column">
-                    <div className="guidelines-column-header donts">
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <BanIcon size={14} color="#b91c1c" />
-                        <span>Restricciones Clínicas (Factores de Riesgo)</span>
+                  <div className="guidelines-group">
+                    <div className="guidelines-group-header">
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span className="guidelines-status-dot dont" aria-hidden="true" />
+                        <h4 style={{ margin: 0, fontSize: "13.5px", fontWeight: 700, color: "var(--color-text)", letterSpacing: "-0.01em" }}>
+                          Restricciones Clínicas
+                        </h4>
                       </div>
-                      <span>{activeDonts.length} restricciones</span>
+                      <span className="guideline-count-tag dont">{activeDonts.length} restricciones</span>
                     </div>
 
-                    {activeDonts.map((raw, idx) => {
-                      const item = formatClinicalGuideline(raw, true);
-                      return (
-                        <div className="guideline-card dont" key={`dont-${idx}`}>
-                          <div className="guideline-icon-badge dont" aria-hidden="true">
-                            {renderGuidelineIcon(item.iconType, true)}
-                          </div>
-                          <div className="guideline-body">
-                            <span className="guideline-headline">{item.headline}</span>
-                            <p className="guideline-detail">{item.detail}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <ul className="guidelines-bullet-list">
+                      {activeDonts.map((raw, idx) => {
+                        const item = formatClinicalGuideline(raw, true);
+                        return (
+                          <li className="guideline-bullet-item dont" key={`dont-${idx}`}>
+                            <div className="guideline-bullet-icon dont" aria-hidden="true">
+                              {renderGuidelineIcon(item.iconType, true)}
+                            </div>
+                            <div className="guideline-bullet-content">
+                              <p className="guideline-bullet-text">
+                                <strong className="guideline-bullet-lead">{item.lead}</strong>
+                                {item.body && (
+                                  <span className="guideline-bullet-desc">
+                                    {item.lead.endsWith(":") ? ` ${item.body}` : `: ${item.body}`}
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 )}
               </div>
