@@ -31,9 +31,20 @@ export async function GET(request: Request) {
 
     return NextResponse.json(formattedCourses);
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.message || "Internal Server Error" },
-      { status: 500 }
-    );
+    console.warn("API /courses/search warning:", error);
+    try {
+      const { CLINICAL_PROCEDURES } = await import("@/lib/clinical-data");
+      const { searchParams } = new URL(request.url);
+      const query = (searchParams.get("q") || "").toLowerCase().trim();
+      const filtered = CLINICAL_PROCEDURES.filter(
+        (p) =>
+          p.title.toLowerCase().includes(query) ||
+          p.description.toLowerCase().includes(query) ||
+          p.category.toLowerCase().includes(query)
+      );
+      return NextResponse.json(filtered.length > 0 ? filtered : CLINICAL_PROCEDURES);
+    } catch {
+      return NextResponse.json([]);
+    }
   }
 }

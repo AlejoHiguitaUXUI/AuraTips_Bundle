@@ -19,17 +19,24 @@ export default async function LessonPage({
   params: Promise<{ slug: string; lessonId: string }>;
 }) {
   const { slug, lessonId } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user: any = null;
+  let dbCourse: any = null;
 
-  // 1. Intentar cargar desde Supabase
-  const { data: dbCourse } = await supabase
-    .from("courses")
-    .select("id, title, slug")
-    .eq("slug", slug)
-    .maybeSingle();
+  try {
+    const supabase = await createClient();
+    const { data: authData } = await supabase.auth.getUser();
+    user = authData?.user ?? null;
+
+    // 1. Intentar cargar desde Supabase
+    const { data } = await supabase
+      .from("courses")
+      .select("id, title, slug")
+      .eq("slug", slug)
+      .maybeSingle();
+    dbCourse = data;
+  } catch (e) {
+    console.warn("LessonPage: Supabase offline, using local clinical data:", e);
+  }
 
   const clinicalProc = getProcedureBySlug(slug);
 
@@ -50,15 +57,17 @@ export default async function LessonPage({
   let checklist: string[] = [];
 
   if (dbCourse) {
-    const { data: lesson } = await supabase
-      .from("lessons")
-      .select("id, title, timeline_tag, care_type, module_id, modules ( course_id )")
-      .eq("id", lessonId)
-      .maybeSingle();
+    try {
+      const supabase = await createClient();
+      const { data: lesson } = await supabase
+        .from("lessons")
+        .select("id, title, timeline_tag, care_type, module_id, modules ( course_id )")
+        .eq("id", lessonId)
+        .maybeSingle();
 
-    const lessonCourseId = Array.isArray(lesson?.modules)
-      ? lesson?.modules[0]?.course_id
-      : lesson?.modules?.course_id;
+      const lessonCourseId = Array.isArray(lesson?.modules)
+        ? lesson?.modules[0]?.course_id
+        : lesson?.modules?.course_id;
 
     if (lesson && lessonCourseId === dbCourse.id) {
       lessonTitle = lesson.title;
@@ -102,7 +111,10 @@ export default async function LessonPage({
         ? (content as any).checklist_items
         : [];
     }
+  } catch (e) {
+    console.warn("LessonPage: failed to fetch lesson from db, falling back to clinical data:", e);
   }
+}
 
   // 2. Si no se encontró en Supabase o es un procedimiento de ejemplo
   if (!lessonTitle && clinicalProc) {

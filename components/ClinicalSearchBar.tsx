@@ -229,7 +229,7 @@ export function ClinicalSearchBar() {
                     <strong style={{ fontSize: "14px", color: "var(--color-text)" }}>{r.title}</strong>
                     <span
                       style={{
-                        fontSize: "11px",
+                        fontSize: "12px",
                         padding: "2px 8px",
                         borderRadius: "999px",
                         backgroundColor: "var(--color-brand-soft)",
@@ -253,7 +253,7 @@ export function ClinicalSearchBar() {
                     </p>
                   )}
                   {r.recovery_time && (
-                    <span style={{ fontSize: "11px", color: "var(--color-brand)", marginTop: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <span style={{ fontSize: "12px", color: "var(--color-brand)", marginTop: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
                       <ClockIcon size={12} />
                       <span>Recuperación estimada: <strong>{r.recovery_time}</strong></span>
                     </span>

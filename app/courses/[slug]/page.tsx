@@ -23,19 +23,26 @@ export default async function CourseDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user: any = null;
+  let dbCourse: any = null;
 
-  // 1. Intentar cargar desde Supabase
-  const { data: dbCourse } = await supabase
-    .from("courses")
-    .select(
-      "id, title, slug, description, cover_url, status, owner_id, profiles ( display_name, bio, avatar_url )"
-    )
-    .eq("slug", slug)
-    .maybeSingle();
+  try {
+    const supabase = await createClient();
+    const { data: authData } = await supabase.auth.getUser();
+    user = authData?.user ?? null;
+
+    // 1. Intentar cargar desde Supabase
+    const { data } = await supabase
+      .from("courses")
+      .select(
+        "id, title, slug, description, cover_url, status, owner_id, profiles ( display_name, bio, avatar_url )"
+      )
+      .eq("slug", slug)
+      .maybeSingle();
+    dbCourse = data;
+  } catch (err) {
+    console.warn("CourseDetailPage: Supabase offline, using local clinical data:", err);
+  }
 
   // 2. Si no está en Supabase, buscar en el dataset clínico local
   const clinicalProc = getProcedureBySlug(slug);
@@ -94,40 +101,47 @@ export default async function CourseDetailPage({
   let reviews: any[] = [];
 
   if (dbCourse) {
-    const [{ data: mods }, { data: rRow }] = await Promise.all([
-      supabase
-        .from("modules")
-        .select("id, title, position, lessons ( id, title, position, timeline_tag, care_type )")
-        .eq("course_id", dbCourse.id)
-        .order("position", { ascending: true }),
-      supabase
-        .from("course_ratings")
-        .select("avg_rating, review_count")
-        .eq("course_id", dbCourse.id)
-        .maybeSingle(),
-    ]);
+    try {
+      const supabase = await createClient();
+      const [{ data: mods }, { data: rRow }] = await Promise.all([
+        supabase
+          .from("modules")
+          .select("id, title, position, lessons ( id, title, position, timeline_tag, care_type )")
+          .eq("course_id", dbCourse.id)
+          .order("position", { ascending: true }),
+        supabase
+          .from("course_ratings")
+          .select("avg_rating, review_count")
+          .eq("course_id", dbCourse.id)
+          .maybeSingle(),
+      ]);
 
-    modulesData = mods || [];
-    ratingRow = rRow;
+      modulesData = mods || [];
+      ratingRow = rRow;
 
-    if (user && !isOwner) {
-      const { data: enrollment } = await supabase
-        .from("enrollments")
-        .select("id")
+      if (user && !isOwner) {
+        const { data: enrollment } = await supabase
+          .from("enrollments")
+          .select("id")
+          .eq("course_id", dbCourse.id)
+          .eq("user_id", user.id)
+          .maybeSingle();
+        isEnrolled = !!enrollment;
+      }
+
+      const { data: revs } = await supabase
+        .from("reviews")
+        .select("id, user_id, rating, body, created_at, profiles ( display_name )")
         .eq("course_id", dbCourse.id)
-        .eq("user_id", user.id)
-        .maybeSingle();
-      isEnrolled = !!enrollment;
+        .order("created_at", { ascending: false });
+
+      reviews = revs || [];
+    } catch (e) {
+      console.warn("CourseDetailPage: failed to fetch modules from db, falling back to clinical data:", e);
     }
+  }
 
-    const { data: revs } = await supabase
-      .from("reviews")
-      .select("id, user_id, rating, body, created_at, profiles ( display_name )")
-      .eq("course_id", dbCourse.id)
-      .order("created_at", { ascending: false });
-
-    reviews = revs || [];
-  } else if (clinicalProc) {
+  if (modulesData.length === 0 && clinicalProc) {
     modulesData = clinicalProc.modules.map((m) => ({
       id: m.id,
       title: m.title,

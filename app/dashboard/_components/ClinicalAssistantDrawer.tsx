@@ -205,7 +205,7 @@ export function ClinicalAssistantDrawer({
                   />
                   <span
                     style={{
-                      fontSize: "11px",
+                      fontSize: "12px",
                       fontWeight: 700,
                       color: "var(--color-brand)",
                       letterSpacing: "0.02em",
@@ -240,7 +240,7 @@ export function ClinicalAssistantDrawer({
               <p
                 style={{
                   margin: "0 0 8px 0",
-                  fontSize: "12.5px",
+                  fontSize: "13px",
                   lineHeight: 1.5,
                   color: "var(--color-text)",
                   fontWeight: 400,
@@ -256,7 +256,7 @@ export function ClinicalAssistantDrawer({
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  fontSize: "11.5px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   color: "var(--color-brand)",
                 }}
@@ -352,9 +352,9 @@ export function ClinicalAssistantDrawer({
                   style={{
                     backgroundColor: "rgba(194, 155, 56, 0.25)",
                     color: "var(--color-gold, #FDE68A)",
-                    padding: "1px 6px",
+                    padding: "2px 8px",
                     borderRadius: "9999px",
-                    fontSize: "10px",
+                    fontSize: "12px",
                     fontWeight: 700,
                     border: "1px solid var(--color-gold-border, rgba(194, 155, 56, 0.4))",
                   }}
@@ -362,7 +362,7 @@ export function ClinicalAssistantDrawer({
                   En vivo
                 </span>
               </div>
-              <span style={{ fontSize: "11.5px", color: "rgba(255, 255, 255, 0.9)", marginTop: "2px" }}>
+              <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.95)", marginTop: "2px" }}>
                 ¿Dudas hoy? Habla con la Dra. Mariana
               </span>
             </div>
@@ -470,7 +470,7 @@ export function ClinicalAssistantDrawer({
                 <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#FAF8F5" }}>
                   AuraTips • Dra. Mariana Gómez
                 </h3>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", opacity: 0.9 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", opacity: 0.9 }}>
                   <span
                     style={{
                       width: "6px",
@@ -523,7 +523,7 @@ export function ClinicalAssistantDrawer({
                   color: "var(--color-inverse)",
                   padding: "2px 8px",
                   borderRadius: "9999px",
-                  fontSize: "10px",
+                  fontSize: "12px",
                   fontWeight: 700,
                 }}
               >
@@ -654,7 +654,7 @@ export function ClinicalAssistantDrawer({
                         <ShieldAlertIcon size={14} color="#FFFFFF" />
                         <span>Contactar a la Dra. Mariana Gómez (Atención Prioritaria)</span>
                       </a>
-                      <p style={{ margin: "6px 0 0", fontSize: "11px", color: "var(--color-muted)" }}>
+                      <p style={{ margin: "6px 0 0", fontSize: "12px", color: "var(--color-muted)" }}>
                         Atención prioritaria activada por coincidencia de 3 o más criterios de valoración médica.
                       </p>
                     </div>
@@ -662,7 +662,7 @@ export function ClinicalAssistantDrawer({
                 </div>
                 <span
                   style={{
-                    fontSize: "10px",
+                    fontSize: "12px",
                     color: "var(--color-muted, #9CA3AF)",
                     marginTop: "4px",
                     padding: "0 4px",
@@ -772,7 +772,7 @@ export function ClinicalAssistantDrawer({
                   <span
                     style={{
                       display: "block",
-                      fontSize: "10px",
+                      fontSize: "12px",
                       color: "var(--color-muted)",
                       marginTop: "4px",
                       paddingLeft: "4px",
@@ -805,8 +805,8 @@ export function ClinicalAssistantDrawer({
                 disabled={loading}
                 style={{
                   flexShrink: 0,
-                  fontSize: "11px",
-                  padding: "4px 10px",
+                  fontSize: "12px",
+                  padding: "5px 12px",
                   borderRadius: "9999px",
                   backgroundColor: "var(--color-brand-soft)",
                   color: "var(--color-brand)",

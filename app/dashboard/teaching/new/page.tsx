@@ -56,7 +56,7 @@ export default function NewCoursePage() {
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
           <span
             style={{
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.08em",

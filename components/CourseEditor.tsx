@@ -214,13 +214,13 @@ export function CourseEditor({
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
             <span
               style={{
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
                 color: "var(--color-brand)",
                 background: "rgba(32, 80, 59, 0.08)",
-                padding: "2px 8px",
+                padding: "3px 8px",
                 borderRadius: "4px",
               }}
             >

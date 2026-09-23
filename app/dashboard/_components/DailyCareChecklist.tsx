@@ -432,7 +432,7 @@ export function DailyCareChecklist({
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span
                 style={{
-                  fontSize: "10px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
@@ -444,9 +444,9 @@ export function DailyCareChecklist({
               {phaseData?.timelineTag && (
                 <span
                   style={{
-                    fontSize: "10px",
+                    fontSize: "12px",
                     fontWeight: 700,
-                    padding: "2px 6px",
+                    padding: "2px 8px",
                     borderRadius: "4px",
                     background: "rgba(32, 80, 59, 0.12)",
                     color: "var(--color-brand)",
@@ -478,7 +478,7 @@ export function DailyCareChecklist({
             className="badge badge-brand"
             style={{
               fontWeight: 700,
-              fontSize: "11px",
+              fontSize: "12px",
               padding: "4px 10px",
               borderRadius: "999px",
               background: isAllCompleted ? "var(--color-success-soft)" : "rgba(32, 80, 59, 0.1)",
@@ -516,7 +516,7 @@ export function DailyCareChecklist({
             gap: "6px",
             flexWrap: "wrap",
             marginBlock: "6px 12px",
-            fontSize: "11px",
+            fontSize: "12px",
           }}
         >
           <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>
@@ -618,9 +618,6 @@ export function DailyCareChecklist({
             style={{
               width: "100%",
               justifyContent: "space-between",
-              fontSize: "12px",
-              padding: "6px 12px",
-              borderRadius: "var(--radius-md)",
               border: "1px solid var(--color-border)",
             }}
           >

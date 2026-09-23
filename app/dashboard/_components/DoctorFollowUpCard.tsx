@@ -55,7 +55,7 @@ export function DoctorFollowUpCard({
         >
           <span
             style={{
-              fontSize: "10px",
+              fontSize: "12px",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.08em",
@@ -69,7 +69,7 @@ export function DoctorFollowUpCard({
               display: "inline-flex",
               alignItems: "center",
               gap: "4px",
-              fontSize: "11px",
+              fontSize: "12px",
               color: "var(--color-brand)",
               fontWeight: 600,
             }}
@@ -129,7 +129,7 @@ export function DoctorFollowUpCard({
             </p>
             <p
               style={{
-                fontSize: "10px",
+                fontSize: "12px",
                 color: "var(--color-muted)",
                 marginTop: "2px",
               }}
@@ -174,7 +174,7 @@ export function DoctorFollowUpCard({
           {formattedDate}
         </p>
 
-        <p style={{ fontSize: "11px", color: "var(--color-muted)" }}>
+        <p style={{ fontSize: "12px", color: "var(--color-muted)" }}>
           {diffDays > 0
             ? `Faltan ${diffDays} días para tu valoración de consolidación.`
             : diffDays === 0
@@ -224,7 +224,6 @@ export function DoctorFollowUpCard({
           style={{
             width: "100%",
             justifyContent: "center",
-            fontSize: "12px",
             textDecoration: "none",
             display: "inline-flex",
             alignItems: "center",

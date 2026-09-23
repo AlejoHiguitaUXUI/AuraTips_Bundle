@@ -44,7 +44,7 @@ export function SiteFooter() {
                 <span style={{ fontWeight: 800, letterSpacing: "-0.02em", color: "var(--color-text)", fontSize: "1.05rem" }}>
                   AuraTips
                 </span>
-                <span style={{ fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-brand)", fontWeight: 600 }}>
+                <span style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-brand)", fontWeight: 600 }}>
                   Acompañamiento Clínico
                 </span>
               </span>
@@ -61,7 +61,7 @@ export function SiteFooter() {
                 borderRadius: "var(--radius-full)",
                 background: "var(--color-brand-soft)",
                 color: "var(--color-brand)",
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 600,
               }}
             >
@@ -218,7 +218,7 @@ export function SiteFooter() {
             }}
           >
             <span>&copy; 2026 AuraTips · Dra. Mariana Gómez. Todos los derechos reservados.</span>
-            <span style={{ fontSize: "11px", color: "var(--color-muted-2)" }}>
+            <span style={{ fontSize: "12px", color: "var(--color-muted-2)" }}>
               Diseño Clínico Accesible · Estándar WCAG 2.1 AA
             </span>
           </div>

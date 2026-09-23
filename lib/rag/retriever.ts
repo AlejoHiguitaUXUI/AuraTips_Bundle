@@ -50,7 +50,14 @@ export async function retrieveClinicalContext(
 ): Promise<RetrievedClinicalContext | null> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-  const supabase = createClient(supabaseUrl, serviceKey);
+  let supabase: any = null;
+  if (supabaseUrl && serviceKey) {
+    try {
+      supabase = createClient(supabaseUrl, serviceKey);
+    } catch {
+      supabase = null;
+    }
+  }
 
   let bestMatchCourse: any = null;
   let matchSimilarity = 0.85;
@@ -76,7 +83,7 @@ export async function retrieveClinicalContext(
   if (!bestMatchCourse) {
     try {
       const queryEmbedding = await generateQueryEmbedding(query);
-      if (queryEmbedding.length === 384) {
+      if (supabase && queryEmbedding.length === 384) {
         const { data: matches, error } = await supabase.rpc("match_courses", {
           query_embedding: queryEmbedding,
           match_threshold: 0.6,

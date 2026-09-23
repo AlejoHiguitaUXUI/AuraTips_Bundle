@@ -187,7 +187,7 @@ export function LessonEditor({
           </strong>
           <span
             style={{
-              fontSize: "11px",
+              fontSize: "12px",
               padding: "2px 8px",
               borderRadius: "999px",
               background: "rgba(32, 80, 59, 0.08)",
@@ -200,7 +200,7 @@ export function LessonEditor({
           {isAlarm && (
             <span
               style={{
-                fontSize: "11px",
+                fontSize: "12px",
                 padding: "2px 8px",
                 borderRadius: "999px",
                 background: "rgba(239, 68, 68, 0.12)",

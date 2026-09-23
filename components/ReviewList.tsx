@@ -32,7 +32,7 @@ export function ReviewList({ reviews }: { reviews: Review[] }) {
                     color={i < r.rating ? "currentColor" : "var(--color-border)"}
                   />
                 ))}
-                <span style={{ fontSize: "11px", color: "var(--color-muted)", marginLeft: "6px" }}>
+                <span style={{ fontSize: "12px", color: "var(--color-muted)", marginLeft: "6px" }}>
                   {new Date(r.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" })}
                 </span>
               </div>

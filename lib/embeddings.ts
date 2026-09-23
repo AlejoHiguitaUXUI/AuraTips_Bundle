@@ -93,22 +93,44 @@ export async function searchCoursesBySimilarity(
         // RPC fallback
     }
 
-    const { data: courses, error } = await client
-        .from('courses')
-        .select('id, title, slug, description, price, category, recovery_time, pain_level, results_duration, alarm_signs, cover_url')
-        .eq('status', 'published')
-        .or(`title.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`)
-        .limit(limit);
+    try {
+        const { data: courses, error } = await client
+            .from('courses')
+            .select('id, title, slug, description, price, category, recovery_time, pain_level, results_duration, alarm_signs, cover_url')
+            .eq('status', 'published')
+            .or(`title.ilike.%${encodeURIComponent(query.trim())}%,description.ilike.%${encodeURIComponent(query.trim())}%`)
+            .limit(limit);
 
-    if (!error && courses && courses.length > 0) {
-        return courses;
+        if (!error && courses && courses.length > 0) {
+            return courses;
+        }
+
+        const { data: fallback } = await client
+            .from('courses')
+            .select('id, title, slug, description, price, category, recovery_time, pain_level, results_duration, alarm_signs, cover_url')
+            .eq('status', 'published')
+            .limit(limit);
+
+        if (fallback && fallback.length > 0) {
+            return fallback;
+        }
+    } catch {
+        // Fallback gracefully when Supabase is unreachable
     }
 
-    const { data: fallback } = await client
-        .from('courses')
-        .select('id, title, slug, description, price, category, recovery_time, pain_level, results_duration, alarm_signs, cover_url')
-        .eq('status', 'published')
-        .limit(limit);
-
-    return fallback || [];
+    // Fallback de búsqueda local con el dataset clínico integrado
+    try {
+        const { CLINICAL_PROCEDURES } = await import('@/lib/clinical-data');
+        const q = query.toLowerCase().trim();
+        const matches = CLINICAL_PROCEDURES.filter(
+            (p) =>
+                p.title.toLowerCase().includes(q) ||
+                p.description.toLowerCase().includes(q) ||
+                p.category.toLowerCase().includes(q) ||
+                p.alarm_signs.some((sign) => sign.toLowerCase().includes(q))
+        );
+        return (matches.length > 0 ? matches : CLINICAL_PROCEDURES).slice(0, limit);
+    } catch {
+        return [];
+    }
 }

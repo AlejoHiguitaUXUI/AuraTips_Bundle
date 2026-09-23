@@ -5,39 +5,45 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LeafIcon, StethoscopeIcon, UserCheckIcon } from "@/components/icons";
 
 export async function SiteHeader() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  let user: any = null;
   let isSpecialist = false;
   let clinicalRoleLabel = "Paciente en Cuidados";
 
-  if (user) {
-    const userEmail = user.email?.toLowerCase() ?? "";
-    if (
-      userEmail.includes("especialista") ||
-      userEmail.includes("doctor") ||
-      userEmail.includes("mariana")
-    ) {
-      isSpecialist = true;
-      clinicalRoleLabel = "Dra. Mariana Gómez";
-    } else {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("display_name")
-        .eq("id", user.id)
-        .maybeSingle();
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    user = authUser;
 
+    if (user) {
+      const userEmail = user.email?.toLowerCase() ?? "";
       if (
-        profile?.display_name?.toLowerCase().includes("dra") ||
-        profile?.display_name?.toLowerCase().includes("mariana") ||
-        profile?.display_name?.toLowerCase().includes("especialista")
+        userEmail.includes("especialista") ||
+        userEmail.includes("doctor") ||
+        userEmail.includes("mariana")
       ) {
         isSpecialist = true;
         clinicalRoleLabel = "Dra. Mariana Gómez";
+      } else {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (
+          profile?.display_name?.toLowerCase().includes("dra") ||
+          profile?.display_name?.toLowerCase().includes("mariana") ||
+          profile?.display_name?.toLowerCase().includes("especialista")
+        ) {
+          isSpecialist = true;
+          clinicalRoleLabel = "Dra. Mariana Gómez";
+        }
       }
     }
+  } catch (error) {
+    console.warn("SiteHeader: Supabase unavailable, rendering guest header state:", error);
   }
 
   return (
@@ -66,7 +72,7 @@ export async function SiteHeader() {
             </span>
             <span
               style={{
-                fontSize: "9px",
+                fontSize: "12px",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
                 color: "var(--color-brand)",
@@ -99,7 +105,7 @@ export async function SiteHeader() {
                     background: "rgba(194, 155, 56, 0.14)",
                     color: "var(--color-gold-text, #997316)",
                     border: "1px solid rgba(194, 155, 56, 0.35)",
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: 700,
                     letterSpacing: "0.02em",
                   }}
@@ -119,7 +125,7 @@ export async function SiteHeader() {
                     background: "var(--color-brand-soft)",
                     color: "var(--color-brand)",
                     border: "1px solid var(--color-brand-border)",
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: 600,
                   }}
                   title="Paciente en seguimiento clínico activo"

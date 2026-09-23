@@ -23,15 +23,18 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="btn btn-ghost btn-sm"
+      className="btn btn-ghost"
       aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
       title={theme === "light" ? "Modo oscuro" : "Modo claro"}
       style={{
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "6px 8px",
-        color: "var(--color-muted)",
+        width: "36px",
+        height: "36px",
+        padding: 0,
+        borderRadius: "var(--radius-md)",
+        color: "var(--color-text)",
       }}
     >
       {theme === "light" ? <MoonIcon size={16} /> : <SunIcon size={16} />}

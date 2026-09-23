@@ -27,25 +27,33 @@ interface PageProps {
 }
 
 export default async function LearningDashboard({ searchParams }: PageProps) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user: any = null;
+  let enrollments: any[] = [];
 
   const resolvedSearchParams = await searchParams;
   const demoSlug = resolvedSearchParams?.demo;
 
-  if (!user && !demoSlug) redirect("/login?next=/dashboard/learning");
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    user = authUser;
 
-  // Fetch enrollments with course data if user is authenticated
-  const { data: enrollments } = user
-    ? await supabase
+    if (user) {
+      const { data } = await supabase
         .from("enrollments")
         .select("id, enrolled_at, courses ( id, title, slug, cover_url, status )")
         .eq("user_id", user.id)
         .eq("status", "active")
-        .order("enrolled_at", { ascending: false })
-    : { data: [] };
+        .order("enrolled_at", { ascending: false });
+      enrollments = data || [];
+    }
+  } catch (e) {
+    console.warn("LearningDashboard: Supabase connection unavailable, using demo mode fallback:", e);
+  }
+
+  if (!user && !demoSlug) redirect("/login?next=/dashboard/learning");
 
   // Check whether we have real enrollments or a demo selected
   const hasRealEnrollments = !!(enrollments && enrollments.length > 0);
@@ -161,7 +169,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
           >
             <span
               style={{
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -220,7 +228,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                     <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
                       {proc.title}
                     </strong>
-                    <span style={{ fontSize: "11px", color: "var(--color-muted)" }}>
+                    <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
                       Simular recuperación y cuidados diarios ({proc.recovery_time})
                     </span>
                   </div>
@@ -323,9 +331,9 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             {demoProcedure && (
               <span
                 style={{
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: 700,
-                  padding: "2px 8px",
+                  padding: "3px 10px",
                   borderRadius: "var(--radius-full)",
                   background: "rgba(194, 155, 56, 0.15)",
                   color: "#997316",
@@ -344,7 +352,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
         {/* Demo Switcher Pill / Treatment Count */}
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", flexWrap: "wrap" }}>
           {demoProcedure ? (
-            <Link href="/dashboard/learning" className="btn-ghost btn btn-sm" style={{ fontSize: "12px" }}>
+            <Link href="/dashboard/learning" className="btn-ghost btn btn-sm">
               Salir de Modo Demo
             </Link>
           ) : (
@@ -361,27 +369,15 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                 <Link
                   key={p.id}
                   href={`/dashboard/learning?demo=${p.slug}`}
-                  className="btn-ghost btn btn-sm"
-                  style={{
-                    fontSize: "11px",
-                    padding: "4px 10px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    borderRadius: "var(--radius-full)",
-                    border: isActive ? "1px solid var(--color-brand)" : "1px solid var(--color-border)",
-                    background: isActive ? "rgba(32, 80, 59, 0.1)" : "var(--color-surface)",
-                    color: isActive ? "var(--color-brand)" : "var(--color-text)",
-                    fontWeight: isActive ? 700 : 500,
-                  }}
+                  className={`procedure-switcher-pill ${isActive ? "active" : ""}`}
                   title={`Ver cuidados de ${p.title}`}
                 >
                   {p.category === "Inyectables" ? (
-                    <SyringeIcon size={12} />
+                    <SyringeIcon size={13} />
                   ) : p.category === "Dermoestética" ? (
-                    <SparklesIcon size={12} />
+                    <SparklesIcon size={13} />
                   ) : (
-                    <SmileIcon size={12} />
+                    <SmileIcon size={13} />
                   )}
                   <span>{p.title.split(" ")[0]}</span>
                 </Link>
@@ -462,14 +458,14 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                       <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
                         {c.title}
                       </strong>
-                      <span style={{ fontSize: "11px", color: "var(--color-muted)" }}>
+                      <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
                         Registrado el {new Date(enr.enrolled_at).toLocaleDateString("es-ES")}
                       </span>
                     </div>
                     <Link
                       href={`/courses/${c.slug}`}
                       className="btn-ghost btn btn-sm"
-                      style={{ fontSize: "11px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                      style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
                     >
                       <span>Ver Protocolo</span>
                       <ArrowRightIcon size={12} />

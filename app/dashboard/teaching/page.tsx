@@ -69,7 +69,7 @@ export default async function TeachingDashboard() {
           <div>
             <span
               style={{
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -101,7 +101,7 @@ export default async function TeachingDashboard() {
             <strong style={{ fontSize: "20px", display: "block", color: "#FAF8F5" }}>
               {courses?.length ?? 0}
             </strong>
-            <span style={{ fontSize: "11px", opacity: 0.8 }}>Protocolos Registrados</span>
+            <span style={{ fontSize: "12px", opacity: 0.8 }}>Protocolos Registrados</span>
           </div>
 
           <div
@@ -116,7 +116,7 @@ export default async function TeachingDashboard() {
             <strong style={{ fontSize: "20px", display: "block", color: "#34D399" }}>
               {publishedCount}
             </strong>
-            <span style={{ fontSize: "11px", opacity: 0.85, color: "#E5E7EB" }}>Activos en AuraTips</span>
+            <span style={{ fontSize: "12px", opacity: 0.85, color: "#E5E7EB" }}>Activos en AuraTips</span>
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default async function TeachingDashboard() {
                   <strong style={{ fontSize: "var(--text-base)", color: "var(--color-text)" }}>{c.title}</strong>
                   <span
                     style={{
-                      fontSize: "11px",
+                      fontSize: "12px",
                       padding: "2px 8px",
                       borderRadius: "999px",
                       background: "rgba(194, 155, 56, 0.1)",
@@ -213,7 +213,7 @@ export default async function TeachingDashboard() {
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <span
                   style={{
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: 700,
                     padding: "4px 10px",
                     borderRadius: "var(--radius-full)",

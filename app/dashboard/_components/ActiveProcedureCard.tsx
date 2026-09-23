@@ -263,7 +263,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
             {procedure.recovery_time && (
               <span
                 style={{
-                  fontSize: "11px",
+                  fontSize: "12px",
                   padding: "4px 8px",
                   borderRadius: "var(--radius-sm)",
                   background: "var(--color-surface-2)",
@@ -281,7 +281,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
             {procedure.anesthesia_type && (
               <span
                 style={{
-                  fontSize: "11px",
+                  fontSize: "12px",
                   padding: "4px 8px",
                   borderRadius: "var(--radius-sm)",
                   background: "var(--color-surface-2)",
@@ -388,7 +388,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            fontSize: "11px",
+            fontSize: "12px",
             color: "var(--color-muted)",
             marginTop: "6px",
           }}

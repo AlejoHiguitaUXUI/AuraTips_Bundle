@@ -113,7 +113,7 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
           gap: "6px",
           flexWrap: "wrap",
           marginBottom: "14px",
-          fontSize: "11px",
+          fontSize: "12px",
         }}
       >
         <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 8px", background: "var(--color-surface-2)", borderRadius: "4px", color: "var(--color-text-2)" }}>

@@ -29,13 +29,18 @@ export default async function CatalogPage({
   const resolvedParams = searchParams ? await searchParams : {};
   const currentCategory = resolvedParams.category || "Todos";
 
-  const supabase = await createClient();
-
-  const { data: dbCourses } = await supabase
-    .from("courses")
-    .select("id, title, slug, cover_url, description, owner_id, profiles ( display_name )")
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
+  let dbCourses: any[] | null = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("courses")
+      .select("id, title, slug, cover_url, description, owner_id, profiles ( display_name )")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+    dbCourses = data;
+  } catch (err) {
+    console.warn("CatalogPage: Supabase query failed, falling back to local clinical data:", err);
+  }
 
   // Conectar con los datos de Supabase y enriquecer con los metadatos clínicos
   const procedures = (dbCourses && dbCourses.length > 0)
@@ -192,7 +197,7 @@ export default async function CatalogPage({
                         <ActivityIcon size={13} /> Molestia esperada
                       </span>
                       <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
-                        {painMeter} <span style={{ fontSize: "10px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
+                        {painMeter} <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
                       </span>
                     </div>
                   </div>
