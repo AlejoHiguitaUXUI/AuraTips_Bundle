@@ -148,10 +148,10 @@ export function generateClinicalResponse(
     const reply =
       `### Atención Médica Prioritaria Recomendada\n\n` +
       `¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Comprendo plenamente que notar estos cambios te cause inquietud y queremos darte total acompañamiento, serenidad y soporte médico directo.\n\n` +
-      `En **AuraTips**, por protocolo clínico preventivo de seguridad, cuando se presentan **3 o más criterios de observación de forma simultánea**, lo más prudente y seguro para tu bienestar es que la **especialista** realice una valoración médica prioritaria directa.\n\n` +
+      `En **AuraTips**, por protocolo clínico preventivo de seguridad, cuando se presentan **3 o más criterios de observación de forma simultánea**, lo más prudente y seguro para tu bienestar es que la **Dra. Mariana Gómez** realice una valoración médica prioritaria directa.\n\n` +
       `#### Instrucciones de cuidado inmediato:\n` +
       `* Mantén la calma: nuestro equipo médico está disponible para asistirte de inmediato.\n` +
-      `* Comunícate ahora mismo con la **especialista** a través del botón de atención médica prioritaria a continuación.\n` +
+      `* Comunícate ahora mismo con la **Dra. Mariana Gómez** a través del botón de atención médica prioritaria a continuación.\n` +
       `* Reposa en un lugar fresco, mantén la cabeza elevada y suspende masajes o aplicación de frío/calor.\n\n` +
       `*Tu tranquilidad y salud son nuestra prioridad absoluta.*`;
 
@@ -162,7 +162,7 @@ export function generateClinicalResponse(
       intent: "alert_triage",
       matchedProcedure: context.procedureTitle,
       recoveryPhase: context.currentPhaseTitle,
-      recommendedDos: ["Mantener la calma y reposo", "Contactar a la especialista de forma prioritaria"],
+      recommendedDos: ["Mantener la calma y reposo", "Contactar a la Dra. Mariana Gómez de forma prioritaria"],
       recommendedDonts: ["No presionar ni masajear la zona", "No aplicar calor ni hielo directo", "No automedicarte con ungüentos"],
       alarmSigns: context.alarmSigns,
       contactDoctorUrl: "https://wa.me/573009123456?text=Consulta%20Prioritaria%20Post-Tratamiento%20Dra%20Mariana%20Gomez",
@@ -202,7 +202,7 @@ export function generateClinicalResponse(
 
     const reply =
       `### Gestión de Cita de Control • AuraTips\n\n` +
-      `¡Hola! Bienvenido(a) a AuraTips. Tu cita formal de revisión y control clínico está programada para el **Día 14 con la especialista**.\n\n` +
+      `¡Hola! Bienvenido(a) a AuraTips. Tu cita formal de revisión y control clínico está programada para el **Día 14 con la Dra. Mariana Gómez**.\n\n` +
       `${clinicalSafetyRationale}\n\n` +
       `Para consultar disponibilidad de agenda o coordinar una reprogramación directa, comunícate con recepción médica aquí: [Contactar a Recepción Médica](https://wa.me/573009123456?text=Hola,%20deseo%20consultar%20sobre%20mi%20cita%20de%20control%20Dra%20Mariana%20Gomez) o llamando al [+57 300 912 3456](tel:+573009123456).`;
 
@@ -262,7 +262,7 @@ export function generateClinicalResponse(
     q.includes("chuec")
   ) {
     adviceSection =
-      `Es muy común percibir que un lado luce con más volumen en tu Día ${day}. Cada mitad del rostro cuenta con drenaje linfático independiente y la postura al dormir hace que un lado retenga más líquido por gravedad. El ácido hialurónico tarda 14 días en estabilizarse; la simetría real se evalúa en tu control del Día 14 con la especialista.`;
+      `Es muy común percibir que un lado luce con más volumen en tu Día ${day}. Cada mitad del rostro cuenta con drenaje linfático independiente y la postura al dormir hace que un lado retenga más líquido por gravedad. El ácido hialurónico tarda 14 días en estabilizarse; la simetría real se evalúa en tu control del Día 14 con la Dra. Mariana Gómez.`;
   } else if (
     q.includes("bolita") ||
     q.includes("pelota") ||
@@ -334,7 +334,7 @@ export function generateClinicalResponse(
       `Por favor **revisa tu fórmula médica oficial**. Evita automedicarte con Ibuprofeno o Aspirina en estas primeras 48 horas: tienen efecto **antiagregante plaquetario** que favorece los moretones. El **Acetaminofén** es el analgésico seguro pautado por la clínica porque alivia la molestia sin alterar la coagulación.`;
   } else {
     adviceSection =
-      `Te acompaño en tu **Día ${day}** (${context.currentPhaseTitle || "Recuperación activa"}). Nuestro compromiso es brindarte un seguimiento cercano, seguro y alineado con las indicaciones de la especialista.`;
+      `Te acompaño en tu **Día ${day}** (${context.currentPhaseTitle || "Recuperación activa"}). Nuestro compromiso es brindarte un seguimiento cercano, seguro y alineado con las indicaciones de la Dra. Mariana Gómez.`;
   }
 
   // Conexión contextual breve si hay historial
@@ -356,7 +356,7 @@ export function generateClinicalResponse(
     `#### Acciones a evitar (Qué evitar):\n` +
     context.donts.slice(0, 3).map((d) => `* ${d}`).join("\n") +
     "\n\n" +
-    `*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`;
+    `*Tu cita de revisión y control clínico está programada para el Día 14 con la **Dra. Mariana Gómez**.*`;
 
   return {
     reply,

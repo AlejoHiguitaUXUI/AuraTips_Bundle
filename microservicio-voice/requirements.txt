@@ -1,0 +1,26 @@
+# ==============================================================================
+# EDY SERVICE - DEPENDENCIES
+# ==============================================================================
+
+# Core API & HTTP
+fastapi>=0.115.0
+uvicorn>=0.30.0
+pydantic>=2.8.0
+httpx>=0.27.0
+requests>=2.32.0
+python-dotenv>=1.0.1
+
+# LiveKit WebRTC & Voice Agents
+livekit>=1.1.0
+livekit-agents>=1.8.0
+livekit-api>=1.2.0
+
+# LiveKit Plugins (Audio & AI Providers)
+livekit-plugins-elevenlabs>=1.8.0
+livekit-plugins-google>=1.8.0
+livekit-plugins-silero>=1.8.0
+livekit-plugins-anthropic>=1.8.0
+
+# AI Provider SDKs
+google-genai>=2.0.0
+anthropic>=0.125.0

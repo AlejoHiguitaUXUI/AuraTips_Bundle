@@ -34,9 +34,8 @@ export default async function CatalogPage({
     const supabase = await createClient();
     const { data } = await supabase
       .from("courses")
-      .select("id, title, slug, cover_url, description, owner_id, profiles ( display_name )")
-      .eq("status", "published")
-      .order("created_at", { ascending: false });
+      .select("id, title, slug, cover_url, description, owner_id, category, recovery_time, pain_level, results_duration, profiles ( display_name )")
+      .eq("status", "published");
     dbCourses = data;
   } catch (err) {
     console.warn("CatalogPage: Supabase query failed, falling back to local clinical data:", err);
@@ -50,12 +49,12 @@ export default async function CatalogPage({
           id: c.id,
           title: c.title,
           slug: c.slug,
-          category: spec?.category || "Inyectables",
+          category: c.category || spec?.category || "Facial",
           description: c.description || spec?.description || "",
           cover_url: c.cover_url || spec?.cover_url || "/images/botox.jpg",
-          recovery_time: spec?.recovery_time || "24 a 48 horas",
-          pain_level: spec?.pain_level ?? 2,
-          results_duration: spec?.results_duration || "6 a 12 meses",
+          recovery_time: c.recovery_time || spec?.recovery_time || "24 a 48 horas",
+          pain_level: c.pain_level ?? spec?.pain_level ?? 2,
+          results_duration: c.results_duration || spec?.results_duration || "6 a 12 meses",
           author_name: Array.isArray(c.profiles) ? c.profiles[0]?.display_name : c.profiles?.display_name || spec?.doctor_name || "Dra. Mariana Gómez",
         };
       })
@@ -72,6 +71,14 @@ export default async function CatalogPage({
         author_name: p.doctor_name || "Dra. Mariana Gómez",
       }));
 
+  // Ordenar conforme al catálogo clínico oficial (Facial -> Corporal -> Capilar)
+  procedures.sort((a, b) => {
+    const idxA = CLINICAL_PROCEDURES.findIndex((p) => p.slug === a.slug);
+    const idxB = CLINICAL_PROCEDURES.findIndex((p) => p.slug === b.slug);
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    return 0;
+  });
+
   const filteredProcedures =
     currentCategory === "Todos"
       ? procedures
@@ -79,10 +86,9 @@ export default async function CatalogPage({
 
   const categories = [
     { name: "Todos", icon: <SparklesIcon size={16} /> },
-    { name: "Inyectables", icon: <SyringeIcon size={16} /> },
-    { name: "Armonización Facial", icon: <SmileIcon size={16} /> },
-    { name: "Dermoestética", icon: <SparklesIcon size={16} /> },
-    { name: "Bioestimulación", icon: <ActivityIcon size={16} /> },
+    { name: "Facial", icon: <SmileIcon size={16} /> },
+    { name: "Corporal y Reducción", icon: <ActivityIcon size={16} /> },
+    { name: "Capilar", icon: <LeafIcon size={16} /> },
   ];
 
   return (

@@ -6,6 +6,67 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ---
 
+## [1.2.0] - 2026-09-23
+
+### 🚀 Añadido (Added)
+- **Microservicio de Voz y Texto en Tiempo Real AURA (`microservicio-voice`):**
+  - Desacoplamiento e integración técnica del microservicio Python con LiveKit Cloud WebRTC (`wss://edyagent-kd6idx85.livekit.cloud`).
+  - Reconocimiento de voz (STT Scribe v2 realtime) y síntesis natural (TTS voz humana) provistos por ElevenLabs.
+  - Orquestación y razonamiento médico-comercial con Google Gemini 3.6 Flash.
+  - Servidor FastAPI en puerto `:8000` con endpoints `/health`, `/voice/token` y worker de voz en segundo plano (`voice/main.py dev`).
+  - Suite de validación técnica automatizada `verify_migration.py` con 6/6 pruebas aprobadas (100% PASS).
+  - Rebranding a **AURA**: Asesora virtual médica y comercial de **AuraMed Grupo Estético (Sede Medellín)**.
+  - Directrices institucionales y comerciales de Medellín: sede física con parqueadero, medios de pago inmediatos con llaves **BRE-B**, citas de control a los 14 días y estricta política de valoración médica presencial obligatoria para cotizaciones y diagnósticos definitivos.
+  - Triaje preventivo de urgencias: detección inmediata de sospecha de isquemia vascular (palidez/frialdad + dolor agudo), ptosis palpebral o anafilaxia con interrupción de IA y derivación prioritaria al especialista de guardia.
+
+- **Catálogo Oficial Completo de 20 Procedimientos Clínicos:**
+  - **Área Facial (9 tratamientos):** Toxina Botulínica Facial (Botox), Ácido Hialurónico en Labios (Russian Lips), Rinomodelación sin Cirugía, Peeling Químico Médico Facial, Bioestimuladores de Colágeno (Radiesse / Sculptra), Limpieza Facial Profunda + Plasma Rico en Plaquetas (PRP), Dermapen (Microneedling Facial), Radiofrecuencia Facial y Ultrasonido Facial con Sonoforesis.
+  - **Área Corporal y Reducción (9 tratamientos):** Mesoterapia Corporal (Lipoescultura sin Cirugía), Hidrolipoclasia Ultrasónica (Cavitación Médica), Carboxiterapia Médica Corporal, Radiofrecuencia Corporal (Tensado y Anticelulitis), Ultrasonido Corporal y Drenaje Mecánico, Masaje Reductor y Moldeador, Drenaje Linfático Manual Médico (DLM), Masaje Relajante y Descontracturante, y Sueroterapia Intravenosa (Wellness & Detox).
+  - **Área Capilar (2 tratamientos):** Terapia Capilar con Mesoterapia (Bioestimulación Folicular) y Terapia Capilar con Plasma Rico en Plaquetas (PRP Capilar).
+  - Módulo clínico desacoplado en `lib/clinical-procedures-extended.ts` y catálogo unificado en `lib/clinical-data.ts`.
+
+- **Botón CTA de AURA en la Barra de Búsqueda Principal (`ClinicalSearchBar.tsx`):**
+  - Disposición fluida `Search bar ------ Consúltalo con AURA`.
+  - Botón prominente `.aura-call-cta-btn` con degradado verde bosque de lujo, ribete dorado, icono telefónico (`PhoneIcon`) y halo pulsante verde esmeralda animado (`.aura-call-pulse-dot`).
+  - Popover explicativo al pasar el cursor (*hover*) detallando las capacidades de AURA con IA y voz en vivo.
+  - Modal interactivo de llamada WebRTC en tiempo real con visualizador de audio integrado (`EdyVoiceWidget.tsx`).
+
+- **Sincronización Total en Supabase Cloud:**
+  - Persistencia de los **20 procedimientos** en la tabla `courses` con metadatos médicos completos (`category`, `recovery_time`, `pain_level`, `duration_minutes`, `results_duration`, `anesthesia_type`, `alarm_signs`).
+  - Estructuración de **35 módulos** en `modules`, **36 lecciones clínicas** en `lessons` y **36 contenidos paso a paso** en `lesson_contents`.
+  - Endpoint de sincronización seguro `app/api/admin/seed/route.ts` y script CLI `npm run seed` (`scripts/seed.mjs`) respaldado por `scripts/clinical-procedures-dataset.json`.
+
+- **Generación de Vector Embeddings al 100%:**
+  - **20 de 20 procedimientos vectorizados** en vectores densos de 384 dimensiones (`gte-small`) en Supabase (0 campos NULL en `courses.embedding`).
+  - Optimización de `searchCoursesBySimilarity` en `lib/embeddings.ts` para conectar con la función RPC `match_courses` y vector query embeddings.
+  - Ranking semántico de alta precisión ante dudas corporales, faciales y capilares en `/api/courses/search`.
+
+- **Banco Fotográfico Clínico Original con IA (Gemini):**
+  - Generación de 15 fotografías clínicas originales con Gemini (`generate_image`), ambientadas en una clínica médico-estética premium en Medellín con personal médico, aparatología y camillas de lujo.
+  - Alojamiento local en `public/images/` y verificación HTTP de respuesta exitosa (`200 OK`) en las 20 portadas, eliminando enlaces rotos y dependencias de Unsplash.
+
+---
+
+## [1.1.0] - 2026-09-22
+
+### 🚀 Añadido (Added)
+- **Enrutador de Intenciones Inteligente (`lib/rag/clinical-engine.ts`):**
+  - Clasificación de intenciones del paciente en 4 vertientes: `scheduling` (Citas y Agendamiento), `human_handoff` (Atención telefónica / Humana), `clinical_query` (Consulta clínica concisa) y `alert_triage` (Triaje preventivo de alerta).
+  - **Regla estricta para citas y llamadas:** Erradicación de respuestas genéricas de "Pautas recomendadas / Qué evitar" ante preguntas administrativas o solicitudes de llamada; respuesta empática en 2 líneas y enlaces directos (`tel:+573009123456` y WhatsApp de recepción).
+  - Pedagogía médica del Día 14: reconocimiento de la cita programada con la **Dra. Mariana Gómez** y fundamentación biológica de estabilización del producto.
+- **Calibración de Sensibilidad en Criterios de Triaje (`lib/rag/guardrails.ts`):**
+  - Ampliación de expresiones regulares en `CLINICAL_ALARM_CRITERIA` para reconocer diminutivos y expresiones cotidianas (*ampollitas*, *pálida*, *fría*, *me duele mucho*).
+- **Suite de Pruebas de Estrés Automatizada (`scripts/test_chat_scenarios.mjs`):**
+  - Batería de validación que simula 5 interacciones clínicas reales contra `POST /api/chat`, verificando latencia, pertinencia, ausencia de tecnicismos alarmistas y concisión.
+- **Componentes de Audio y Voz (`components/voice/EdyVoiceWidget.tsx`):**
+  - Soporte de estilos `@livekit/components-styles` para renderizado fluido del visualizador de audio en el asistente.
+
+### 🔄 Modificado (Changed)
+- **Control de Extensión y Concisión (Anti-Biblias):**
+  - Calibración de todos los casos Few-Shot (`lib/rag/few-shot-examples.ts`) y respuestas dinámicas para limitarlas a 2 o 3 párrafos cortos en tuteo respetuoso y cercano.
+
+---
+
 ## [1.0.0] - 2026-09-22
 
 ### 🚀 Añadido (Added)

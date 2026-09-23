@@ -52,10 +52,14 @@ export function checkClinicalGuardrails(message: string): GuardrailCheckResult {
     }
   }
 
-  // Regla médica: Se requiere cumplir al menos 3 criterios simultáneos
-  // (o criterio sistémico/respiratorio directo) para activar el botón de atención prioritaria
-  const isSystemic = /(dificultad para respirar|garganta cerrada|ahogo|asfixia)/i.test(normalized);
-  const meetsThreshold = matchedCriteria.length >= 3 || isSystemic;
+  // Regla médica: Urgencia directa ante sospecha de isquemia vascular (palidez + dolor)
+  // o compromiso respiratorio/anafiláctico, o 2+ criterios de alarma simultáneos
+  const isVascularCrisis =
+    /(piel blanca|palidez|p[aá]lid[ao]|fr[ií][ao]|gris[aá]ceo|moteado)/i.test(normalized) &&
+    /(dolor|fuerte|intenso|insoportable|puls[aá]til|duele)/i.test(normalized);
+  const isSystemicOrAnaphylaxis =
+    /(dificultad para respirar|garganta cerrada|ahogo|asfixia|hinchaz[oó]n de lengua|angioedema)/i.test(normalized);
+  const meetsThreshold = matchedCriteria.length >= 2 || isSystemicOrAnaphylaxis || isVascularCrisis;
 
   if (meetsThreshold) {
     return {

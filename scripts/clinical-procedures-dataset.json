@@ -1,0 +1,1584 @@
+[
+  {
+    "id": "57fc49ba-4905-4014-a8a0-bad31bc982e6",
+    "title": "Toxina Botulínica Facial (Botox)",
+    "slug": "toxina-botulinica-botox-facial",
+    "description": "Protocolo médico integral de relajación neuromuscular selectiva para líneas de expresión frontales, glabelares (entrecejo) y perioculares (patas de gallo). Guía clínica de recuperación día a día, control de difusión y prevención de asimetrías.",
+    "cover_url": "/images/botox.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "4 a 24 horas",
+    "pain_level": 1,
+    "duration_minutes": 30,
+    "results_duration": "4 a 6 meses",
+    "anesthesia_type": "Crioterapia / Frío local",
+    "alarm_signs": [
+      "Caída del párpado superior o ceja con dificultad para abrir el ojo (ptosis palpebral)",
+      "Visión doble (diplopía) o visión borrosa persistente al enfocar",
+      "Asimetría facial marcada e involuntaria al gesticular o en reposo",
+      "Dificultad para tragar (disfagia) o hablar (evento adverso sistémico de máxima urgencia)"
+    ],
+    "modules": [
+      {
+        "id": "093c18da-51f7-41d4-a7a9-808345389dee",
+        "title": "Fase Inmediata: Primeras 4 Horas Críticas",
+        "lessons": [
+          {
+            "id": "de6d43ed-3be3-40a8-a2c3-61d4a28a91c0",
+            "title": "Postura erguida y gesticulación guiada",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Primeras horas tras la microinyección\n\nDurante las primeras 4 horas, la molécula de toxina botulínica se encuentra en proceso de fijación a los receptores presinápticos en la unión neuromuscular.\n\n* Mantén la cabeza en posición vertical.\n* Realiza gesticulaciones suaves cada 15 minutos.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "f14add52-c21f-43c9-98c7-b5c69a506eda",
+        "title": "Fase de Estabilización: Primeras 24 a 48 Horas",
+        "lessons": [
+          {
+            "id": "543cabab-8976-46cd-8fb8-4b3a34afa436",
+            "title": "Restricción de actividad física y control térmico",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Evitar vasodilatación y calor extremo\n\nEl aumento del flujo sanguíneo acelera la difusión antes del acople neuromuscular completo.\n\n* Suspende ejercicio intenso durante 48 horas.\n* Cero saunas ni baños de vapor.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "fea68f0b-ac9b-458a-9a13-715d2cde8e4f",
+        "title": "Fase de Fijación y Resultados: Días 3 a 15",
+        "lessons": [
+          {
+            "id": "6bca9c85-a652-4367-8d85-dd10d91fc36a",
+            "title": "Evolución gradual y cita de control",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Línea de tiempo de los resultados\n\n* Día 3 a 5: Inicio de atenuación.\n* Día 14: Evaluación y cita de control definitivo.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 3
+      },
+      {
+        "id": "1ccf48d7-8230-4119-8d28-95b069ae76d2",
+        "title": "Fase Inmediata: Primeras 24 Horas Críticas",
+        "lessons": [
+          {
+            "id": "029f4be7-8968-4aa3-81ef-aba6c90c01cb",
+            "title": "Postura erguida, gesticulación guiada y primeras horas",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Permanecer en posición vertical y erguida al menos 4 horas completas tras la infiltración.",
+                "Dormir en posición decúbito supino (boca arriba) con 2 almohadas (elevación de 30°) para favorecer el drenaje linfático.",
+                "Realizar micro-gesticulaciones faciales suaves (sonreír, fruncir sutilmente) durante las primeras 2 horas para dinamizar la unión neuromuscular.",
+                "Lavar el rostro con agua fresca o templada y limpiador dermocosmético suave Syndet con toques sin frotar.",
+                "Hidratación oral abundante con agua templada o fresca (al menos 2 litros)."
+              ],
+              "donts": [
+                "No acostarse, tumbarse horizontalmente en la cama o sofá ni agachar la cabeza durante las primeras 4 horas.",
+                "No masajear, frotar, rascar ni presionar los puntos de punción (frente, entrecejo, patas de gallo).",
+                "No usar gorras, vinchas apretadas, cascos de moto ni gafas pesadas que ejerzan compresión frontal.",
+                "No aplicar maquillaje, bases cosméticas con color ni ácidos exfoliantes en las primeras 24 horas.",
+                "No consumir bebidas alcohólicas ni comidas excesivamente calientes, picantes o hipercalóricas."
+              ],
+              "body_md": "### Primeras horas tras la microinyección\n\nDurante las primeras 4 horas, las moléculas de neurotoxina botulínica se unen activamente a los receptores presinápticos de la placa motora neuromuscular. La presión física, compresión o posiciones declives pueden favorecer la difusión indeseada del fármaco hacia músculos vecinos (como el elevador del párpado superior).\n\n* **Postura y descanso:** Permanece con la cabeza erguida al menos 4 horas completas (prohibido tumbarse en el sofá, tomar siestas o agacharse a recoger objetos del suelo). Para dormir la primera noche, hazlo estrictamente **boca arriba (decúbito supino) con 2 almohadas** o la cabecera elevada a 30° para promover el drenaje linfático y prevenir edema periorbitario matutino.\n* **Aplicación de frío:** Si notas inflamación leve o molestia en los puntos de inyección, aplica frío seco local **envuelto en una gasa estéril limpia en pulsos de 10 minutos**, sin apoyar peso ni ejercer presión sobre las zonas inyectadas.\n* **Skincare y maquillaje:** Cero maquillaje durante las primeras 24 horas para mantener las micro-punciones selladas y libres de contaminación bacteriana. Lava el rostro con agua fresca o templada y limpiador Syndet (sin jabón) mediante toques delicados sin frotar. Si necesitas salir de día, aplica protector solar mineral con toques suaves de la yema de los dedos sin arrastrar.\n* **Alimentación e hidratación:** Ingiere al menos 2 litros de agua fresca a temperatura ambiente. Evita bebidas alcohólicas durante las primeras 24 horas (el alcohol genera vasodilatación y amplifica hematomas), así como comidas excesivamente calientes o hipercondimentadas.",
+              "checklist_items": [
+                "Permanecí con la cabeza erguida durante las primeras 4 horas sin recostarme",
+                "Preparé 2 almohadas para dormir boca arriba y evitar apoyar el rostro",
+                "Apliqué frío indirecto con gasa limpia por 10 minutos sin ejercer presión",
+                "Bebí al menos 2 litros de agua y evité alcohol y comidas hirviendo/picantes",
+                "Mantuve mis manos alejadas de los puntos de inyección sin masajear",
+                "Dejé el rostro limpio sin maquillaje ni cosméticos densos por hoy"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "5648c00f-2019-4184-919a-b4057efa7bc7",
+        "title": "Fase de Estabilización y Control Térmico",
+        "lessons": [
+          {
+            "id": "18891ba2-0481-4b7e-a720-9ea3676c06fa",
+            "title": "Restricción física, fotoprotección y cuidado dérmico",
+            "position": 0,
+            "care_type": "prohibited",
+            "timeline_tag": "Días 1–3",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar protector solar mineral SPF 50+ cada mañana con suaves toques de la yema de los dedos.",
+                "Si existen hematomas o marcas puntuales, usar gel de árnica o vitamina K en capa fina 2 veces al día.",
+                "Continuar durmiendo boca arriba con cabecera ligeramente elevada durante las primeras 72 horas.",
+                "Reanudar maquillaje mineral suave utilizando brochas o aplicadores limpios y desinfectados.",
+                "Mantener hidratación dérmica con lociones calmantes sin ácidos irritantes ni fragancias."
+              ],
+              "donts": [
+                "Cero ejercicio cardiovascular vigoroso, crossfit o levantamiento de pesas pesadas durante 48 a 72 horas.",
+                "Prohibido entrar a saunas, baños turcos, jacuzzis calientes y exponerse al calor directo del horno.",
+                "No realizar limpiezas faciales profundas, exfoliaciones mecánicas, radiofrecuencia ni masajes Gua Sha.",
+                "Evitar dormir de lado aplastando el rostro o frotando las cejas contra las sábanas."
+              ],
+              "body_md": "### Evitar vasodilatación, sudoración y tensión muscular\n\nDurante los días 1 a 3, la toxina se internaliza en las terminaciones nerviosas. El aumento excesivo de temperatura local o corporal por esfuerzo físico eleva el flujo vascular facial acelerando el aclaramiento del producto antes de completar su fijación biológica.\n\n* **Descanso y postura:** Continúa descansando boca arriba con elevación durante las primeras 48 a 72 horas para prevenir asimetrías transitorias y reabsorción de micro-edemas.\n* **Manejo de hematomas (equimosis):** Si apareció algún pequeño hematoma en los sitios de punción, aplica una capa fina de crema o gel con **árnica o vitamina K tópica** con toquecitos ligeros, 2 veces al día.\n* **Skincare y fotoprotección:** Aplica religiosamente **protector solar 100% mineral SPF 50+** cada mañana y reaplica a mediodía mediante toques suaves. Se autoriza maquillaje ligero o mineral a partir de las 24 horas, siempre utilizando brochas o esponjas previamente lavadas y desinfectadas.\n* **Actividad física y calor:** Prohibido el ejercicio físico extenuante (running, crossfit, levantamiento de pesas), saunas, baños turcos, duchas calientes prolongadas y posturas invertidas de yoga durante 48 a 72 horas.",
+              "checklist_items": [
+                "Apliqué protector solar mineral SPF 50+ con toques ligeros sin frotar",
+                "Pospuse entrenamientos pesados de pesas y cardio intenso por 48-72h",
+                "Evité saunas, baños calientes y ambientes sofocantes",
+                "Apliqué árnica/vitamina K en toquecitos sobre hematomas si aparecieron",
+                "Continué durmiendo boca arriba con elevación para drenaje óptimo"
+              ]
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "a5c36146-ee37-40c9-8b54-35f98e104aef",
+        "title": "Fase de Fijación y Resultados Definitivos",
+        "lessons": [
+          {
+            "id": "2ea2904c-e8b9-4c70-acb7-c90f098f9e61",
+            "title": "Evolución gradual, simetría y cita de control médico",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Días 4–14",
+            "lesson_contents": {
+              "dos": [
+                "Observar la atenuación paulatina de las arrugas dinámicas entre el día 4 y el día 10 con paciencia.",
+                "Retomar progresivamente la actividad física y deportiva habitual.",
+                "Tomar fotografías de control frontal y lateral en reposo y gesticulación para tu historia clínica.",
+                "Agendar y acudir a la cita médica de valoración y retoque de simetría al cumplirse los 14 días.",
+                "Mantener el uso diario de fotoprotección solar para evitar fotoenvejecimiento añadido."
+              ],
+              "donts": [
+                "No solicitar retoques ni aplicaciones adicionales antes del día 14 (el fármaco continúa asentándose).",
+                "No someterse a tratamientos térmicos profundos (HIFU, láser ablativo) en la zona tratada sin autorización médica.",
+                "No suspender la hidratación facial ni los cuidados generales de la barrera cutánea."
+              ],
+              "body_md": "### Cronograma biológico de resultados\n\nLa denervación química reversible progresa de forma paulatina:\n* **Días 3 a 5:** Notarás que el músculo comienza a perder fuerza y las líneas de expresión dinámicas se suavizan.\n* **Días 7 a 10:** El bloqueo alcanza entre el 80% y el 90% de su efectividad.\n* **Día 14:** Momento clínico exacto en que la fijación es completa al 100%. Es aquí donde se evalúa el resultado definitivo y se realiza cualquier micro-retoque de simetría en consulta médica.\n\n* **Rutina y actividad:** Puedes reincorporar tu actividad física habitual sin restricciones y tu rutina completa de dermocosmética habitual.\n* **Fotoprotección:** Mantén el protector solar SPF 50+ como hábito diario para salvaguardar la calidad dérmica y prolongar la durabilidad del tratamiento.",
+              "checklist_items": [
+                "Monitoreé la relajación muscular gradual frente al espejo sin ansiedad",
+                "Reanudé mi entrenamiento deportivo habitual de forma progresiva",
+                "Mantuve mi rutina dermocosmética habitual y fotoprotección diaria",
+                "Tomé fotografías de frente y perfil para documentar mi evolución",
+                "Agendé la cita de revisión médica para el día 14 post-tratamiento"
+              ]
+            }
+          }
+        ],
+        "position": 3
+      }
+    ]
+  },
+  {
+    "id": "3f367df5-8761-43f7-96a3-28a075928fde",
+    "title": "Relleno y Perfilado de Labios con Ácido Hialurónico (Russian Lips)",
+    "slug": "acido-hialuronico-labios-russian-lips",
+    "description": "Protocolo clínico para aumento, eversión sutil, definición del arco de cupido e hidratación profunda con ácido hialurónico reticulado. Manejo integral de edema higroscópico, prevención de compresión vascular y pautas de higiene post-inyección.",
+    "cover_url": "/images/lips.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "48 a 72 horas",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "9 a 12 meses",
+    "anesthesia_type": "Crema anestésica tópica + Lidocaína incorporada",
+    "alarm_signs": [
+      "Palidez marmórea, blanqueamiento o moteado azul-violáceo persistente en el labio o filtro nasal (requiere valoración médica directa)",
+      "Dolor desproporcionado, agudo y pulsátil que no cede con analgésicos comunes",
+      "Aparición de pequeñas ampollas o vesículas en racimo con base eritematosa (reactivación de herpes simple labial)",
+      "Sensación de frialdad cutánea localizada en el bermellón o piel perioral"
+    ],
+    "modules": [
+      {
+        "id": "546c7c03-671a-4b3b-b589-67c6c7deca30",
+        "title": "Fase de Asentamiento: Días 2 a 7",
+        "lessons": [
+          {
+            "id": "4d4532df-4267-47ba-a279-5ab4659e5611",
+            "title": "Manejo de hematomas, nódulos temporales y edema",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### La regla de los 7 días\n\nEntre el día 2 y 4 el volumen parecerá un 30% mayor del real por retención de agua. No masajear agresivamente.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "aafdd937-bb9b-40e2-8fa7-63ffb5a68b0a",
+        "title": "Fase Inmediata: Día 0 (Primeras 24 Horas)",
+        "lessons": [
+          {
+            "id": "d8b30391-d67e-4f05-b1d5-9386e91de8d3",
+            "title": "Crioterapia intermitente y prevención de asimetrías",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Protocolo antiinflamatorio inicial\n\nAplica frío local envuelto en gasa durante 10 minutos cada dos horas. Evita sorbetes o pajillas y no consumas bebidas excesivamente calientes.",
+              "checklist_items": []
+            }
+          },
+          {
+            "id": "68139748-b9ff-4184-8dcb-513b4a2dbffa",
+            "title": "Crioterapia indirecta, reposo labial y prevención de deformaciones",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar frío local indirecto con compresa envuelta en gasa estéril limpia en intervalos de 10 minutos cada 1-2 horas.",
+                "Dormir semisentada o boca arriba con 2 almohadas para favorecer el drenaje linfático facial.",
+                "Mantener los labios lubricados con bálsamo reparador estéril emoliente neutro o vaselina pura de grado médico.",
+                "Beber abundante agua (2 a 2.5 litros) a sorbos suaves en vaso abierto o taza amplia.",
+                "Consumir alimentos frescos o templados de textura blanda que no requieran apertura bucal forzada."
+              ],
+              "donts": [
+                "PROHIBIDO el uso de sorbetes, pitillos o pajillas (la succión desplaza mecánicamente el gel reticulado).",
+                "No frotar, morder, presionar ni pellizcar los labios; evitar frotar labio contra labio compulsivamente.",
+                "Cero besos con presión o mordiscos, gestos de succión forzada o morder piezas enteras duras (manzanas, bocadillos rígidos).",
+                "No aplicar maquillaje labial con pigmentos, tintas permanentes ni brillos voluminizadores en las primeras 24h.",
+                "No fumar, vapear ni consumir bebidas alcohólicas (empeoran el edema y dañan la microcirculación)."
+              ],
+              "body_md": "### Control agudo de inflamación y protección del gel reticulado\n\nEl bermellón labial es una mucosa ricamente vascularizada e inervada. Tras la técnica Russian Lips (micro-inyecciones verticales columnares), es completamente fisiológico un edema pronunciado en las primeras 24 a 48 horas.\n\n* **Aplicación de frío seguro:** Aplica compresas frías o gel refrigerante **envuelto en gasa estéril limpia en pulsos de 10 minutos** por hora durante la tarde y noche. **Bajo ninguna circunstancia presiones con fuerza los labios ni apliques hielo directo**, pues congelaría la mucosa o deformaría las columnas de soporte recién moldeadas.\n* **Postura y descanso:** Duerme semisentada o estrictamente **boca arriba con 2 almohadas altas** (cabecera a 30° o 45°). La elevación de la cabeza activa el drenaje venolinfático y mitiga significativamente la hinchazón matutina.\n* **Skincare y labios:** Aplica constantemente un bálsamo reparador labial estéril neutro (ácido hialurónico no reticulado, manteca de karité pura o vaselina estéril de grado médico) utilizando un bastoncillo de algodón limpio. Prohibido pintalabios cosméticos con pigmento, delineadores o brillos con mentol/capsaicina (voluminizadores) durante 24h.\n* **Alimentación e hidratación:** Bebe abundante agua (2 a 2.5 litros) a pequeños sorbos **en vaso de boca ancha o taza abierta**. **PROHIBIDO EL USO DE SORBETES, PAJILLAS O PITILLOS**, ya que la presión negativa de succión ejerce fuerzas tensoras que desplazan el ácido hialurónico. Consume alimentos templados o frescos, de consistencia blanda, y evita condimentos picantes o comidas con alto contenido de sodio. Cero consumo de alcohol y tabaco.",
+              "checklist_items": [
+                "Apliqué compresas frías envueltas en gasa limpia en pulsos de 10 minutos sin presionar",
+                "Dormí boca arriba o semisentada con 2 almohadas para favorecer el drenaje linfático",
+                "Bebí abundante agua en vaso abierto y evité terminantemente sorbetes o pajillas",
+                "Apliqué ungüento reparador estéril sin fragancias con bastoncillo limpio",
+                "Evité comidas muy calientes, picantes o muy saladas y consumo de tabaco o alcohol",
+                "Me abstuve de aplicar cosméticos labiales con color y de frotar los labios"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "11287cdd-c18b-4085-a46d-572932be8102",
+        "title": "Fase de Máximo Edema y Estabilización",
+        "lessons": [
+          {
+            "id": "a4707bb7-5d65-430d-a7bf-bdb084cc7298",
+            "title": "Manejo de hematomas, hidratación higroscópica y cuidados peribucales",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Días 1–3",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar bálsamo reparador cicatrizante (pantenol B5, madecassoside o ácido hialurónico) 4 a 6 veces al día.",
+                "Usar crema de árnica o vitamina K en toques delicados sobre zonas con hematomas peribucales.",
+                "Continuar durmiendo boca arriba con 2 almohadas para acelerar la reabsorción del edema matutino.",
+                "Ingerir entre 2 y 2.5 litros de agua diarios para alimentar la matriz hídrica del hialurónico.",
+                "Realizar enjuagues orales suaves sin alcohol tras cada comida para máxima higiene."
+              ],
+              "donts": [
+                "No masajear ni intentar aplastar bultitos o irregularidades palpables (la inflamación es heterogénea).",
+                "Evitar la exposición solar directa, lámparas UV, saunas y baños de inmersión caliente.",
+                "No someterse a tratamientos dentales, empastes ni limpiezas orales profundas durante 2 semanas.",
+                "No realizar depilación con cera o hilo en el labio superior (área del bozo) ni peelings periorales."
+              ],
+              "body_md": "### La regla del edema y el comportamiento higroscópico\n\nEntre las 24 y 72 horas post-inyección se experimenta el pico máximo de inflamación. El volumen labial puede aparentar entre un 25% y un 35% superior al resultado definitivo debido a la alta capacidad del ácido hialurónico para retener agua tisular.\n\n* **Hematomas peribucales:** Es habitual la aparición de pequeñas equimosis (\"moraditos\") en las comisuras o bermellón por la técnica de micropunción. Aplica **crema o gel con árnica o vitamina K tópica** con toquecitos muy delicados 2 a 3 veces al día en la piel peribucal.\n* **Descanso nocturno:** Mantén la elevación de cabecera al dormir con 2 almohadas para evitar despertar con congestión labial asimétrica.\n* **Skincare y protección:** Aplica bálsamo reparador con pantenol B5 o madecassoside de 4 a 6 veces al día. A partir del segundo día puedes usar fotoprotector labial mineral SPF 30+ o SPF 50+ si vas a salir al exterior. Maquillaje labial suave permitido desde el día 2 si se retira con agua micelar suave sin frotar.\n* **Restricción térmica y bucodental:** Cero saunas, baños turcos o duchas con agua ardiente. Pospón limpiezas dentales o citas odontológicas al menos 14 días.",
+              "checklist_items": [
+                "Hidraté los labios 4-6 veces al día con bálsamo reparador emoliente neutro",
+                "Apliqué crema de árnica o vitamina K sobre hematomas peribucales en toques suaves",
+                "Mantuve la ingesta de más de 2 litros de agua diarios para nutrir el gel de hialurónico",
+                "Dormí boca arriba con 2 almohadas para evitar presión lateral sobre los labios",
+                "Evité masajear los nódulos transitorios y me abstuve de saunas y ejercicio vigoroso"
+              ]
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "15026269-272a-4841-9818-59ef125d6d34",
+        "title": "Fase de Asentamiento, Textura Final y Revisión",
+        "lessons": [
+          {
+            "id": "64cda614-289f-4a7e-928e-6a33a4a6cc73",
+            "title": "Integración tisular, desinflamación y control médico a los 14 días",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Días 4–14",
+            "lesson_contents": {
+              "dos": [
+                "Permitir la integración biológica natural del gel hialurónico en el tejido conectivo hasta el día 14.",
+                "Reanudar con total normalidad el uso de cosméticos, barras labiales y perfiladores limpios.",
+                "Mantener hidratación externa frecuente con bálsamo nutritivo que contenga filtro solar.",
+                "Acudir a la cita de control médico a los 14 días para valorar simetría, arco de cupido y perfilado.",
+                "Continuar con ingesta adecuada de agua diaria para optimizar la turgencia y durabilidad."
+              ],
+              "donts": [
+                "No alarmarse por la desinflamación natural del 25-30% del volumen inicial observado los primeros días.",
+                "No apretar con pinzas o uñas nódulos residuales sin la instrucción explícita de tu médico.",
+                "No someterse a micropigmentación labial ni tatuaje perioral antes de cumplirse 4 semanas."
+              ],
+              "body_md": "### Revelación del contorno natural y evaluación médica\n\nA partir del día 5 al 7, el edema agudo cede casi en su totalidad. El producto se integra a nivel intersticial entre las fibras del músculo orbicular de los labios, tornándose suave, elástico y flexible al hablar o sonreír.\n\n* **Evolución del volumen:** Notarás que el volumen inicial disminuye hasta acomodarse en la proyección natural proyectada. Las pequeñas induraciones se suavizan espontáneamente con la dinámica labial habitual.\n* **Cuidados cotidianos:** Puedes reincorporar tu maquillaje labial preferido, hidratantes cosméticos y realizar ejercicio físico con normalidad. Mantén el uso de protector solar labial para prolongar la integridad del ácido hialurónico.\n* **Cita médica de control (Día 14):** A las dos semanas el resultado es 100% definitivo. Es el momento pautado para acudir con tu especialista para fotografiar el resultado final y realizar balance de simetría si correspondiera.",
+              "checklist_items": [
+                "Evalué la forma real de mis labios con la desinflamación natural progresiva",
+                "Apliqué bálsamo protector labial con filtro solar a diario",
+                "Reanudé cosméticos y labiales con higiene adecuada",
+                "Continué con mi consumo habitual de agua para mantener la hidrofilia del hialurónico",
+                "Confirmé la cita de revisión y control con mi especialista a los 14 días"
+              ]
+            }
+          }
+        ],
+        "position": 3
+      }
+    ]
+  },
+  {
+    "id": "61b3df30-6531-4d36-9799-47165b8b4b35",
+    "title": "Peeling Químico Médico Facial (AHA / TCA / Retinoico)",
+    "slug": "peeling-quimico-medico-facial",
+    "description": "Protocolo médico de exfoliación química controlada para renovación celular dérmica, atenuación de manchas pigmentarias, secuelas de acné y textura cutánea. Manejo estricto de la barrera cutánea, reepitelización segura, hidratación emoliente y fotoprotección médica innegociable.",
+    "cover_url": "/images/peeling.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "5 a 7 días",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "Efecto acumulativo en ciclos periódicos",
+    "anesthesia_type": "Sin anestesia / Ventilación de aire frío",
+    "alarm_signs": [
+      "Aparición de ampollas dolorosas con contenido seroso amarillento o exudado purulento (sospecha de sobreinfección)",
+      "Enrojecimiento severo que aumenta en intensidad y temperatura pasadas las primeras 48 horas",
+      "Dolor quemante urente persistente que no cede con la aplicación de bálsamo reparador emoliente",
+      "Oscurecimiento reactivo abrupto o pigmentación moteada grisácea (hiperpigmentación post-inflamatoria reactiva)"
+    ],
+    "modules": [
+      {
+        "id": "e254b10e-1680-458f-be2e-2944200705c3",
+        "title": "Fase de Descamación y Barrera Cutánea: Días 1 a 5",
+        "lessons": [
+          {
+            "id": "8859a060-b1e0-4dd1-b5fc-e9b2d3fb7108",
+            "title": "Prohibición de arrancar pieles y nutrición tópica",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Protección de la piel nueva\n\nBajo ninguna circunstancia jales o rasques las pieles descamadas. Aplica crema regeneradora Cicaplast o equivalente frecuentemente.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "dd153522-4064-4b9f-b0aa-5f998288a030",
+        "title": "Fase Inmediata y Neutralización Cutánea: Día 0 (Primeras 24 Horas)",
+        "lessons": [
+          {
+            "id": "5aa562fa-c46c-41c0-9f24-f90e2ad5f67d",
+            "title": "Calma epidérmica, barrera tópica y fotoprotección cero exposición",
+            "position": 0,
+            "care_type": "prohibited",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar bálsamo reparador epitelizante (con pantenol B5 o madecassoside) de 3 a 5 veces al día ante cualquier tirantez.",
+                "Rociar bruma de agua termal fresca o aplicar compresas con gasa estéril fría en pulsos de 10 minutos para calmar el calor.",
+                "Dormir boca arriba con 2 almohadas y funda de almohada limpia para minimizar el roce mecánico nocturno.",
+                "Permanecer en interiores protegidos de la radiación solar directa y fuentes de calor.",
+                "Hidratación oral intensiva con abundante agua fresca (mínimo 2.5 litros diarios)."
+              ],
+              "donts": [
+                "PROHIBIDO arrancar, pellizcar o frotar la piel aunque comience a sentirse apergaminada o acartonada.",
+                "No lavar el rostro con jabones comunes con detergentes, esponjas exfoliantes ni agua caliente.",
+                "PROHIBIDO aplicar bases de maquillaje, correctores, polvos o iluminadores durante las primeras 24 horas.",
+                "No usar productos cosméticos con retinol, ácido glicólico, salicílico ni vitamina C ácida.",
+                "No exponerse al sol directo ni consumir comidas picantes, muy calientes o bebidas alcohólicas."
+              ],
+              "body_md": "### Cuidado de la epidermis sensibilizada y mantenimiento de la barrera\n\nEn las primeras 24 horas tras el peeling médico, los agentes químicos (ácido glicólico, mandélico, TCA o retinoico) han iniciado la degradación controlada de los corneocitos del estrato córneo. La piel se siente tirante, enrojecida y sensible al calor.\n\n* **Alivio seguro del calor cutáneo:** Si experimentas sensación de ardor o calor, no apliques hielo directo. Utiliza **brumas de agua termal fría** (conservada en refrigerador) o compresas de gasa estéril humedecida en agua termal en **pulsos de 10 minutos** para calmar la reactividad dérmica sin frotar.\n* **Postura y descanso:** Duerme boca arriba con 2 almohadas y utiliza una funda de almohada limpia de algodón suave o seda para evitar fricciones nocturnas involuntarias sobre el rostro.\n* **Skincare y nutrición dérmica:** Aplica en capa generosa un **bálsamo reparador epidérmico calmante** (con pantenol B5, madecassoside, óxido de zinc o ceramidas, como Cicalfate o Cicaplast B5) de 3 a 5 veces al día según la sensación de tirantez. No laves la cara con jabones convencionales ni agua caliente; usa agua templada o fresca sola.\n* **Cero maquillaje y cero irritantes:** Totalmente prohibido el uso de bases de maquillaje, correctores, polvos, perfumes o cosméticos con retinoides, ácidos exfoliantes o vitamina C.\n* **Alimentación y protección solar:** Bebe al menos 2.5 litros de agua fresca para contrarrestar la pérdida transepidérmica de agua. Evita comidas picantes o muy calientes y alcohol. Permanece en interiores alejado de la luz solar directa.",
+              "checklist_items": [
+                "Apliqué crema barrera reparadora calmante (pantenol/madecassoside) en capa generosa",
+                "Usé compresas de gasa con agua termal fría por 10 minutos para calmar el ardor",
+                "Dormí boca arriba con 2 almohadas y funda limpia para evitar fricción facial",
+                "Bebí 2.5 litros de agua fresca y evité comidas calientes, picantes o alcohol",
+                "Cero maquillaje, exfoliantes, ácidos y cero exposición directa a la radiación solar"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "2d95e62d-1c4b-43c4-b2bb-3857b56c0db2",
+        "title": "Fase de Descamación Activa y Reepitelización",
+        "lessons": [
+          {
+            "id": "fcf93385-f5f9-47bd-9f34-9d95c3a3a906",
+            "title": "Regla de oro: desprendimiento natural, regeneración y fotoprotección mineral",
+            "position": 0,
+            "care_type": "prohibited",
+            "timeline_tag": "Días 1–3",
+            "lesson_contents": {
+              "dos": [
+                "REGLA DE ORO: Dejar que las pieles descamadas caigan por sí solas en el lavado suave; jamás arrancarlas.",
+                "Aplicar crema hidratante reparadora (Cicaplast B5, Cicalfate o equivalente) de 4 a 6 veces al día.",
+                "Aplicar fotoprotector 100% mineral SPF 50+ cada 2 a 3 horas religiosamente desde la mañana.",
+                "Lavar suavemente con limpiador Syndet sin jabón y agua tibia, secando con toques suaves de toalla limpia.",
+                "Utilizar sombrero de ala ancha y gafas oscuras de alta protección al salir al exterior.",
+                "Si alguna piel suelta cuelga en exceso, recortar con tijeritas limpias el borde libre sin jalar la raíz."
+              ],
+              "donts": [
+                "JAMÁS jalar, pelar ni raspar las escamas de piel seca (riesgo severo de mancha o cicatriz permanente).",
+                "No aplicar maquillaje cosmético sobre las áreas que se encuentran activamente pelándose.",
+                "Cero ejercicio vigoroso que produzca sudoración profusa (las sales del sudor irritan intensamente la piel nueva).",
+                "Prohibido entrar a piscinas con cloro, jacuzzis, saunas y playas.",
+                "No utilizar toallitas desmaquillantes, tónicos astringentes con alcohol ni cepillos mecánicos de limpieza."
+              ],
+              "body_md": "### La regla inquebrantable de la descamación médica\n\nEntre el día 2 y el día 4 comenzará la fase de descamación activa (\"pelado\"), normalmente iniciando alrededor de la boca y extendiéndose hacia mejillas y frente.\n\n* **LA REGLA DE ORO DEL PEELING:** **BAJO NINGUNA CIRCUNSTANCIA DEBES ARRANCAR, JALAR, DESPEGAR NI RASCAR LAS PIELES SECAS.** La epidermis subyacente aún no ha completado su queratinización madura. Si jalas una escama forzadamente, arrancarás queratinocitos inmaduros exponiendo la dermis papilar, lo que provocará una mancha oscura permanente (**hiperpigmentación postinflamatoria**) o cicatriz atrófica.\n* **Cómo gestionar las pieles sueltas:** Las pieles deben desprenderse espontáneamente durante el lavado suave facial. Si una lámina de piel suelta cuelga y resulta molesta, puedes recortar cuidadosamente el extremo libre con una tijerita limpia y desinfectada, **NUNCA jalarla de la raíz**.\n* **Skincare y nutrición dérmica:** Hidrata continuamente con crema reparadora emoliente (Cicaplast B5, Cicalfate o equivalente) entre 4 y 6 veces al día. Lava suavemente con un limpiador Syndet sin jabón y agua tibia, secando con toquecitos delicados de toalla limpia sin frotar.\n* **Fotoprotección mineral innegociable:** La piel nueva carece temporalmente de manto lipídico y melanina defensiva. Aplica **protector solar 100% mineral SPF 50+ cada 2 a 3 horas de forma innegociable**, incluso si estás dentro de casa. Si sales a la calle, usa sombrero de ala ancha y gafas oscuras.",
+              "checklist_items": [
+                "REGLA DE ORO: No arranqué ni tiré de ninguna piel; dejé que se desprendan naturalmente",
+                "Apliqué bálsamo cicatrizante y reparador 4 a 6 veces al día ante cada sensación de tirantez",
+                "Apliqué y reapliqué protector solar mineral SPF 50+ cada 2 a 3 horas religiosamente",
+                "Lavé mi rostro con limpiador Syndet suave con agua tibia y secado por toques",
+                "Usé sombrero de ala ancha y evité por completo el sol directo y el sudor intenso"
+              ]
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "09397e57-eebd-4014-92fd-c67db9f0a6b3",
+        "title": "Fase de Regeneración de Barrera Cutánea y Fotoprotección Médica",
+        "lessons": [
+          {
+            "id": "c490b6b7-7e17-46fc-9e76-4bb314afb24e",
+            "title": "Consolidación epidérmica, nutrición avanzada y prevención de manchas",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Días 4–14",
+            "lesson_contents": {
+              "dos": [
+                "Reaplicar protector solar SPF 50+ de amplio espectro cada 3 a 4 horas durante los próximos 30 días.",
+                "Nutrir la nueva epidermis con ácido hialurónico puro y cremas reparadoras con ceramidas y niacinamida.",
+                "Reanudar el maquillaje cosmético mineral hipoalergénico solo cuando la descamación haya cesado por completo.",
+                "Monitorear la uniformidad del tono de piel e informar oportunamente cualquier pigmentación reactiva.",
+                "Asistir a la revisión dermatológica de control o sesión complementaria programada."
+              ],
+              "donts": [
+                "No exponerse deliberadamente al sol en playas, piscinas o terrazas durante al menos un mes completo.",
+                "No reintroducir retinoides, ácido glicólico, salicílico ni exfoliantes físicos antes del día 14.",
+                "No realizarse depilación facial con cera, hilo, láser o luz pulsada durante al menos 4 semanas."
+              ],
+              "body_md": "### Consolidación de la nueva epidermis y protocolo anti-manchas\n\nHacia el día 5 al 7, la descamación concluye. La nueva capa epidérmica está completamente expuesta: se aprecia más luminosa, con poros más compactos y tono homogéneo, pero con una reactividad vascular elevada.\n\n* **El escudo solar diario:** La prevención de hiperpigmentación postinflamatoria exige mantener la reaplicación de **protector solar SPF 50+ cada 3 a 4 horas durante al menos 30 días posteriores al tratamiento**.\n* **Nutrición de la barrera cutánea:** Enriquecer la rutina con sueros de **ácido hialurónico puro**, lociones con **ceramidas, niacinamida y fosfolípidos** para restituir la barrera hidrolipídica y optimizar la elasticidad dérmica.\n* **Reanudación del maquillaje:** Puedes reanudar el uso de maquillaje cosmético hipoalergénico una vez que la descamación haya finalizado al 100% en todo el rostro.\n* **Activos cosméticos y depilación:** No reintroduzcas ácidos glicólicos, salicílicos, exfoliantes físicos ni retinoides hasta haber completado los 14 días y consultar la pauta médica. Suspende cualquier método de depilación facial durante al menos 4 semanas.",
+              "checklist_items": [
+                "Mantuve la reaplicación de fotoprotector SPF 50+ cada 3-4 horas sin excepción",
+                "Nutrí la barrera cutánea con ácido hialurónico y ceramidas reconstituyentes",
+                "Reanudé maquillaje hipoalergénico solo tras haber finalizado la descamación al 100%",
+                "Pospuse el uso de ácidos exfoliantes, retinoides y depilación facial hasta el día 14+",
+                "Agendé la cita de valoración dermatológica de control post-peeling"
+              ]
+            }
+          }
+        ],
+        "position": 3
+      }
+    ]
+  },
+  {
+    "id": "85b53a7f-a09d-470a-8429-7392ed2a2d6b",
+    "title": "Ultrasonido Corporal y Drenaje Mecánico",
+    "slug": "ultrasonido-corporal",
+    "description": "Aplicación de ondas mecánicas de 3 MHz para desinflamar tejidos corporales, ablandar zonas con fibrosis post-quirúrgica o post-traumática, mejorar la microcirculación y favorecer el drenaje en protocolos reductores.",
+    "cover_url": "/images/ultrasonido-corporal.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 30,
+    "results_duration": "Progresivo con ciclo de sesiones",
+    "anesthesia_type": "No requerida",
+    "alarm_signs": [
+      "Dolor óseo o articular vecino por aplicación inadecuada sobre rebordes óseos",
+      "Alergia o dermatitis por el gel de contacto conductor"
+    ],
+    "modules": [
+      {
+        "id": "7d204c4f-85eb-4135-be1d-b2c64c9a951a",
+        "title": "Fase de Desinflamación Tisular",
+        "lessons": [
+          {
+            "id": "2315c79d-9d4f-4d97-ae2c-1d61c9d68bfb",
+            "title": "Protocolo de drenaje asistido por ultrasonido",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Mantener hidratación hídrica constante.",
+                "Combinar con caminatas suaves o presoterapia si está indicada."
+              ],
+              "donts": [
+                "No suspender el uso de prendas compresivas si es parte de un protocolo post-operatorio."
+              ],
+              "body_md": "Sesión confortable y relajante sin hematomas ni dolor. Ayuda significativamente a desinflamar zonas inflamadas o en proceso de moldeamiento.",
+              "checklist_items": [
+                "Completé mi sesión de ultrasonido desinflamatorio",
+                "Mantuve la hidratación recomendada"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "51dd6d51-1b4e-4895-a2cb-9f48125e66ab",
+    "title": "Drenaje Linfático Manual Médico (DLM)",
+    "slug": "drenaje-linfatico-manual",
+    "description": "Técnica manual especializada con maniobras rítmicas, suaves y precisas (método Vodder/Leduc) para estimular los ganglios linfáticos, evacuar edemas post-quirúrgicos o circulatorios y promover una desinflamación acelerada sin dolor.",
+    "cover_url": "/images/drenaje-linfatico.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 50,
+    "results_duration": "Efecto desinflamatorio inmediato y acumulativo",
+    "anesthesia_type": "No requerida (técnica ultra suave)",
+    "alarm_signs": [
+      "Edema asimétrico unilateral súbito en pierna con dolor en pantorrilla (sospecha de trombosis venosa profunda TVP - urgencia médica)",
+      "Fiebre o signos de infección linfática aguda (linfangitis o erisipela)",
+      "Dificultad respiratoria súbita o dolor torácico pleurítico"
+    ],
+    "modules": [
+      {
+        "id": "9a244109-aa19-4441-964d-18aed75afb8e",
+        "title": "Fase de Drenaje Linfático y Alivio del Edema",
+        "lessons": [
+          {
+            "id": "4f08d1bd-97f7-4af2-b849-32f4340b93d0",
+            "title": "Activación del sistema linfático",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Descansar con las extremidades ligeramente elevadas para favorecer el retorno venoso.",
+                "Ingerir agua pura para facilitar la filtración renal de toxinas.",
+                "Llevar puestas prendas o medias de compresión si han sido formuladas."
+              ],
+              "donts": [
+                "No solicitar presiones dolorosas ni masajes bruscos sobre zonas inflamadas.",
+                "Evitar el consumo excesivo de sal y alimentos que propicien retención de líquidos."
+              ],
+              "body_md": "El drenaje no debe doler bajo ninguna circunstancia. Es habitual experimentar un aumento en la diuresis (necesidad de orinar) en las horas posteriores debido a la evacuación efectiva de líquidos retenidos.",
+              "checklist_items": [
+                "Experimenté alivio en la pesadez corporal",
+                "Aumenté mi ingesta de agua para eliminar toxinas",
+                "Mantuve las piernas o zona tratada en reposo elevado"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "32b43599-fed5-4cef-b080-ad950e7acb6e",
+    "title": "Sueroterapia Intravenosa (Wellness, Inmune & Detox)",
+    "slug": "sueroterapia-intravenosa",
+    "description": "Infusión médica intravenosa directa de oligoelementos, aminoácidos esenciales, megadosis de Vitamina C y antioxidantes maestros (Glutatión) para revitalización celular, fortalecimiento del sistema inmunológico y detoxificación metabólica.",
+    "cover_url": "/images/sueroterapia.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 45,
+    "results_duration": "3 a 6 semanas según demanda física y metabólica",
+    "anesthesia_type": "No requerida / Punción venosa periférica estéril",
+    "alarm_signs": [
+      "Dificultad respiratoria, disnea, opresión en el pecho o sibilancias (reacción anafiláctica - urgencia máxima)",
+      "Signos de flebitis en el sitio de venopunción: cordón venoso duro, caliente, rojo y muy doloroso",
+      "Edema súbito de párpados, labios o lengua (angioedema)",
+      "Fiebre con escalofríos y temblores durante o poco después de la aplicación"
+    ],
+    "modules": [
+      {
+        "id": "d384afdc-d1c1-432c-a475-974507e3d21e",
+        "title": "Fase de Absorción Celular y Vitalidad",
+        "lessons": [
+          {
+            "id": "b7240022-3f09-4d53-91d6-52d1db8cd57d",
+            "title": "Cuidados tras la sueroterapia intravenosa",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Mantener el parche estéril sobre la vena durante 30 a 60 minutos.",
+                "Continuar con buena hidratación oral durante todo el día.",
+                "Retomar tus actividades cotidianas con normalidad."
+              ],
+              "donts": [
+                "No doblar bruscamente el brazo ni cargar pesos excesivos con el brazo puncionado durante 2 horas.",
+                "No frotar el sitio de venopunción para evitar la formación de hematomas.",
+                "Evitar el consumo de bebidas alcohólicas el día de la sesión para optimizar la acción antioxidante."
+              ],
+              "body_md": "Al ser una vía intravenosa directa con 100% de biodisponibilidad, los nutrientes actúan de inmediato a nivel celular. Mantén la gasa o parche del sitio de punción seco y limpio.",
+              "checklist_items": [
+                "Mantuve el parche sobre la punción por al menos 30 minutos",
+                "Bebí suficiente agua para apoyar la función renal",
+                "Evité cargar peso con el brazo de la canalización",
+                "Verifiqué que no haya enrojecimiento o endurecimiento en la vena"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "bfa05552-c7f9-402e-8471-5c97b2f30c01",
+    "title": "Terapia Capilar con Plasma Rico en Plaquetas (PRP Capilar)",
+    "slug": "terapia-capilar-plasma",
+    "description": "Tratamiento biológico autólogo de regeneración folicular mediante extracción de sangre periférica, centrifugado diferencial e infiltración de plasma concentrado en factores de crecimiento (VEGF, PDGF, IGF-1) para reactivar folículos en reposo y engrosar la fibra capilar.",
+    "cover_url": "/images/plasma-capilar.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Capilar",
+    "recovery_time": "12 a 24 horas",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "4 a 6 meses por sesión / protocolo de mantenimiento anual",
+    "anesthesia_type": "Frío local y anestésico tópico en cuero cabelludo",
+    "alarm_signs": [
+      "Infección en los sitios de punción (eritema caliente, secreción o dolor progresivo)",
+      "Hematoma subcutáneo a tensión en cuero cabelludo",
+      "Cefalea severa refractaria que no cede",
+      "Hinchazón en la zona frontal o periocular"
+    ],
+    "modules": [
+      {
+        "id": "169152e3-d541-42af-b23c-286057b88d0f",
+        "title": "Fase de Bioestimulación Plaquetaria Folicular",
+        "lessons": [
+          {
+            "id": "4d1e53e2-65dc-4949-a690-6549d6a439c0",
+            "title": "Absorción y bioestimulación autóloga",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-1",
+            "lesson_contents": {
+              "dos": [
+                "Mantener el cuero cabelludo seco y limpio sin lavarse por 24 horas.",
+                "Lavar al día siguiente con agua tibia y champú dermocosmético suave.",
+                "Dormir sobre una funda de almohada limpia."
+              ],
+              "donts": [
+                "No lavar el cabello en las primeras 24 horas para permitir la acción de los factores plaquetarios.",
+                "No usar sombreros, vinchas o cascos ajustados.",
+                "Evitar ejercicio físico extenuante y saunas por 24 a 48 horas.",
+                "No aplicar tratamientos químicos (tintes o alisados) por al menos 7 días."
+              ],
+              "body_md": "El plasma autólogo libera gradualmente factores que nutren los vasos sanguíneos perifoliculares. Puede sentirse una ligera sensibilidad en el cuero cabelludo en las primeras horas.",
+              "checklist_items": [
+                "No lavé mi cabello durante las primeras 24 horas",
+                "Evité la compresión con gorras o cascos",
+                "Dormí en una funda de almohada limpia",
+                "Mantuve la zona protegida de radiación solar directa"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "05466e4c-4350-4247-a09c-94745b14c518",
+    "title": "Masaje Relajante y Descontracturante",
+    "slug": "masaje-relajante",
+    "description": "Protocolo manual terapéutico corporal que combina pases suaves y fluidos con presiones medias en puntos gatillo para disolver contracturas musculares por estrés, disminuir el cortisol y promover el bienestar integral.",
+    "cover_url": "/images/masaje-relajante.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 60,
+    "results_duration": "1 a 2 semanas de sensación de bienestar y alivio",
+    "anesthesia_type": "No requerida (aromaterapia y aceites esenciales)",
+    "alarm_signs": [
+      "Dolor punzante o pérdida de fuerza motora irradiada a extremidades (signo radicular)",
+      "Mareo intenso o síncope postural al ponerse de pie de manera súbita"
+    ],
+    "modules": [
+      {
+        "id": "05f4dcf5-6079-48a5-815b-20d67fb08479",
+        "title": "Fase de Relajación y Equilibrio Muscular",
+        "lessons": [
+          {
+            "id": "bdd23c77-b48f-4e5b-b513-67dff8c828f1",
+            "title": "Post-masaje de bienestar y descanso",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Ingerir una infusión tibia o agua para rehidratar el tejido fascial.",
+                "Disfrutar de un descanso o siesta reparadora si el horario lo permite.",
+                "Ducharse con agua tibia para prolongar la relajación muscular."
+              ],
+              "donts": [
+                "No realizar entrenamientos de fuerza máxima o levantamiento de pesas el mismo día.",
+                "Evitar bebidas energizantes con alto contenido de cafeína inmediatamente después."
+              ],
+              "body_md": "Permítete disfrutar de la sensación de desconexión y alivio muscular. Es recomendable no someterse a situaciones de estrés ni esfuerzos físicos intensos tras la sesión.",
+              "checklist_items": [
+                "Tomé agua o infusión relajante tras la sesión",
+                "Mantuve una tarde/noche tranquila sin esfuerzos pesados",
+                "Verifiqué que no hayan dolores anormales en articulaciones"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "d8e39ad2-cdbd-482f-a4ad-b33ff2755e00",
+    "title": "Rinomodelación sin Cirugía con Ácido Hialurónico",
+    "slug": "rinomodelacion-sin-cirugia-acido-hialuronico",
+    "description": "Corrección tridimensional no quirúrgica del dorso, ángulo nasolabial y elevación de la punta nasal mediante ácido hialurónico reticulado de alta viscoelasticidad. Protocolo de bioseguridad vascular, protección estructural contra presiones externas y preservación de perfusión.",
+    "cover_url": "/images/rhino.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "48 a 72 horas",
+    "pain_level": 2,
+    "duration_minutes": 40,
+    "results_duration": "12 a 18 meses",
+    "anesthesia_type": "Anestesia local infiltrativa / Tópica",
+    "alarm_signs": [
+      "Palidez marmórea súbita, blanqueamiento o piel fría en la punta nasal, alas de la nariz o entrecejo (Signo crítico de compresión o embolia vascular)",
+      "Dolor desproporcionado, agudo y punzante que irradia hacia la frente, la órbita ocular o los dientes",
+      "Cambio de coloración cutánea hacia un tono violáceo, livedo reticularis o moteado grisáceo",
+      "Pérdida visual súbita parcial o total, visión borrosa o dolor ocular retrobulbar (EMERGENCIA OFTALMOLÓGICA ABSOLUTA: acudir de inmediato)"
+    ],
+    "modules": [
+      {
+        "id": "28ec4fed-2585-4679-a8ba-1da796a57d67",
+        "title": "Cuidados Críticos: Primeras 48 Horas",
+        "lessons": [
+          {
+            "id": "a41294d8-f6f1-41ad-91a3-fb2e6f729924",
+            "title": "Prohibición de anteojos y presión sobre el dorso",
+            "position": 1,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [],
+              "donts": [],
+              "body_md": "### Cuidado estructural de la nariz\n\nEstá terminantemente prohibido usar gafas o lentes apoyados sobre el dorso durante 14 días. Dormir boca arriba estricto.",
+              "checklist_items": []
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "43adef07-56d3-4a0c-aea1-2bc3ed514544",
+        "title": "Fase Crítica e Inmediata: Día 0 (Primeras 24 Horas)",
+        "lessons": [
+          {
+            "id": "54d5fdd2-b634-4886-a7ec-4eaefa848392",
+            "title": "Prohibición absoluta de gafas, postura de descanso y vigilancia vascular",
+            "position": 0,
+            "care_type": "prohibited",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Dormir en decúbito supino estricto (boca arriba) con 2 almohadas elevadas (30-45°) y soporte lateral con cojines.",
+                "Inspeccionar periódicamente la coloración de la piel nasal frente al espejo (debe estar sonrosada y cálida).",
+                "Limpiar suavemente la zona de los orificios de punción con gasa estéril humedecida en suero fisiológico mediante toquecitos.",
+                "Si necesitas corrección óptica, usar lentes de contacto o suspender las gafas de la frente con cinta médica microporosa sin contacto nasal.",
+                "Beber abundante agua y mantener reposo relativo en casa durante las primeras 24 horas."
+              ],
+              "donts": [
+                "PROHIBIDO el uso de gafas de ver, gafas de sol, monturas ópticas o visores de realidad virtual apoyados en la nariz.",
+                "No presionar, apretar, pellizcar, empujar ni intentar moldear la punta o el dorso nasal con los dedos.",
+                "No sonarse la nariz con fuerza explosiva ni hurgarse las fosas nasales; emplear solución salina suave si hay congestión.",
+                "No dormir de lado ni boca abajo bajo ninguna circunstancia.",
+                "No aplicar maquillaje, correctores ni cremas densas sobre la pirámide nasal en las primeras 24 horas."
+              ],
+              "body_md": "### Cuidado de la pirámide nasal y vigilancia de la microcirculación\n\nLa rinomodelación deposita depósitos de alta precisión de ácido hialurónico reticulado sobre el plano supraperióstico y supra pericóndrico. Durante las primeras horas el material es altamente maleable y vulnerable a la fuerza de la gravedad y compresiones externas.\n\n* **PROHIBICIÓN ESTRICTA DE GAFAS O ANTEOJOS:** Está **terminantemente prohibido apoyar gafas formuladas, monturas ópticas, gafas de sol o cascos sobre el dorso de la nariz durante al menos 14 días**. El peso de la montura creará una indentación irreversible o desplazará el implante hacia los lados del dorso. Si requieres corrección visual, utiliza lentes de contacto o suspende las gafas fijándolas a la frente con esparadrapo médico sin tocar la nariz.\n* **Postura y descanso nocturno:** Duerme estrictamente **boca arriba (decúbito supino) con 2 almohadas altas** para asegurar drenaje linfático. Coloca cojines a los lados de la cabeza para asegurar que no te gires accidentalmente durante el sueño. Prohibido dormir boca abajo o de lado.\n* **Aplicación de frío seguro:** Aplica frío indirecto envuelto en gasa estéril limpia **únicamente en los pómulos o entrecejo por periodos de 10 minutos**. **NUNCA apoyes compresas ni ejerzas presión mecánica sobre el puente ni la punta nasal**.\n* **Vigilancia vascular:** Revisa periódicamente en el espejo que la piel de la punta y dorso mantenga una coloración rosada natural, con temperatura cálida. Comunica al instante cualquier palidez o dolor intenso.\n* **Higiene y alimentación:** Lava el rostro con gasas con suero fisiológico estéril en toques suaves sin arrastrar. Bebe al menos 2 litros de agua y consume alimentos templados de fácil masticación, evitando sonarte la nariz con fuerza.",
+              "checklist_items": [
+                "Cero apoyo de gafas o monturas sobre el dorso nasal (usé lentes de contacto o suspensión frontal)",
+                "Dormí boca arriba con 2 almohadas y soportes laterales para no girar la cabeza",
+                "Apliqué frío indirecto con gasa por 10 minutos en zonas periféricas sin comprimir la nariz",
+                "Inspeccioné la coloración cutánea de la punta y dorso nasal (rosada, sin palidez ni manchas moradas)",
+                "Bebí al menos 2 litros de agua y consumí alimentos templados y suaves",
+                "Evité sonarme la nariz bruscamente y mantuve mis manos alejadas de la zona tratada"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "d3d8ac32-ca69-4764-ac36-250049bb926d",
+        "title": "Fase de Consolidación y Prevención de Desplazamiento",
+        "lessons": [
+          {
+            "id": "defdc7b7-4ec8-4b7a-855f-923d0c49e48d",
+            "title": "Mantenimiento estructural, fotoprotección mineral y control de hematomas",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Días 1–3",
+            "lesson_contents": {
+              "dos": [
+                "Mantener la prohibición ininterrumpida de apoyar gafas o anteojos sobre el caballete nasal.",
+                "Aplicar protector solar mineral SPF 50+ mediante toques muy suaves y sin presión en las mañanas.",
+                "Si existen hematomas pequeños en el punto de entrada, usar gel con árnica o vitamina K en capa fina 2 veces al día.",
+                "Continuar durmiendo boca arriba con cabecera elevada para facilitar el drenaje del edema perinasal.",
+                "Mantener reposo relativo evitando actividades que eleven bruscamente la presión sanguínea facial."
+              ],
+              "donts": [
+                "No realizar deportes de contacto, tenis, natación con gafas herméticas ni entrenamientos de pesas vigorosos.",
+                "No realizarse limpiezas de cutis con extracción de puntos negros en la nariz ni usar tiras adhesivas depilatorias.",
+                "Evitar la exposición a saunas, baños turcos, duchas calientes y cocción a fuego directo con vapor en el rostro.",
+                "No inclinarse súbitamente hacia el suelo con la cabeza baja (evitar aumento de presión hidrostática nasal)."
+              ],
+              "body_md": "### Fijación inicial de la corrección nasal\n\nDurante los días 1 a 3, el ácido hialurónico comienza a interactuar con los glucosaminoglicanos y colágeno del tejido receptor. La estructura moldeada se afianza progresivamente.\n\n* **Continuidad en la prohibición de gafas:** La restricción de gafas sobre el puente nasal se mantiene de manera rigurosa.\n* **Skincare y fotoprotección:** Aplica protector solar 100% mineral SPF 50+ con toques milimétricos suaves de las yemas de los dedos, sin arrastrar producto sobre el dorso. Si notas algún hematoma puntual en el orificio de entrada de la cánula o aguja, aplica gel de **árnica o vitamina K** en capa fina con un bastoncillo limpio.\n* **Postura y actividad física:** Mantén el descanso boca arriba con cabecera elevada. Suspende deportes de impacto, pesas, flexiones o posturas donde la cabeza quede por debajo del corazón (evitar congestión cefálica por aumento de presión hidrostática). Evita saunas y baños calientes.",
+              "checklist_items": [
+                "Mantuve la restricción estricta de anteojos y gafas sobre la pirámide nasal",
+                "Apliqué protector solar mineral SPF 50+ mediante toques muy ligeros sin compresión",
+                "Apliqué gel de árnica o vitamina K sobre hematomas discretos en puntos de acceso",
+                "Dormí en posición supina con dos almohadas durante toda la noche",
+                "Evité entrenamientos vigorosos, levantamiento de cargas y fuentes de calor"
+              ]
+            }
+          }
+        ],
+        "position": 2
+      },
+      {
+        "id": "3fa98be1-fff5-403f-8e1b-d4e0140bd69d",
+        "title": "Fase de Asentamiento Estructural y Resultados Definitivos",
+        "lessons": [
+          {
+            "id": "86fdedbb-e762-4705-b488-f5be118ab48f",
+            "title": "Estabilidad de la corrección nasal y revisión médica a las 2 semanas",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Días 4–14",
+            "lesson_contents": {
+              "dos": [
+                "Continuar protegiendo el dorso nasal de golpes accidentales o presiones continuadas hasta el día 14.",
+                "Retomar de forma progresiva la actividad aeróbica moderada evitando deportes con riesgo de impacto directo.",
+                "Aplicar fotoprotector solar diario SPF 50+ para evitar pigmentación post-inflamatoria en el orificio de entrada.",
+                "Asistir a la cita de control médico a los 14 días para valorar simetría, proyección y estabilidad del implante.",
+                "Evaluar la armonía estética mediante fotografías de perfil y frente comparativas."
+              ],
+              "donts": [
+                "No utilizar monturas pesadas de pasta o gafas de natación/buceo ajustadas antes del día 14 sin consultar.",
+                "No manipular con fuerza los cartílagos alares o el dorso de la nariz al sonarse o secarse el rostro.",
+                "No aplicarse aparatología facial focalizada en la nariz (radiofrecuencia o ultrasonido focalizado)."
+              ],
+              "body_md": "### Consolidación y evaluación del perfil nasal definitivo\n\nA partir del día 5 a 7, el edema transitorio en el dorso y la punta nasal desaparece casi en su totalidad, revelando un dorso rectilíneo armonioso y una punta nasal estilizada y elevada.\n\n* **Reincorporación gradual de monturas:** Se aconseja esperar al cumplimiento de las 2 semanas completas antes de volver a utilizar gafas convencionales de montura ligera. Evita monturas pesadas de acetato grueso o gafas de trabajo rígidas hasta recibir el visto bueno médico.\n* **Fotoprotección continuada:** Continúa aplicando protector solar diario SPF 50+ para proteger el punto de punción de cánula y prevenir hiperpigmentaciones solares indeseadas.\n* **Cita médica de valoración (Día 14):** Acude a tu control con el médico especialista para evaluar la estabilidad estructural, la simetría del perfil y archivar la fotografía de resultado final.",
+              "checklist_items": [
+                "Verifiqué la fijación del dorso y la punta nasal con resolución del edema inicial",
+                "Mantuve fotoprotección SPF 50+ estricta en el dorso y punta nasal a diario",
+                "Mantuve prudencia con monturas pesadas hasta cumplir los 14 días reglamentarios",
+                "Tomé fotografías de perfil y frente para mi seguimiento clínico",
+                "Acudí o confirmé mi cita médica de control estructural a los 14 días"
+              ]
+            }
+          }
+        ],
+        "position": 3
+      }
+    ]
+  },
+  {
+    "id": "77200861-fcb9-45ca-92b2-290c5dbab754",
+    "title": "Masaje Reductor y Moldeador de Contorno",
+    "slug": "masaje-reductor",
+    "description": "Técnica manual vigorosa y rítmica con maniobras de amasamiento, fricción y percusión orientada a movilizar grasa localizada, aumentar la temperatura tisular para dinamizar el metabolismo lipídico y perfilar la silueta en cintura y abdomen.",
+    "cover_url": "/images/masaje-reductor.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata a 24 horas",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "Sujeto a hábitos nutricionales e hidratación",
+    "anesthesia_type": "No requerida (uso de geles termogénicos)",
+    "alarm_signs": [
+      "Hematomas extensos y dolorosos por fuerza o presión excesiva",
+      "Dolor muscular agudo que impida la movilidad normal",
+      "Aparición de petequias generalizadas"
+    ],
+    "modules": [
+      {
+        "id": "8dd05da6-d4cc-42b4-bca7-45dca4858e6a",
+        "title": "Fase de Moldeamiento y Metabolismo Activo",
+        "lessons": [
+          {
+            "id": "c6c7fb33-af9b-4247-b95d-7679a7eeec53",
+            "title": "Optimización de la reducción de medidas",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-1",
+            "lesson_contents": {
+              "dos": [
+                "Beber abundante agua antes y después del masaje.",
+                "Mantener una alimentación baja en carbohidratos simples y grasas saturadas.",
+                "Complementar con actividad cardiovascular ligera."
+              ],
+              "donts": [
+                "No ingerir comidas pesadas o ultraprocesadas inmediatamente después de la sesión.",
+                "No realizar masajes agresivos si la piel presenta hematomas activos."
+              ],
+              "body_md": "Puede experimentarse una ligera sensibilidad muscular similar a la que queda tras realizar ejercicio físico intenso. El cuerpo moviliza líquidos y toxinas.",
+              "checklist_items": [
+                "Tomé agua antes y después de mi sesión",
+                "Mantuve una cena ligera y balanceada",
+                "Verifiqué que no haya dolor excesivo o hematomas severos"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "d80b8cae-96c0-4ab3-85c5-8fb849f53895",
+    "title": "Terapia Capilar con Mesoterapia (Bioestimulación Folicular)",
+    "slug": "mesoterapia-capilar",
+    "description": "Microinyecciones intradérmicas directas en cuero cabelludo con cócteles estériles de péptidos biomiméticos, biotina, D-pantenol, vasodilatadores y nutrientes para frenar la miniaturización del folículo piloso, estimular la fase anágena y densificar el cabello.",
+    "cover_url": "/images/mesoterapia-capilar.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Capilar",
+    "recovery_time": "12 a 24 horas",
+    "pain_level": 2,
+    "duration_minutes": 30,
+    "results_duration": "Mantenimiento semestral tras ciclo inicial de 4-6 sesiones",
+    "anesthesia_type": "Crioterapia local / anestesia tópica opcional",
+    "alarm_signs": [
+      "Dolor punzante o cefalea persistente que no ceda con analgésicos convencionales",
+      "Signos de foliculitis bacteriana o infección en cuero cabelludo (pústulas, calor y supuración)",
+      "Edema frontal que descienda hacia los párpados",
+      "Reacción alérgica aguda con prurito incontrolable o eritema generalizado"
+    ],
+    "modules": [
+      {
+        "id": "463006fa-5978-458a-a4c9-9ee54da16b88",
+        "title": "Fase de Fijación Folicular (Primeras 24 Horas)",
+        "lessons": [
+          {
+            "id": "bb924d02-49e3-49d8-b438-29e821aa857d",
+            "title": "Cuidados del cuero cabelludo post-microinyección",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-1",
+            "lesson_contents": {
+              "dos": [
+                "Dejar reposar el producto sin lavar el cabello durante al menos 12 a 24 horas.",
+                "Lavar el cabello al día siguiente con champú suave neutro sin frotar con las uñas.",
+                "Secar con toalla suave mediante toques delicados."
+              ],
+              "donts": [
+                "No lavar el cabello inmediatamente después de la sesión.",
+                "No usar gorras, sombreros apretados ni cascos de moto durante 24 horas.",
+                "No aplicar tintes, decoloraciones, geles ni lacas durante 5 a 7 días.",
+                "Evitar saunas, piscinas y ejercicio vigoroso con sudoración profusa en las primeras 24 horas."
+              ],
+              "body_md": "Las microinyecciones depositan los activos directamente en la papila dérmica folicular. Es fundamental mantener el cuero cabelludo limpio y libre de productos capilares densos durante las primeras 24 horas.",
+              "checklist_items": [
+                "Esperé al menos 12-24 horas antes de lavar mi cabello",
+                "Evité el uso de gorras o cascos apretados el primer día",
+                "Utilicé un champú suave sin frotar bruscamente",
+                "Pospuse tintes y químicos capilares por 7 días"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "300c5bda-3f75-4fa1-934c-83fa94554ea5",
+    "title": "Bioestimulación Facial & Inducción de Colágeno",
+    "slug": "bioestimulacion-facial-colageno",
+    "description": "Protocolo médico de hidroxiapatita cálcica y polinucleótidos para recuperar firmeza dérmica, redensificación y luminosidad duradera.",
+    "cover_url": "/images/bioestimulacion.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "24 a 48 horas",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "12 a 18 meses",
+    "anesthesia_type": "Tópica y Frío local",
+    "alarm_signs": [
+      "Dolor desproporcionado persistente o que no cede con analgesia básica",
+      "Cambios de coloración cutánea bruscos (palidez marcada, tono grisáceo o moteado violáceo)",
+      "Formación de nódulos dolorosos, eritema caliente o supuración en las zonas tratadas",
+      "Reacción alérgica aguda con edema desmedido o dificultad respiratoria"
+    ],
+    "modules": [
+      {
+        "id": "444bc55f-8f76-4f40-b6f2-1b2e8c261541",
+        "title": "Fase de Integración: Primeros 7 Días",
+        "lessons": [
+          {
+            "id": "7c31228e-58d9-49b2-93a4-dfb9959b6d28",
+            "title": "Técnica de masaje 5-5-5 y fotoprotección",
+            "position": 1,
+            "care_type": "allowed",
+            "timeline_tag": "Días 1–7",
+            "lesson_contents": {
+              "dos": [
+                "Realizar masaje con crema hidratante suave en movimientos ascendentes circulares.",
+                "Aplicar protector solar SPF 50+ cada 3 a 4 horas durante el día.",
+                "Beber abundante agua (mínimo 2 litros diarios) para favorecer la neocolagénesis."
+              ],
+              "donts": [
+                "No realizar presiones excesivas o compresiones dolorosas sobre las zonas de punción.",
+                "Evitar calor extremo, saunas, baños turcos y actividad física intensa durante 72 horas.",
+                "No exponerse al sol directo ni realizarse otros tratamientos faciales por 2 semanas."
+              ],
+              "body_md": "### Estimulación uniforme de colágeno\n\nRealiza masajes suaves 5 minutos, 5 veces al día durante los primeros 5 días para asegurar una distribución homogénea del bioestimulador y activar los fibroblastos dérmicos.",
+              "checklist_items": [
+                "Realicé mi sesión de masaje pautado 5-5-5 con suavidad",
+                "Apliqué fotoprotector solar cada 3-4 horas",
+                "Mantuve hidratación hídrica adecuada (2+ litros de agua)"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "b7086870-8e89-4972-8c60-745dedc823c9",
+    "title": "Carboxiterapia Médica Corporal",
+    "slug": "carboxiterapia-corporal",
+    "description": "Infiltración médica subcutánea de dióxido de carbono medicinal (CO₂) estéril para estimular la microcirculación, activar el efecto Bohr, romper adipocitos localizados y estimular la producción de colágeno contra celulitis, flacidez y estrías.",
+    "cover_url": "/images/carboxiterapia.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "4 a 12 horas",
+    "pain_level": 3,
+    "duration_minutes": 30,
+    "results_duration": "6 a 12 meses según estilo de vida y mantenimiento",
+    "anesthesia_type": "No requerida (sensación de pesadez y crepitación transitoria)",
+    "alarm_signs": [
+      "Dolor torácico agudo o dificultad respiratoria súbita (urgencia máxima)",
+      "Crepitación gaseosa que no disminuye pasadas 24 horas",
+      "Enrojecimiento intenso con calor y dolor punzante en la zona tratada",
+      "Signos de infección cutánea en los puntos de microinyección"
+    ],
+    "modules": [
+      {
+        "id": "13f339b3-ac91-4847-b192-9210be783353",
+        "title": "Fase de Difusión Gaseosa y Oxigenación Tisular",
+        "lessons": [
+          {
+            "id": "f5c198f7-136e-43a4-acef-36f3f54cd9b7",
+            "title": "Sensación de crepitación y reabsorción del gas",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Mantenerse en movimiento suave (caminar) para acelerar la difusión del gas.",
+                "Ingerir agua para apoyar la eliminación metabólica.",
+                "Mantener las zonas tratadas limpias y secas."
+              ],
+              "donts": [
+                "No ducharse con agua muy fría las primeras 4 horas.",
+                "Evitar sumergirse en piscinas, lagos o tinas el día del procedimiento.",
+                "No exponerse al sol si aparecen pequeños hematomas puntiformes."
+              ],
+              "body_md": "El CO₂ se difunde rápidamente por los tejidos subdérmicos y se reabsorbe de forma fisiológica a través de la vía respiratoria en un lapso de 30 minutos a 2 horas. Es común sentir una ligera crepitación táctil (como burbujas) transitoria.",
+              "checklist_items": [
+                "Verifiqué que la sensación de burbujeo disminuyó progresivamente",
+                "Realicé una caminata suave para favorecer la circulación",
+                "Evité la inmersión en agua las primeras horas"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "b834b4da-f505-4044-a1b4-0a3113582582",
+    "title": "Limpieza Facial Profunda + Plasma Rico en Plaquetas (PRP)",
+    "slug": "limpieza-facial-plasma-facial",
+    "description": "Protocolo dual de higiene dermatológica profunda, extracción asistida de comedones e hidratación celular, complementado con bioestimulación autóloga mediante plasma rico en plaquetas para revitalizar la luminosidad y elasticidad dérmica.",
+    "cover_url": "/images/plasma-facial.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "12 a 24 horas",
+    "pain_level": 1,
+    "duration_minutes": 60,
+    "results_duration": "1 a 3 meses",
+    "anesthesia_type": "Anestesia tópica en crema",
+    "alarm_signs": [
+      "Enrojecimiento severo o edema periorbital que empeore pasadas 48 horas",
+      "Aparición de pústulas, supuración o signos de infección bacteriana",
+      "Fiebre o sensación de calor excesivo localizado en el rostro",
+      "Reacción alérgica aguda con urticaria o dificultad respiratoria"
+    ],
+    "modules": [
+      {
+        "id": "d2ceea39-dc59-47b0-b8c9-b89601d7c753",
+        "title": "Fase Inmediata: Regeneración y Sellado Dérmico (Horas 0-24)",
+        "lessons": [
+          {
+            "id": "e8f1caaa-4e71-40c5-ba30-484e5c6d674e",
+            "title": "Cuidado de micropunciones y absorción de factores de crecimiento",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Mantener el rostro limpio y descubierto sin tocar con manos no desinfectadas.",
+                "Lavar suavemente con solución salina estéril o agua fresca a toques suaves tras 6 horas.",
+                "Dormir boca arriba con la cabeza ligeramente elevada para favorecer el drenaje.",
+                "Hidratación oral abundante con al menos 2 litros de agua."
+              ],
+              "donts": [
+                "No aplicar maquillaje, bases con color ni polvos durante 24 horas.",
+                "No frotar, rascar ni exfoliar la piel del rostro.",
+                "Evitar exposición solar directa, saunas, baños turcos y piscinas durante 72 horas.",
+                "No realizar ejercicio físico vigoroso que induzca sudoración profusa en las primeras 24 horas."
+              ],
+              "body_md": "Tras la aplicación de plasma rico en plaquetas y la limpieza profunda, los microcanales dérmicos permanecen activos recibiendo los factores de crecimiento autólogos. Mantén la piel limpia sin aplicar productos cosméticos o maquillaje las primeras 24 horas. Lava únicamente con agua fresca o solución salina estéril mediante suaves toques.",
+              "checklist_items": [
+                "Dejé reposar el plasma en el rostro sin lavarme de inmediato",
+                "Evité el uso de maquillaje durante todo el primer día",
+                "Dormí boca arriba con cabecera ligeramente elevada",
+                "Apliqué agua fresca sin frotar"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      },
+      {
+        "id": "a4d4a58b-daf1-4f18-b723-ef3ecce96914",
+        "title": "Fase de Luminosidad y Fotoprotección (Días 1 a 3)",
+        "lessons": [
+          {
+            "id": "809728ab-3c8b-473c-844b-85da37d266b8",
+            "title": "Reactivación celular y barrera cutánea",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 1-3",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar protector solar FPS 50+ no comedogénico cada 3-4 horas.",
+                "Utilizar cremas hidratantes formuladas con ácido hialurónico o pantenol.",
+                "Reanudar maquillaje ligero mineral a partir de las 24-48 horas."
+              ],
+              "donts": [
+                "No utilizar ácidos exfoliantes (glicólico, salicílico, retinoides) durante 7 días.",
+                "Evitar el bronceado directo o camas solares.",
+                "No acudir a fuentes de calor intenso como saunas o vapores."
+              ],
+              "body_md": "En esta fase disminuye el eritema leve y la piel comienza a sintetizar nuevo colágeno. Es obligatorio el uso de protector solar mineral de amplio espectro FPS 50+ cada 3 a 4 horas para proteger la nueva capa celular.",
+              "checklist_items": [
+                "Apliqué protector solar cada 3-4 horas con toques delicados",
+                "Hidraté con suero suave sin perfumes ni alcohol",
+                "Evité exfoliantes y retinoides"
+              ]
+            }
+          }
+        ],
+        "position": 2
+      }
+    ]
+  },
+  {
+    "id": "e398031f-d01f-4c05-9d02-a52a4e5c15a2",
+    "title": "Dermapen (Microneedling de Regeneración Facial)",
+    "slug": "dermapen-microneedling",
+    "description": "Terapia médica de inducción de colágeno mediante microagujas oscilantes estériles a profundidad controlada. Estimula la renovación celular, mejora la textura cutánea, minimiza poros dilatados y atenúa cicatrices de acné.",
+    "cover_url": "/images/dermapen.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "24 a 48 horas",
+    "pain_level": 2,
+    "duration_minutes": 45,
+    "results_duration": "6 a 12 meses (progresivo por ciclo de sesiones)",
+    "anesthesia_type": "Anestesia tópica en crema (lidocaína)",
+    "alarm_signs": [
+      "Sensación de ardor extremo o quemazón persistente mayor a 24 horas",
+      "Signos de infección cutánea: supuración, costras amarillentas mielicéricas o pústulas",
+      "Fiebre o inflamación facial asimétrica progresiva",
+      "Hiperpigmentación post-inflamatoria súbita por exposición lumínica prematura"
+    ],
+    "modules": [
+      {
+        "id": "82417ad7-476a-457e-a207-5d9d72a0614b",
+        "title": "Fase de Calma Epidérmica y Cierre de Microcanales (Día 0-1)",
+        "lessons": [
+          {
+            "id": "32bb705c-7ce3-4e68-844b-7fc19cfe5035",
+            "title": "Control del eritema post-microneedling",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-1",
+            "lesson_contents": {
+              "dos": [
+                "Aplicar suero regenerador estéril o ácido hialurónico puro formulado por la especialista.",
+                "Lavar con agua mineral o hervida templada con toques suaves de toalla estéril sin arrastre.",
+                "Cambiar la funda de la almohada por una limpia la primera noche."
+              ],
+              "donts": [
+                "Cero maquillaje durante las primeras 24 a 48 horas.",
+                "No tocar el rostro con las manos sucias.",
+                "Evitar el gimnasio, cardio intenso o ambientes con polvo o bacterias.",
+                "No aplicar cremas con fragancias, alcohol o ácidos activos."
+              ],
+              "body_md": "Es completamente normal experimentar un enrojecimiento similar a una quemadura solar leve y sensación de tirantez. Los microcanales generados cierran en las primeras 24 horas. No apliques productos cosméticos convencionales.",
+              "checklist_items": [
+                "Cambié la funda de mi almohada por una limpia",
+                "Evité maquillarme durante las 24 horas post-procedimiento",
+                "Apliqué solo el suero estéril indicado por la especialista",
+                "No realicé actividad deportiva que me hiciera transpirar"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "05b85921-9d5b-48b1-ab12-be88568a9d8b",
+    "title": "Radiofrecuencia Facial (Lifting no Quirúrgico)",
+    "slug": "radiofrecuencia-facial",
+    "description": "Diatermia dérmica controlada mediante ondas electromagnéticas de alta frecuencia para contraer fibras de colágeno existentes y estimular la producción de nueva elastina en tercio inferior, mejillas y cuello.",
+    "cover_url": "/images/radiofrecuencia-facial.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "Inmediata (0 a 2 horas)",
+    "pain_level": 1,
+    "duration_minutes": 40,
+    "results_duration": "4 a 8 meses con sesiones de mantenimiento",
+    "anesthesia_type": "No requerida (gel conductor térmico)",
+    "alarm_signs": [
+      "Aparición de ampollas, vesículas o flictenas térmicas",
+      "Eritema persistente con dolor localizado mayor a 24 horas",
+      "Pérdida de sensibilidad focal en zonas tratadas",
+      "Hinchazón desproporcionada en cuello o mandíbula"
+    ],
+    "modules": [
+      {
+        "id": "843f3e6b-59d3-436a-b512-a7ed3960037c",
+        "title": "Fase de Hidratación y Mantenimiento Térmico",
+        "lessons": [
+          {
+            "id": "3da17c47-f33e-4ea1-aeea-a1a127ce5ca7",
+            "title": "Post-sesión de radiofrecuencia facial",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Ingerir al menos 2 litros de agua durante el día.",
+                "Aplicar crema hidratante calmante con ceramidas o aloe vera.",
+                "Usar protector solar FPS 50+ si hay exposición a la luz natural."
+              ],
+              "donts": [
+                "No aplicar compresas de hielo directo inmediatamente después (el calor terapéutico residual favorece la bioestimulación).",
+                "Evitar saunas o duchas de agua hirviendo las primeras 12 horas.",
+                "No realizar exfoliaciones agresivas en las 48 horas posteriores."
+              ],
+              "body_md": "La radiofrecuencia no genera incapacidad. Puede presentarse un sutil rubor térmico que desaparece en 1 a 2 horas. Es fundamental mantener una hidratación dérmica profunda para potenciar la síntesis del colágeno.",
+              "checklist_items": [
+                "Bebí suficiente agua para hidratar las fibras de colágeno",
+                "Apliqué protector solar antes de exponerme a la luz",
+                "Evité lavar el rostro con agua excesivamente caliente"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "6cce9add-5923-41e4-a311-db32bb395bab",
+    "title": "Ultrasonido Facial y Sonoforesis Regenerativa",
+    "slug": "ultrasonido-facial",
+    "description": "Emisión de ondas ultrasónicas que inducen micromasaje tisular, promueven la circulación microcapilar y mejoran la permeabilidad dérmica (sonoforesis) para la penetración profunda de antioxidantes y regeneradores celulares.",
+    "cover_url": "/images/ultrasonido-facial.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Facial",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 30,
+    "results_duration": "1 a 2 meses (efecto revitalizante acumulativo)",
+    "anesthesia_type": "No requerida (gel hidratante neutro)",
+    "alarm_signs": [
+      "Eritema o irritación cutánea anormal por sensibilidad a activos",
+      "Molestia o sensibilidad mandibular persistente",
+      "Reacción alérgica con erupción o picor generalizado"
+    ],
+    "modules": [
+      {
+        "id": "82c89b80-2776-4141-a4df-5e0af6f48149",
+        "title": "Fase de Fijación de Principios Activos",
+        "lessons": [
+          {
+            "id": "a86f2029-8373-4152-a943-42313f2e5058",
+            "title": "Cuidados post-sonoforesis",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Dejar absorber los principios activos aplicados sin lavar el rostro de inmediato.",
+                "Mantener fotoprotección solar constante.",
+                "Continuar con la rutina de skincare habitual."
+              ],
+              "donts": [
+                "No usar desmaquillantes abrasivos ni cepillos de limpieza facial en 24 horas.",
+                "Evitar exposición solar prolongada sin protección."
+              ],
+              "body_md": "Procedimiento suave y placentero sin tiempo de inactividad. Los activos penetrados continúan actuando en las capas medias de la dermis.",
+              "checklist_items": [
+                "Permití la absorción completa de los sueros aplicados",
+                "Apliqué fotoprotector solar FPS 50+"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "680193a2-7079-4201-9c51-762eb3bd6fca",
+    "title": "Mesoterapia Corporal (Lipoescultura sin Cirugía)",
+    "slug": "mesoterapia-corporal",
+    "description": "Microinyecciones intradérmicas y subcutáneas de principios activos lipolíticos, drenantes y reafirmantes (como alcachofa, carnitina, cafeína y silicio orgánico) para tratar adiposidad localizada rebelde y celulitis en abdomen, flancos y muslos.",
+    "cover_url": "/images/mesoterapia-corporal.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "24 a 48 horas",
+    "pain_level": 2,
+    "duration_minutes": 30,
+    "results_duration": "Duradero con hábitos saludables y ciclo de sesiones",
+    "anesthesia_type": "No requerida / Crioterapia local previa",
+    "alarm_signs": [
+      "Nódulos indurados calientes y dolorosos que aumentan de tamaño tras 48 horas",
+      "Hematoma expansivo progresivo de gran tamaño con dolor agudo",
+      "Fiebre, escalofríos o malestar general sistémico",
+      "Reacción anafiláctica o erupción urticarial generalizada"
+    ],
+    "modules": [
+      {
+        "id": "665b2820-81c3-4700-8817-e378bac1680d",
+        "title": "Fase de Drenaje y Prevención de Hematomas (Horas 0-48)",
+        "lessons": [
+          {
+            "id": "84549164-131e-4334-bcd8-cb9c700de25e",
+            "title": "Eliminación metabólica de ácidos grasos",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-2",
+            "lesson_contents": {
+              "dos": [
+                "Ingerir entre 2.5 y 3 litros de agua diaria para acelerar la eliminación de toxinas.",
+                "Usar prendas de compresión suave o ropa holgada para evitar roces dolorosos.",
+                "Caminar 30 minutos al día siguiente para activar la circulación de retorno."
+              ],
+              "donts": [
+                "No masajear bruscamente los puntos de inyección en las primeras 24 horas.",
+                "No ingerir bebidas alcohólicas ni comidas ricas en sodio que retengan líquidos.",
+                "Evitar piscinas, jacuzzis o saunas durante 48 horas para prevenir infecciones en los puntos de punción.",
+                "Evitar exposición al sol directo si hay pequeños hematomas (para evitar manchas de hemosiderina)."
+              ],
+              "body_md": "Los activos aplicados disuelven micelas lipídicas que deben ser depuradas por el sistema linfático y excretadas por vía renal. La ingesta hídrica es el factor clave para optimizar los resultados.",
+              "checklist_items": [
+                "Bebí al menos 2.5 litros de agua pura durante el día",
+                "Evité el consumo de alcohol y alimentos hipercalóricos",
+                "Protegí las zonas con pequeños hematomas de la radiación solar"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "0fdd445d-2917-49f1-ae97-cdb34dc110ea",
+    "title": "Hidrolipoclasia Ultrasónica (Cavitación Médica)",
+    "slug": "hidrolipoclasia-ultrasonica",
+    "description": "Tratamiento médico-estético para la lisis de células grasas mediante infiltración de solución hipotónica estéril directamente en el tejido adiposo, seguida de la aplicación de ultrasonido cavitacional para romper la membrana del adipocito de forma definitiva.",
+    "cover_url": "/images/hidrolipoclasia.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "48 a 72 horas",
+    "pain_level": 2,
+    "duration_minutes": 60,
+    "results_duration": "Permanente sobre los adipocitos eliminados manteniendo peso estable",
+    "anesthesia_type": "Anestésico local diluido en solución hipotónica",
+    "alarm_signs": [
+      "Seroma a tensión con fluctuación dolorosa palpable",
+      "Hematoma extenso con dolor desproporcionado que no cede",
+      "Fiebre, secreción purulenta en sitios de infiltración o celulitis cutánea",
+      "Mareos intensos persistentes o hipotensión arterial severa"
+    ],
+    "modules": [
+      {
+        "id": "bcefd789-2ff8-4c84-9b91-657f1109ba45",
+        "title": "Fase de Compresión y Evacuación Linfática (Días 0 a 3)",
+        "lessons": [
+          {
+            "id": "fb0fe661-dcf8-4e65-afe9-69f2b1e27297",
+            "title": "Uso de faja de compresión y drenaje linfático",
+            "position": 0,
+            "care_type": "allowed",
+            "timeline_tag": "Día 0-3",
+            "lesson_contents": {
+              "dos": [
+                "Portar la faja de compresión médica según indicación de la especialista (20-22 horas al día).",
+                "Iniciar sesiones de Drenaje Linfático Manual a partir de las 24 a 48 horas post-tratamiento.",
+                "Ingerir abundante agua (2.5 a 3 litros al día).",
+                "Reposo relativo durante las primeras 24 horas, caminando distancias cortas."
+              ],
+              "donts": [
+                "No retirar la faja durante periodos prolongados en los primeros días.",
+                "No realizar ejercicio físico vigoroso ni levantamiento de pesas durante 5 a 7 días.",
+                "Evitar el consumo de sal en exceso, ultraprocesados y alcohol.",
+                "No exponerse al calor extremo ni tomar baños de inmersión."
+              ],
+              "body_md": "Tras la cavitación y lisis celular, queda líquido residual en el espacio intersticial. Es indispensable el uso constante de faja de compresión graduada para moldear el contorno y evitar la formación de seromas.",
+              "checklist_items": [
+                "Me coloqué la faja de compresión médica ajustada adecuadamente",
+                "Agendé mi primera sesión de drenaje linfático post-hidrolipoclasia",
+                "Mantuve reposo relativo sin esfuerzo físico pesado",
+                "Bebí abundante agua para facilitar el drenaje metabólico"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  },
+  {
+    "id": "514886c0-6bef-4758-9473-2cc76a568193",
+    "title": "Radiofrecuencia Corporal (Tensado y Anticelulitis)",
+    "slug": "radiofrecuencia-corporal",
+    "description": "Tecnología electromagnética profunda que genera hipertermia controlada en dermis e hipodermis, compactando los septos fibrosos de la celulitis, reafirmando zonas con flacidez (abdomen, brazos, glúteos y piernas) y estimulando colágeno.",
+    "cover_url": "/images/radiofrecuencia-corporal.jpg",
+    "status": "published",
+    "price": 0,
+    "category": "Corporal y Reducción",
+    "recovery_time": "Inmediata (0 horas)",
+    "pain_level": 1,
+    "duration_minutes": 45,
+    "results_duration": "6 a 9 meses con mantenimiento",
+    "anesthesia_type": "No requerida (control térmico continuo)",
+    "alarm_signs": [
+      "Aparición de quemaduras térmicas o ampollas flictenulares",
+      "Dolor urente (ardor) localizado que persista más de 12 horas",
+      "Endurecimiento o nódulo graso doloroso post-térmico"
+    ],
+    "modules": [
+      {
+        "id": "7e5b43cc-566e-469e-8998-095fb9c516dc",
+        "title": "Fase de Reafirmación Tisular",
+        "lessons": [
+          {
+            "id": "426277fe-0885-477c-a102-a02a99662881",
+            "title": "Cuidados tras la radiofrecuencia corporal",
+            "position": 0,
+            "care_type": "general",
+            "timeline_tag": "Día 0",
+            "lesson_contents": {
+              "dos": [
+                "Beber abundante agua para hidratar las fibras tisulares.",
+                "Aplicar cremas hidratantes o reafirmantes formuladas.",
+                "Mantener una rutina de ejercicio para preservar el tono muscular."
+              ],
+              "donts": [
+                "No aplicar hielo ni frío inmediato que contrarreste el calor terapéutico biológico.",
+                "Evitar duchas de agua excesivamente caliente el mismo día."
+              ],
+              "body_md": "No genera tiempo de recuperación. La zona puede lucir ligeramente sonrosada por el aumento de la circulación sanguínea local. El estímulo de colágeno se desarrolla gradualmente a lo largo de las siguientes 3 a 6 semanas.",
+              "checklist_items": [
+                "Mantuve una adecuada ingesta de líquidos",
+                "Apliqué crema hidratante en la zona tratada",
+                "Evité la aplicación de compresas frías inmediatas"
+              ]
+            }
+          }
+        ],
+        "position": 1
+      }
+    ]
+  }
+]

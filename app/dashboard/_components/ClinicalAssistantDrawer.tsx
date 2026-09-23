@@ -7,7 +7,9 @@ import {
   ShieldAlertIcon,
   SparklesIcon,
   ArrowRightIcon,
+  SendIcon,
 } from "@/components/icons";
+import { EdyVoiceWidget } from "@/components/voice/EdyVoiceWidget";
 
 interface Message {
   id: string;
@@ -32,6 +34,7 @@ export function ClinicalAssistantDrawer({
   recoveryDay = 2,
 }: ClinicalAssistantDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCallout, setShowCallout] = useState(true);
@@ -484,23 +487,53 @@ export function ClinicalAssistantDrawer({
               </div>
             </div>
 
-            <button
-              onClick={() => setIsOpen(false)}
-              aria-label="Cerrar chat"
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Cerrar chat"
+                title="Cerrar chat"
+                style={{
+                  background: "rgba(255, 255, 255, 0.12)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  color: "#FAF8F5",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.24)";
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.12)";
+                  e.currentTarget.style.transform = "none";
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          </header>
+
+          {/* Widget de Voz EDY (LiveKit WebRTC) */}
+          {isVoiceActive && (
+            <div
               style={{
-                background: "transparent",
-                border: "none",
-                color: "#FFFFFF",
-                fontSize: "20px",
-                cursor: "pointer",
-                padding: "4px 8px",
-                borderRadius: "8px",
-                opacity: 0.8,
+                padding: "12px",
+                backgroundColor: "var(--color-base)",
+                borderBottom: "1px solid var(--color-border)",
+                animation: "fadeIn 0.2s ease-out",
               }}
             >
-              ✕
-            </button>
-          </header>
+              <EdyVoiceWidget onClose={() => setIsVoiceActive(false)} />
+            </div>
+          )}
 
           {/* Procedimiento de contexto */}
           {procedureTitle && (
@@ -827,10 +860,11 @@ export function ClinicalAssistantDrawer({
               handleSend();
             }}
             style={{
-              padding: "12px",
+              padding: "12px 14px",
               backgroundColor: "var(--color-surface)",
               borderTop: "1px solid var(--color-border)",
               display: "flex",
+              alignItems: "center",
               gap: "8px",
             }}
           >
@@ -840,34 +874,118 @@ export function ClinicalAssistantDrawer({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={loading}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-brand)";
+                e.currentTarget.style.boxShadow = "0 0 0 3px var(--color-brand-soft)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-border)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
               style={{
                 flex: 1,
-                padding: "10px 14px",
-                borderRadius: "10px",
-                border: "1px solid var(--color-border)",
+                height: "44px",
+                boxSizing: "border-box",
+                padding: "0 16px",
+                borderRadius: "12px",
+                border: "1.5px solid var(--color-border)",
                 backgroundColor: "var(--color-surface-2)",
                 color: "var(--color-text)",
-                fontSize: "13px",
+                fontSize: "13.5px",
                 outline: "none",
+                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
               }}
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
+              aria-label="Enviar mensaje"
               style={{
+                height: "44px",
+                boxSizing: "border-box",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
                 padding: "0 18px",
-                backgroundColor: "var(--color-brand)",
-                color: "var(--color-inverse)",
-                border: "none",
-                borderRadius: "10px",
-                fontWeight: 700,
-                fontSize: "13px",
+                borderRadius: "12px",
+                fontSize: "13.5px",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
                 cursor: loading || !input.trim() ? "not-allowed" : "pointer",
-                opacity: loading || !input.trim() ? 0.6 : 1,
-                transition: "opacity 0.2s",
+                transition: "all 0.2s ease",
+                border: "1.5px solid " + (
+                  loading
+                    ? "var(--color-brand-border)"
+                    : input.trim()
+                    ? "var(--color-brand)"
+                    : "var(--color-border)"
+                ),
+                background: loading
+                  ? "var(--color-brand-soft)"
+                  : input.trim()
+                  ? "var(--color-brand)"
+                  : "var(--color-surface-2)",
+                color: loading
+                  ? "var(--color-brand)"
+                  : input.trim()
+                  ? "#FFFFFF"
+                  : "var(--color-muted-2)",
+                boxShadow: input.trim() && !loading
+                  ? "var(--shadow-brand)"
+                  : "none",
+                opacity: input.trim() || loading ? 1 : 0.45,
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => {
+                if (input.trim() && !loading) {
+                  e.currentTarget.style.background = "var(--color-brand-hover)";
+                  e.currentTarget.style.borderColor = "var(--color-brand-hover)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(32, 80, 59, 0.28)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (input.trim() && !loading) {
+                  e.currentTarget.style.background = "var(--color-brand)";
+                  e.currentTarget.style.borderColor = "var(--color-brand)";
+                  e.currentTarget.style.transform = "none";
+                  e.currentTarget.style.boxShadow = "var(--shadow-brand)";
+                }
+              }}
+              onMouseDown={(e) => {
+                if (input.trim() && !loading) {
+                  e.currentTarget.style.transform = "scale(0.98)";
+                }
+              }}
+              onMouseUp={(e) => {
+                if (input.trim() && !loading) {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }
               }}
             >
-              Enviar
+              {loading ? (
+                <>
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    style={{ animation: "spin 0.9s linear infinite" }}
+                  >
+                    <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                    <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
+                  </svg>
+                  <span>Enviando</span>
+                </>
+              ) : (
+                <>
+                  <span>Enviar</span>
+                  <SendIcon size={15} strokeWidth={2.2} />
+                </>
+              )}
             </button>
           </form>
         </aside>

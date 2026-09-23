@@ -82,15 +82,20 @@ export async function searchCoursesBySimilarity(
     }
 
     try {
-        const { data, error } = await client.rpc('match_courses', {
-            query_text: query,
-            match_count: limit,
-        });
-        if (!error && data && Array.isArray(data) && data.length > 0) {
-            return data;
+        const { generateQueryEmbedding } = await import('@/lib/rag/retriever');
+        const queryEmbedding = await generateQueryEmbedding(query);
+        if (queryEmbedding && queryEmbedding.length === 384) {
+            const { data, error } = await client.rpc('match_courses', {
+                query_embedding: queryEmbedding,
+                match_threshold: 0.2,
+                match_count: limit,
+            });
+            if (!error && data && Array.isArray(data) && data.length > 0) {
+                return data;
+            }
         }
-    } catch {
-        // RPC fallback
+    } catch (rpcErr) {
+        console.warn("Vector match_courses error, falling back to text search:", rpcErr);
     }
 
     try {

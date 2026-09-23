@@ -2,7 +2,14 @@ export interface ClinicalProcedure {
   id: string;
   title: string;
   slug: string;
-  category: "Inyectables" | "Armonización Facial" | "Dermoestética" | "Bioestimulación";
+  category:
+    | "Facial"
+    | "Corporal y Reducción"
+    | "Capilar"
+    | "Inyectables"
+    | "Armonización Facial"
+    | "Dermoestética"
+    | "Bioestimulación";
   description: string;
   cover_url: string;
   recovery_time: string;
@@ -33,12 +40,14 @@ export interface ClinicalProcedure {
   }[];
 }
 
+import { EXTENDED_CLINICAL_PROCEDURES } from "./clinical-procedures-extended";
+
 export const CLINICAL_PROCEDURES: ClinicalProcedure[] = [
   {
     id: "proc-botox-facial",
     title: "Toxina Botulínica Facial (Botox)",
     slug: "toxina-botulinica-botox-facial",
-    category: "Inyectables",
+    category: "Facial",
     description: "Protocolo médico integral de relajación neuromuscular selectiva para líneas de expresión frontales, glabelares (entrecejo) y perioculares (patas de gallo). Guía clínica de recuperación día a día, control de difusión y prevención de asimetrías.",
     cover_url: "/images/botox.jpg",
     recovery_time: "4 a 24 horas",
@@ -190,7 +199,7 @@ La denervación química reversible progresa de forma paulatina:
     id: "proc-acido-hialuronico-labios",
     title: "Relleno y Perfilado de Labios con Ácido Hialurónico (Russian Lips)",
     slug: "acido-hialuronico-labios-russian-lips",
-    category: "Inyectables",
+    category: "Facial",
     description: "Protocolo clínico para aumento, eversión sutil, definición del arco de cupido e hidratación profunda con ácido hialurónico reticulado. Manejo integral de edema higroscópico, prevención de compresión vascular y pautas de higiene post-inyección.",
     cover_url: "/images/lips.jpg",
     recovery_time: "48 a 72 horas",
@@ -340,7 +349,7 @@ A partir del día 5 al 7, el edema agudo cede casi en su totalidad. El producto 
     id: "proc-rinomodelacion",
     title: "Rinomodelación sin Cirugía con Ácido Hialurónico",
     slug: "rinomodelacion-sin-cirugia-acido-hialuronico",
-    category: "Armonización Facial",
+    category: "Facial",
     description: "Corrección tridimensional no quirúrgica del dorso, ángulo nasolabial y elevación de la punta nasal mediante ácido hialurónico reticulado de alta viscoelasticidad. Protocolo de bioseguridad vascular, protección estructural contra presiones externas y preservación de perfusión.",
     cover_url: "/images/rhino.jpg",
     recovery_time: "48 a 72 horas",
@@ -490,7 +499,7 @@ A partir del día 5 a 7, el edema transitorio en el dorso y la punta nasal desap
     id: "proc-peeling-quimico",
     title: "Peeling Químico Médico Facial (AHA / TCA / Retinoico)",
     slug: "peeling-quimico-medico-facial",
-    category: "Dermoestética",
+    category: "Facial",
     description: "Protocolo médico de exfoliación química controlada para renovación celular dérmica, atenuación de manchas pigmentarias, secuelas de acné y textura cutánea. Manejo estricto de la barrera cutánea, reepitelización segura, hidratación emoliente y fotoprotección médica innegociable.",
     cover_url: "/images/peeling.jpg",
     recovery_time: "5 a 7 días",
@@ -638,7 +647,62 @@ Hacia el día 5 al 7, la descamación concluye. La nueva capa epidérmica está 
         ]
       }
     ]
-  }
+  },
+  {
+    id: "proc-bioestimulacion-facial",
+    title: "Bioestimulación Facial & Inducción de Colágeno",
+    slug: "bioestimulacion-facial-colageno",
+    category: "Facial",
+    description: "Protocolo médico de hidroxiapatita cálcica y polinucleótidos para recuperar firmeza dérmica, redensificación y luminosidad duradera.",
+    cover_url: "/images/bioestimulacion.jpg",
+    recovery_time: "24 a 48 horas",
+    pain_level: 2,
+    duration_minutes: 45,
+    results_duration: "12 a 18 meses",
+    anesthesia_type: "Tópica y Frío local",
+    price: 0,
+    doctor_name: "Dra. Mariana Gómez",
+    doctor_specialty: "Médica Especialista en Estética Facial",
+    alarm_signs: [
+      "Dolor desproporcionado persistente o que no cede con analgesia básica",
+      "Cambios de coloración cutánea bruscos (palidez marcada, tono grisáceo o moteado violáceo)",
+      "Formación de nódulos dolorosos, eritema caliente o supuración en las zonas tratadas",
+      "Reacción alérgica aguda con edema desmedido o dificultad respiratoria"
+    ],
+    modules: [
+      {
+        id: "mod-bioest-1",
+        title: "Fase de Integración: Primeros 7 Días",
+        position: 1,
+        timeline_tag: "Días 1–7",
+        lessons: [
+          {
+            id: "les-bioest-101",
+            title: "Técnica de masaje 5-5-5 y fotoprotección",
+            care_type: "allowed",
+            timeline_tag: "Días 1–7",
+            body_md: "### Estimulación uniforme de colágeno\n\nRealiza masajes suaves 5 minutos, 5 veces al día durante los primeros 5 días para asegurar una distribución homogénea del bioestimulador y activar los fibroblastos dérmicos.",
+            dos: [
+              "Realizar masaje con crema hidratante suave en movimientos ascendentes circulares.",
+              "Aplicar protector solar SPF 50+ cada 3 a 4 horas durante el día.",
+              "Beber abundante agua (mínimo 2 litros diarios) para favorecer la neocolagénesis."
+            ],
+            donts: [
+              "No realizar presiones excesivas o compresiones dolorosas sobre las zonas de punción.",
+              "Evitar calor extremo, saunas, baños turcos y actividad física intensa durante 72 horas.",
+              "No exponerse al sol directo ni realizarse otros tratamientos faciales por 2 semanas."
+            ],
+            checklist: [
+              "Realicé mi sesión de masaje pautado 5-5-5 con suavidad",
+              "Apliqué fotoprotector solar cada 3-4 horas",
+              "Mantuve hidratación hídrica adecuada (2+ litros de agua)"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  ...EXTENDED_CLINICAL_PROCEDURES,
 ];
 
 export function getProcedureBySlug(slug: string): ClinicalProcedure | undefined {

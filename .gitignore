@@ -48,3 +48,15 @@ next-env.d.ts
 supabase/.temp/
 
 
+
+# Python & Microservice Voice
+microservicio-voice/.venv/
+microservicio-voice/.env
+microservicio-voice/**/__pycache__/
+microservicio-voice/**/*.pyc
+.venv/
+__pycache__/
+*.pyc
+*.ses
+:memory:.ses
+

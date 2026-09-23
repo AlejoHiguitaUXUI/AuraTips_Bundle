@@ -1103,6 +1103,15 @@ textarea {
   }
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 /* =========================================================
    22. UTILITY CLASSES
@@ -1199,58 +1208,524 @@ textarea {
   margin: 0 auto var(--space-8);
 }
 
-/* Buscador Clínico RAG */
+/* Buscador Clínico RAG & Asistente */
 .clinical-search-wrapper {
-  max-width: 680px;
-  margin: 0 auto var(--space-10);
+  max-width: 960px;
+  margin: 0 auto var(--space-8);
   position: relative;
 }
+
+.clinical-search-outer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
 
 .clinical-search-bar {
   display: flex;
   align-items: center;
+  height: 52px;
   background-color: var(--color-surface);
   border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: 6px 8px 6px 18px;
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-full);
+  padding: 0 8px 0 18px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), var(--shadow-sm);
   transition: all var(--dur-base) var(--ease-out);
+  box-sizing: border-box;
+}
+
+[data-theme="dark"] .clinical-search-bar {
+  background-color: rgba(21, 32, 27, 0.85);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.35);
 }
 
 .clinical-search-bar:focus-within {
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px var(--color-brand-soft), var(--shadow-lg);
+  box-shadow: 0 0 0 3px var(--color-brand-soft), 0 12px 32px -4px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .clinical-search-bar:focus-within {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(68, 182, 133, 0.18), 0 12px 36px -4px rgba(0, 0, 0, 0.5);
+}
+
+.clinical-search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: var(--color-muted);
+  transition: color var(--dur-base) ease;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.clinical-search-icon svg {
+  display: block;
+}
+
+.clinical-search-bar:focus-within .clinical-search-icon {
+  color: var(--color-brand);
 }
 
 .clinical-search-input {
   flex: 1;
+  min-width: 0;
+  height: 100%;
   border: none;
   background: transparent;
-  font-size: var(--text-base);
+  font-size: 0.9375rem;
+  line-height: normal;
   color: var(--color-text);
   outline: none;
-  padding: var(--space-2) 0;
+  padding: 0;
+  margin: 0;
   font-family: var(--font-sans);
 }
 
 .clinical-search-input::placeholder {
   color: var(--color-muted-2);
+  font-size: inherit;
+  line-height: normal;
+  opacity: 1;
+}
+
+.clinical-search-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  margin-right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: var(--radius-full);
+  transition: all var(--dur-fast) ease;
+}
+
+.clinical-search-clear-btn:hover {
+  color: var(--color-text);
+  background-color: var(--color-surface-2);
+}
+
+.clinical-search-kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-muted-2);
+  background: var(--color-base-2);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 2px 6px;
+  margin-right: 8px;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .clinical-search-kbd {
+    display: none;
+  }
 }
 
 .clinical-search-btn {
-  background: var(--gradient-brand);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-lg);
-  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-brand);
+  color: var(--color-inverse);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  padding: 8px 18px;
   font-weight: var(--fw-semibold);
   font-size: var(--text-sm);
   cursor: pointer;
-  transition: opacity var(--dur-base) ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all var(--dur-base) var(--ease-out);
+  box-shadow: 0 2px 8px -1px rgba(32, 80, 59, 0.25);
+}
+
+[data-theme="dark"] .clinical-search-btn {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  border-color: var(--color-brand-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .clinical-search-btn:hover {
-  opacity: 0.92;
+  background: var(--color-brand-hover);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -1px rgba(32, 80, 59, 0.35);
+}
+
+[data-theme="dark"] .clinical-search-btn:hover {
+  background: var(--color-brand);
+  color: var(--color-inverse);
+  border-color: var(--color-brand);
+  box-shadow: 0 4px 14px rgba(68, 182, 133, 0.3);
+}
+
+.clinical-search-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Botón AURA Voice CTA (Hero Search Row) */
+.aura-call-cta-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.aura-call-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur-base) var(--ease-out);
+  background: linear-gradient(135deg, #183C2C 0%, #20503B 100%);
+  color: #FAF8F5;
+  border: 1.5px solid var(--color-gold, #C29B38);
+  box-shadow: 0 4px 16px rgba(194, 155, 56, 0.28), 0 2px 6px rgba(0, 0, 0, 0.12);
+  user-select: none;
+}
+
+[data-theme="dark"] .aura-call-cta-btn {
+  background: linear-gradient(135deg, rgba(24, 60, 44, 0.95) 0%, rgba(32, 80, 59, 0.9) 100%);
+  color: #FFFFFF;
+  border-color: var(--color-gold, #C29B38);
+  box-shadow: 0 4px 20px rgba(194, 155, 56, 0.32), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.aura-call-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: #FDE68A;
+  box-shadow: 0 8px 24px rgba(194, 155, 56, 0.42), 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.aura-call-cta-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.aura-call-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22C55E;
+  box-shadow: 0 0 8px #22C55E;
+  animation: pulseHalo 2s infinite;
+  flex-shrink: 0;
+}
+
+/* Tooltip / Popover Informativo de AURA */
+.aura-call-popover {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  width: 320px;
+  background-color: var(--color-surface, #18221D);
+  border: 1px solid var(--color-gold-border, rgba(194, 155, 56, 0.45));
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  text-align: left;
+  animation: fadeIn 0.2s ease-out;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .aura-call-popover {
+  background-color: #15201B;
+  border-color: rgba(194, 155, 56, 0.5);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+}
+
+.aura-call-popover::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 48px;
+  width: 10px;
+  height: 10px;
+  background-color: inherit;
+  border-right: 1px solid var(--color-gold-border, rgba(194, 155, 56, 0.45));
+  border-bottom: 1px solid var(--color-gold-border, rgba(194, 155, 56, 0.45));
+  transform: rotate(45deg);
+}
+
+.aura-call-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.aura-call-popover-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-gold, #C29B38);
+  letter-spacing: 0.02em;
+}
+
+.aura-call-popover-live {
+  font-size: 10px;
+  font-weight: 700;
+  color: #22C55E;
+}
+
+.aura-call-popover-desc {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text);
+  font-weight: 400;
+}
+
+.aura-call-popover-action {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-brand);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 768px) {
+  .clinical-search-outer-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .clinical-search-bar {
+    width: 100%;
+  }
+  .aura-call-cta-container {
+    width: 100%;
+  }
+  .aura-call-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .aura-call-popover {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+  .aura-call-popover::after {
+    left: 50%;
+    margin-left: -5px;
+    right: auto;
+  }
+}
+
+/* Quick Queries / Chips */
+.clinical-quick-tags-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.clinical-quick-tags-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  user-select: none;
+}
+
+.clinical-quick-tags-list {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.clinical-quick-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 5px 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-2);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: all var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .clinical-quick-tag-chip {
+  background: rgba(21, 32, 27, 0.6);
+  border-color: var(--color-border);
+  color: var(--color-text-2);
+}
+
+.clinical-quick-tag-chip:hover {
+  background: var(--color-brand-soft);
+  border-color: var(--color-brand-border);
+  color: var(--color-brand);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+.clinical-quick-tag-chip:active {
+  transform: scale(0.97);
+}
+
+/* Floating Dropdown Results */
+.clinical-search-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  z-index: 50;
+  padding: 14px;
+  max-height: 420px;
+  overflow-y: auto;
+  animation: clinicalDropIn 180ms var(--ease-out);
+}
+
+[data-theme="dark"] .clinical-search-dropdown {
+  background-color: #15201B;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+@keyframes clinicalDropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.clinical-search-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.clinical-search-dropdown-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-brand);
+}
+
+.clinical-search-dropdown-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--color-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color var(--dur-fast) ease;
+}
+
+.clinical-search-dropdown-close:hover {
+  color: var(--color-text);
+}
+
+.clinical-search-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-2);
+  border: 1px solid transparent;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--dur-fast) ease;
+}
+
+.clinical-search-item:hover,
+.clinical-search-item:focus,
+.clinical-search-item.is-selected {
+  background-color: var(--color-brand-soft);
+  border-color: var(--color-brand-border);
+  transform: translateX(2px);
+  outline: none;
+}
+
+.clinical-search-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.clinical-search-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clinical-search-item-category {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+.clinical-search-item-desc {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.clinical-search-item-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-brand);
+  margin-top: 6px;
+  font-weight: 500;
 }
 
 /* Category Filters */
