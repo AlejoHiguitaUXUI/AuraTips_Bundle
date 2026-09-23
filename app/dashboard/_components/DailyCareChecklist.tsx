@@ -9,11 +9,102 @@ import {
   SunIcon,
   DropletIcon,
   ChevronRightIcon,
+  ShieldCheckIcon,
+  DumbbellIcon,
+  SparklesIcon,
+  ClipboardCheckIcon,
 } from "@/components/icons";
+
+interface FormattedGuideline {
+  headline: string;
+  detail: string;
+  iconType: "sun" | "moon" | "snowflake" | "droplet" | "dumbbell" | "ban" | "check" | "sparkles";
+}
 
 function cleanTaskText(text: string): string {
   // Strip emojis and leading whitespace cleanly
   return text.replace(/^[\p{Emoji}\uFE0F\u200D\s]+/u, "").trim();
+}
+
+function formatClinicalGuideline(text: string, isRestriction: boolean): FormattedGuideline {
+  const clean = text.replace(/^[\p{Emoji}\uFE0F\u200D\s]+/u, "").trim();
+  const lower = clean.toLowerCase();
+
+  let iconType: FormattedGuideline["iconType"] = isRestriction ? "ban" : "check";
+
+  if (lower.includes("sol") || lower.includes("spf") || lower.includes("fotoprotec") || lower.includes("lámparas uv")) {
+    iconType = "sun";
+  } else if (lower.includes("dormir") || lower.includes("boca arriba") || lower.includes("almohada") || lower.includes("postura") || lower.includes("decúbito") || lower.includes("cabeza")) {
+    iconType = "moon";
+  } else if (lower.includes("frío") || lower.includes("hielo") || lower.includes("gasa") || lower.includes("compresa")) {
+    iconType = "snowflake";
+  } else if (lower.includes("agua") || lower.includes("hidrataci") || lower.includes("beber") || lower.includes("bálsamo") || lower.includes("humect") || lower.includes("ungüento")) {
+    iconType = "droplet";
+  } else if (lower.includes("ejercicio") || lower.includes("pesa") || lower.includes("crossfit") || lower.includes("deporte") || lower.includes("cardio") || lower.includes("aeróbic")) {
+    iconType = "dumbbell";
+  } else if (lower.includes("maquillaje") || lower.includes("cosmético") || lower.includes("labial") || lower.includes("brocha") || lower.includes("esponja") || lower.includes("peeling")) {
+    iconType = "sparkles";
+  } else if (lower.includes("sauna") || lower.includes("calor") || lower.includes("baños turcos") || lower.includes("jacuzzi") || lower.includes("horno") || lower.includes("vapor")) {
+    iconType = "ban";
+  }
+
+  let headline = "";
+  let detail = "";
+
+  // 1. Explicit prohibition formats
+  if (clean.toUpperCase().startsWith("PROHIBIDO") || clean.toUpperCase().startsWith("CERO ") || clean.toUpperCase().startsWith("NO ")) {
+    const parenMatch = clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/);
+    if (parenMatch) {
+      headline = parenMatch[1].trim();
+      detail = parenMatch[2].trim();
+    } else {
+      const splitIdx = clean.search(/[,;:]/);
+      if (splitIdx > 12 && splitIdx < 55) {
+        headline = clean.slice(0, splitIdx).trim();
+        detail = clean.slice(splitIdx + 1).trim();
+      } else {
+        const words = clean.split(" ");
+        if (words.length > 5) {
+          headline = words.slice(0, 5).join(" ");
+          detail = words.slice(5).join(" ");
+        } else {
+          headline = clean;
+          detail = "Medida restrictiva obligatoria para garantizar la simetría y estabilidad del tratamiento.";
+        }
+      }
+    }
+  } else {
+    // 2. Recommendation formats
+    const parenMatch = clean.match(/^([^(]+)\s*\(([^)]+)\)\.?$/);
+    if (parenMatch && parenMatch[1].length < 50) {
+      headline = parenMatch[1].trim();
+      detail = `(${parenMatch[2].trim()})`;
+    } else {
+      const splitIdx = clean.search(/[,;:]/);
+      if (splitIdx > 14 && splitIdx < 55) {
+        headline = clean.slice(0, splitIdx).trim();
+        detail = clean.slice(splitIdx + 1).trim();
+      } else {
+        const words = clean.split(" ");
+        if (words.length > 5) {
+          headline = words.slice(0, 5).join(" ");
+          detail = words.slice(5).join(" ");
+        } else {
+          headline = clean;
+          detail = "Indicación médica protocolizada para favorecer una recuperación óptima.";
+        }
+      }
+    }
+  }
+
+  if (detail.length > 0) {
+    detail = detail.charAt(0).toUpperCase() + detail.slice(1);
+    if (!detail.endsWith(".")) {
+      detail += ".";
+    }
+  }
+
+  return { headline, detail, iconType };
 }
 
 interface DailyCareChecklistProps {
@@ -336,6 +427,28 @@ const PROCEDURE_CARE_PROTOCOLS: Record<string, { day0: ProcedureCareProtocol; da
   },
 };
 
+function renderGuidelineIcon(type: FormattedGuideline["iconType"], isRestriction: boolean) {
+  const size = 14;
+  switch (type) {
+    case "sun":
+      return <SunIcon size={size} />;
+    case "moon":
+      return <MoonIcon size={size} />;
+    case "snowflake":
+      return <SnowflakeIcon size={size} />;
+    case "droplet":
+      return <DropletIcon size={size} />;
+    case "dumbbell":
+      return <DumbbellIcon size={size} />;
+    case "sparkles":
+      return <SparklesIcon size={size} />;
+    case "ban":
+      return <BanIcon size={size} />;
+    default:
+      return isRestriction ? <BanIcon size={size} /> : <CheckCircle2Icon size={size} />;
+  }
+}
+
 export function DailyCareChecklist({
   procedureSlug,
   currentDay,
@@ -373,6 +486,7 @@ export function DailyCareChecklist({
   const legacyStorageKey = `aesthetica_daily_checklist_${procedureSlug}_day_${currentDay}`;
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
   const [showGuidelines, setShowGuidelines] = useState(true);
+  const [guidelineFilter, setGuidelineFilter] = useState<"all" | "dos" | "donts">("all");
 
   // Load persisted state
   useEffect(() => {
@@ -608,69 +722,156 @@ export function DailyCareChecklist({
         </div>
       )}
 
-      {/* Toggle Guidelines Drawer: Estricta estructura médica */}
+      {/* Módulo de Protocolo Clínico Avanzado: Pautas y Restricciones */}
       {(activeDos.length > 0 || activeDonts.length > 0) && (
-        <div style={{ marginTop: "var(--space-2)" }}>
+        <div className="guidelines-wrapper" id="guidelines-accordion">
           <button
             type="button"
-            className="btn-ghost btn btn-sm"
+            className="guidelines-trigger"
             onClick={() => setShowGuidelines(!showGuidelines)}
-            style={{
-              width: "100%",
-              justifyContent: "space-between",
-              border: "1px solid var(--color-border)",
-            }}
+            aria-expanded={showGuidelines}
+            aria-controls="guidelines-detail-content"
           >
-            <span>{showGuidelines ? "Ocultar pautas médicas detalladas" : "Ver pautas recomendadas y restricciones"}</span>
-            <ChevronRightIcon
-              size={14}
-              style={{
-                transform: showGuidelines ? "rotate(-90deg)" : "rotate(90deg)",
-                transition: "transform 0.2s ease",
-              }}
-            />
+            <div className="guidelines-trigger-title">
+              <div className="guidelines-trigger-icon" aria-hidden="true">
+                <ShieldCheckIcon size={18} />
+              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                  <strong style={{ fontSize: "14px", color: "var(--color-text)", fontWeight: 700 }}>
+                    Pautas Médicas Detalladas
+                  </strong>
+                  <span
+                    style={{
+                      fontSize: "var(--text-min)",
+                      padding: "2px 8px",
+                      borderRadius: "var(--radius-full)",
+                      background: "rgba(32, 80, 59, 0.08)",
+                      color: "var(--color-brand)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {activeDos.length + activeDonts.length} Directrices
+                  </span>
+                </div>
+                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--color-muted)", lineHeight: 1.3 }}>
+                  Hábitos recomendados y restricciones clínicas · Dra. Mariana Gómez
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--color-brand)" }}>
+              <span style={{ fontSize: "12px", fontWeight: 600 }}>
+                {showGuidelines ? "Ocultar" : "Consultar"}
+              </span>
+              <ChevronRightIcon
+                size={16}
+                style={{
+                  transform: showGuidelines ? "rotate(-90deg)" : "rotate(90deg)",
+                  transition: "transform 0.2s ease",
+                }}
+              />
+            </div>
           </button>
 
           {showGuidelines && (
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "var(--space-3)",
-                marginTop: "var(--space-3)",
-                padding: "var(--space-3)",
-                background: "var(--color-surface-2)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid var(--color-border)",
-                fontSize: "12px",
-              }}
+              id="guidelines-detail-content"
+              className="guidelines-content"
+              role="region"
+              aria-label="Contenido de pautas médicas detalladas"
             >
-              <div>
-                <strong style={{ color: "#16a34a", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                  <CheckCircle2Icon size={14} color="#16a34a" />
-                  <span>Pautas recomendadas (Qué hacer)</span>
-                </strong>
-                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.45 }}>
-                  {activeDos.map((d, i) => (
-                    <li key={i} style={{ marginBottom: "6px" }}>
-                      {d}
-                    </li>
-                  ))}
-                </ul>
+              {/* Barra de Filtro Segmentado por Tipo */}
+              <div className="guidelines-filter-bar" role="tablist" aria-label="Filtro de directrices">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={guidelineFilter === "all"}
+                  onClick={() => setGuidelineFilter("all")}
+                  className={`guideline-filter-pill ${guidelineFilter === "all" ? "active" : ""}`}
+                >
+                  <ClipboardCheckIcon size={13} />
+                  <span>Todas ({activeDos.length + activeDonts.length})</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={guidelineFilter === "dos"}
+                  onClick={() => setGuidelineFilter("dos")}
+                  className={`guideline-filter-pill ${guidelineFilter === "dos" ? "active" : ""}`}
+                >
+                  <CheckCircle2Icon size={13} />
+                  <span>Qué Hacer ({activeDos.length})</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={guidelineFilter === "donts"}
+                  onClick={() => setGuidelineFilter("donts")}
+                  className={`guideline-filter-pill ${guidelineFilter === "donts" ? "active" : ""}`}
+                >
+                  <BanIcon size={13} />
+                  <span>Qué Evitar ({activeDonts.length})</span>
+                </button>
               </div>
 
-              <div>
-                <strong style={{ color: "#dc2626", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                  <BanIcon size={14} color="#dc2626" />
-                  <span>Acciones a evitar (Qué evitar)</span>
-                </strong>
-                <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.45 }}>
-                  {activeDonts.map((d, i) => (
-                    <li key={i} style={{ marginBottom: "6px" }}>
-                      {d}
-                    </li>
-                  ))}
-                </ul>
+              {/* Grilla de Micro-Tarjetas Clínicas */}
+              <div className={`guidelines-grid ${guidelineFilter === "all" ? "comparative" : ""}`}>
+                {/* Columna / Tarjetas de Qué Hacer */}
+                {(guidelineFilter === "all" || guidelineFilter === "dos") && activeDos.length > 0 && (
+                  <div className="guidelines-column">
+                    <div className="guidelines-column-header dos">
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <CheckCircle2Icon size={14} color="#15803d" />
+                        <span>Pautas Recomendadas (Protocolo Activo)</span>
+                      </div>
+                      <span>{activeDos.length} pautas</span>
+                    </div>
+
+                    {activeDos.map((raw, idx) => {
+                      const item = formatClinicalGuideline(raw, false);
+                      return (
+                        <div className="guideline-card do" key={`do-${idx}`}>
+                          <div className="guideline-icon-badge do" aria-hidden="true">
+                            {renderGuidelineIcon(item.iconType, false)}
+                          </div>
+                          <div className="guideline-body">
+                            <span className="guideline-headline">{item.headline}</span>
+                            <p className="guideline-detail">{item.detail}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Columna / Tarjetas de Qué Evitar */}
+                {(guidelineFilter === "all" || guidelineFilter === "donts") && activeDonts.length > 0 && (
+                  <div className="guidelines-column">
+                    <div className="guidelines-column-header donts">
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <BanIcon size={14} color="#b91c1c" />
+                        <span>Restricciones Clínicas (Factores de Riesgo)</span>
+                      </div>
+                      <span>{activeDonts.length} restricciones</span>
+                    </div>
+
+                    {activeDonts.map((raw, idx) => {
+                      const item = formatClinicalGuideline(raw, true);
+                      return (
+                        <div className="guideline-card dont" key={`dont-${idx}`}>
+                          <div className="guideline-icon-badge dont" aria-hidden="true">
+                            {renderGuidelineIcon(item.iconType, true)}
+                          </div>
+                          <div className="guideline-body">
+                            <span className="guideline-headline">{item.headline}</span>
+                            <p className="guideline-detail">{item.detail}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           )}

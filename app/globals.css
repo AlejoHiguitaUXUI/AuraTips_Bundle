@@ -1864,3 +1864,209 @@ textarea {
   color: var(--color-brand);
 }
 
+/* =========================================================
+   Clinical Guidelines Module (Do's & Don'ts)
+   ========================================================= */
+.guidelines-wrapper {
+  margin-top: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--dur-base) ease;
+}
+
+.guidelines-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px var(--space-4);
+  background: var(--color-surface);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.guidelines-trigger:hover {
+  background-color: var(--color-surface-2);
+}
+
+.guidelines-trigger:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: -2px;
+}
+
+.guidelines-trigger-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guidelines-trigger-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: rgba(32, 80, 59, 0.08);
+  color: var(--color-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.guidelines-content {
+  padding: 0 var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.guidelines-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: var(--space-3);
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+
+.guideline-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: var(--text-min);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text-2);
+  cursor: pointer;
+  transition: all var(--dur-fast) ease;
+}
+
+.guideline-filter-pill:hover {
+  background: var(--color-surface);
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.guideline-filter-pill.active {
+  background: var(--color-brand) !important;
+  color: #FFFFFF !important;
+  border-color: var(--color-brand) !important;
+}
+
+.guidelines-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .guidelines-grid.comparative {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+}
+
+.guidelines-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guidelines-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-min);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.guidelines-column-header.dos {
+  background: rgba(34, 197, 94, 0.08);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.guidelines-column-header.donts {
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* Micro-tarjeta clínica individual */
+.guideline-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  transition: all var(--dur-fast) ease;
+}
+
+.guideline-card:hover {
+  border-color: var(--color-border-2);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.guideline-card.do {
+  border-left: 3.5px solid #22c55e;
+}
+
+.guideline-card.dont {
+  border-left: 3.5px solid #ef4444;
+}
+
+.guideline-icon-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.guideline-icon-badge.do {
+  background: rgba(34, 197, 94, 0.14);
+  color: #16a34a;
+}
+
+.guideline-icon-badge.dont {
+  background: rgba(239, 68, 68, 0.14);
+  color: #dc2626;
+}
+
+.guideline-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.guideline-headline {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.guideline-detail {
+  font-size: 12.5px;
+  color: var(--color-text-2);
+  line-height: 1.5;
+}
+
+
