@@ -94,7 +94,7 @@ export default async function CatalogPage({
         </div>
         <h1 id="hero-heading">Tu recuperación y cuidado estético, guiados con calidez y rigor médico.</h1>
         <p>
-          Protocolos personalizados bajo la dirección de la Dra. Mariana Gómez: líneas de tiempo de desinflamación, pautas recomendadas (qué hacer), acciones a evitar en las primeras 48 horas y signos de observación para tu máxima tranquilidad.
+          Protocolos personalizados bajo la dirección de la especialista: líneas de tiempo de desinflamación, pautas recomendadas (qué hacer), acciones a evitar en las primeras 48 horas y signos de observación para tu máxima tranquilidad.
         </p>
 
         {/* Buscador Clínico RAG & Asistente Semántico */}

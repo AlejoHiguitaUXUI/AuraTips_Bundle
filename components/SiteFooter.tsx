@@ -163,14 +163,14 @@ export function SiteFooter() {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "12px" }}>
               <StethoscopeIcon size={16} color="var(--color-brand)" style={{ marginTop: "2px", flexShrink: 0 }} />
               <div style={{ fontSize: "13px", lineHeight: 1.4 }}>
-                <strong style={{ color: "var(--color-text)" }}>Dra. Mariana Gómez</strong>
+                <strong style={{ color: "var(--color-text)" }}>Atención Médica Directa</strong>
                 <p style={{ margin: "2px 0 0", color: "var(--color-muted)", fontSize: "12px" }}>
                   Medicina Estética & Cuidado Post-Procedimiento
                 </p>
               </div>
             </div>
             <a
-              href="https://wa.me/573001234567?text=Hola%20Dra.%20Mariana%20G%C3%B3mez,%20tengo%20una%20consulta%20sobre%20mi%20recuperaci%C3%B3n%20en%20AuraTips"
+              href="https://wa.me/573001234567?text=Hola%20doctora,%20tengo%20una%20consulta%20sobre%20mi%20recuperaci%C3%B3n%20en%20AuraTips"
               target="_blank"
               rel="noopener noreferrer"
               style={{

@@ -224,7 +224,7 @@ export function CourseEditor({
                 borderRadius: "4px",
               }}
             >
-              Dra. Mariana Gómez • Especialista Responsable
+              Dirección de Protocolos Clínicos • Especialista
             </span>
           </div>
           <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, letterSpacing: "-0.02em", margin: 0 }}>

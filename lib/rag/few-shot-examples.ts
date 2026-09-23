@@ -28,13 +28,13 @@ export const AURA_TIPS_FEW_SHOT_EXAMPLES: ClinicalFewShotExample[] = [
     procedureTitle: "Relleno y Perfilado de Labios con Ácido Hialurónico",
     auraTipsResponse: `### Gestión de Cita de Control • AuraTips
 
-¡Hola! Bienvenido(a) a AuraTips. Tu cita de revisión y control clínico está programada para el **Día 14 con la Dra. Mariana Gómez**.
+¡Hola! Bienvenido(a) a AuraTips. Tu cita de revisión y control clínico está programada para el **Día 14 con la especialista**.
 
 En tu Día 3, no es clínicamente aconsejable adelantar la cita antes del Día 14 porque los tejidos aún se encuentran en pleno proceso de desinflamación y el ácido hialurónico tarda dos semanas en estabilizarse e integrarse de forma definitiva. Sin embargo, si experimentas alguna molestia imprevista o inquietud puntual, podemos coordinar una revisión prioritaria.
 
 Para consultar disponibilidad o solicitar un cambio en tu agenda, comunícate directamente con recepción médica aquí: [Contactar a Recepción Médica](https://wa.me/573009123456?text=Hola,%20deseo%20consultar%20sobre%20mi%20cita%20de%20control%20Dra%20Mariana%20Gomez) o llamando al [+57 300 912 3456](tel:+573009123456).`,
     clinicalPrinciples: [
-      "Reconocer la cita oficial programada del Día 14 con la Dra. Mariana Gómez",
+      "Reconocer la cita oficial programada del Día 14 con la especialista",
       "Explicar en 1 frase la razón biológica de no adelantar el control (desinflamación y biointegración)",
       "Proporcionar enlace y teléfono directo con recepción para reprogramar",
       "Regla estricta: NO incluir listas de pautas recomendadas ni qué evitar",
@@ -75,7 +75,7 @@ Puedes comunicarte ahora mismo de forma directa haciendo clic aquí: [Llamar a R
 * Mantén la piel tratada limpia e hidratada solo con bálsamo estéril o protector solar mineral en toques suaves.
 * Cumplidas las 48 horas podrás reanudar tu base o labial habitual utilizando brochas o esponjas limpias.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Explicación fisiológica concisa (2-3 líneas) del sellado de microorificios",
       "2-3 pautas recomendadas directas y aplicables sin texto superfluo",
@@ -105,7 +105,7 @@ En tus primeras 24 a 48 horas, los labios presentan un **edema inflamatorio agud
 * No aprietes, pellizques ni intentes amoldar los labios con los dedos.
 * No evalúes el resultado final durante el pico inflamatorio inicial.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Validación empática de la angustia visual",
       "Explicación concisa del edema reactivo y retención hidrófila (+30% temporal)",
@@ -124,7 +124,7 @@ En tus primeras 24 a 48 horas, los labios presentan un **edema inflamatorio agud
 
 ¡Hola! Bienvenido(a) a AuraTips. Comprendo perfectamente tu inquietud; es muy común percibir que un lado luce con más volumen o altura que el otro en los primeros días.
 
-Cada mitad del rostro tiene su propia red independiente de microcirculación y drenaje linfático, por lo que un lado desinflama más rápido que el otro. Además, la postura al dormir hace que el lado apoyado retenga más líquido por gravedad. El ácido hialurónico requiere **14 días para integrarse y estabilizarse**: la simetría real se evalúa en tu control del Día 14 con la Dra. Mariana Gómez.
+Cada mitad del rostro tiene su propia red independiente de microcirculación y drenaje linfático, por lo que un lado desinflama más rápido que el otro. Además, la postura al dormir hace que el lado apoyado retenga más líquido por gravedad. El ácido hialurónico requiere **14 días para integrarse y estabilizarse**: la simetría real se evalúa en tu control del Día 14 con la especialista.
 
 #### Pautas recomendadas (Qué hacer):
 * Aplica frío seco local intermitente (10 minutos con paño limpio) en el lado de mayor tensión.
@@ -135,7 +135,7 @@ Cada mitad del rostro tiene su propia red independiente de microcirculación y d
 * Cero manipulación: no empujes, pellizques ni intentes masajear la zona por tu cuenta.
 * No saques conclusiones definitivas antes de cumplir las dos semanas de evolución.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Validación empática de la asimetría temprana",
       "Explicación anatómica de drenaje linfático asimétrico y efecto gravitacional al dormir",
@@ -159,13 +159,13 @@ El ácido hialurónico **no se encapsula en pocos días**. En este momento inici
 #### Pautas recomendadas (Qué hacer):
 * Mantén una buena hidratación bebiendo al menos 2 litros de agua al día para facilitar la biointegración.
 * Aplica bálsamo hidratante en toques suaves superficiales, sin frotar.
-* Si persiste al Día 14, la Dra. Mariana Gómez la evaluará en tu cita de control.
+* Si persiste al Día 14, la especialista la evaluará en tu cita de control.
 
 #### Acciones a evitar (Qué evitar):
 * CERO MANIPULACIÓN: no pellizques, aprietes ni intentes aplastar la bolita (la fricción inflama el tejido y puede desplazar el producto).
 * No pases la lengua ejerciendo presión constante sobre el bulto.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Desmitificar el encapsulamiento temprano",
       "Explicar biointegración tisular (14-21 días) del depósito concentrado",
@@ -196,7 +196,7 @@ Ocurren cuando la aguja roza un capilar diminuto, produciendo una micro-salida d
 * No tomes Aspirina o Ibuprofeno (favorecen el sangrado; consulta tu fórmula de Acetaminofén).
 * Evita la exposición a fuentes de calor directo como saunas o sol intenso.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Normalización y desmitificación médica de la extravasación capilar",
       "Ciclo cromático de reabsorción (5 a 10 días)",
@@ -226,7 +226,7 @@ Por favor **revisa en primer lugar la fórmula médica entregada en tu consulta*
 * NO tomar Ibuprofeno, Aspirina ni derivados AINEs en las primeras 48 horas.
 * No presionar los puntos de inyección para aliviar la molestia.
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Priorizar la fórmula médica de la clínica",
       "Explicación médica concisa del efecto antiagregante de AINEs y riesgo de hematomas",
@@ -256,7 +256,7 @@ El alcohol produce **vasodilatación capilar inmediata** (dilata los vasos sangu
 * Cero consumo de vino, cerveza o licores durante las primeras 48 horas.
 * Evita acercarte a fuentes de calor intenso (calentadores o fogones).
 
-*Tu cita de revisión y control clínico está programada con la **Dra. Mariana Gómez**.*`,
+*Tu cita de revisión y control clínico está programada para el Día 14 con la especialista.*`,
     clinicalPrinciples: [
       "Explicación fisiológica concisa de la vasodilatación capilar inducida por alcohol",
       "Restricción estricta durante 48 horas",
@@ -275,12 +275,12 @@ El alcohol produce **vasodilatación capilar inmediata** (dilata los vasos sangu
 
 ¡Hola! Bienvenido(a) a AuraTips. Comprendo plenamente que notar estos cambios te cause inquietud y queremos brindarte total acompañamiento y soporte médico directo.
 
-En **AuraTips**, por protocolo clínico preventivo, cuando coinciden **3 o más criterios de observación simultáneos** (como cambio marcado de coloración o temperatura dérmica, molestia persistente y reacción vesicular), lo más prudente y seguro para tu bienestar es que la **Dra. Mariana Gómez** realice una valoración médica prioritaria directa.
+En **AuraTips**, por protocolo clínico preventivo, cuando coinciden **3 o más criterios de observación simultáneos** (como cambio marcado de coloración o temperatura dérmica, molestia persistente y reacción vesicular), lo más prudente y seguro para tu bienestar es que la **especialista** realice una valoración médica prioritaria directa.
 
 #### Instrucciones inmediatas:
 * Mantén la calma: nuestro equipo médico está listo para asistirte.
 * **No masajees** la zona ni apliques compresas calientes, frío extremo o ungüentos.
-* Comunícate ahora mismo con la **Dra. Mariana Gómez** pulsando el botón de atención médica prioritaria a continuación.
+* Comunícate ahora mismo con la **especialista** pulsando el botón de atención médica prioritaria a continuación.
 
 *Tu salud, tranquilidad y cuidado son nuestra prioridad absoluta.*`,
     clinicalPrinciples: [

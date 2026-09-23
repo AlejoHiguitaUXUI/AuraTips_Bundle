@@ -65,7 +65,7 @@ export function checkClinicalGuardrails(message: string): GuardrailCheckResult {
       matchedCriteria,
       actionTitle: "Atención Médica Prioritaria Recomendada",
       actionInstructions:
-        "Comprendemos que notar estos cambios te genere inquietud. Al coincidir varias manifestaciones de forma simultánea, lo más prudente y seguro para tu bienestar es que la Dra. Mariana Gómez realice una valoración prioritaria directa. Por favor mantén la calma, suspende la aplicación de frío o masajes, y comunícate con nosotros mediante el botón directo a continuación.",
+        "Comprendemos que notar estos cambios te genere inquietud. Al coincidir varias manifestaciones de forma simultánea, lo más prudente y seguro para tu bienestar es que la especialista realice una valoración prioritaria directa. Por favor mantén la calma, suspende la aplicación de frío o masajes, y comunícate con nosotros mediante el botón directo a continuación.",
       emergencyContactPhone: "+57 300 912 3456",
     };
   }

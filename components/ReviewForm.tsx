@@ -103,7 +103,7 @@ export function ReviewForm({
       <textarea
         id="body"
         value={body}
-        placeholder="Cuéntanos cómo fue tu evolución, inflamación y atención de la Dra. Mariana Gómez..."
+        placeholder="Cuéntanos cómo fue tu evolución, inflamación y atención de la especialista..."
         onChange={(e) => setBody(e.target.value)}
         rows={3}
       />

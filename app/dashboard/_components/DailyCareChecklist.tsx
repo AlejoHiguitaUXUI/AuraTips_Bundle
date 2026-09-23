@@ -755,7 +755,7 @@ export function DailyCareChecklist({
                   </span>
                 </div>
                 <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--color-muted)", lineHeight: 1.3 }}>
-                  Hábitos recomendados y restricciones clínicas · Dra. Mariana Gómez
+                  Hábitos recomendados y restricciones clínicas supervisadas por la especialista
                 </p>
               </div>
             </div>

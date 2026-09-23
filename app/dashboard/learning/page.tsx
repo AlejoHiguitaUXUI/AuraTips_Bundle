@@ -19,7 +19,7 @@ import {
 export const metadata = {
   title: "Mis Cuidados Activos · AuraTips",
   description:
-    "Centro clínico de acompañamiento y recuperación post-procedimiento estético con la Dra. Mariana Gómez.",
+    "Centro clínico de acompañamiento y recuperación post-procedimiento estético supervisado por la especialista.",
 };
 
 interface PageProps {
@@ -87,7 +87,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               Mis Cuidados Activos
             </h1>
             <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", marginTop: "4px" }}>
-              Centro clínico de acompañamiento y evolución guiada · Dra. Mariana Gómez
+              Centro clínico de acompañamiento y evolución guiada por la especialista
             </p>
           </div>
           <span className="badge badge-brand">0 Protocolos Activos</span>
@@ -141,7 +141,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               marginInline: "auto",
             }}
           >
-            Aún no tienes un protocolo de recuperación activo. Al iniciar tu tratamiento con la Dra. Mariana Gómez, este panel calculará automáticamente tu día de evolución, las pautas diarias recomendadas, acciones a evitar y la fecha de tu cita de control médico.
+            Aún no tienes un protocolo de recuperación activo. Al iniciar tu tratamiento con la especialista, este panel calculará automáticamente tu día de evolución, las pautas diarias recomendadas, acciones a evitar y la fecha de tu cita de control médico.
           </p>
 
           <div
@@ -345,7 +345,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             )}
           </div>
           <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", marginTop: "4px" }}>
-            Monitoreo diario de recuperación, pautas médicas y control post-procedimiento · Dra. Mariana Gómez
+            Monitoreo diario de recuperación, pautas médicas y control post-procedimiento
           </p>
         </div>
 

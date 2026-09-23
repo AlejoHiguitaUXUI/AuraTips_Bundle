@@ -423,7 +423,7 @@ export function LessonEditor({
               <input
                 value={emergencyContacts}
                 onChange={(e) => setEmergencyContacts(e.target.value)}
-                placeholder="+57 300 912 3456 (Dra. Mariana Gómez)"
+                placeholder="+57 300 912 3456 (Especialista de guardia)"
                 style={{ flex: 1, padding: "4px 8px", fontSize: "12px", borderRadius: "6px", border: "1px solid var(--color-border)" }}
               />
             </div>

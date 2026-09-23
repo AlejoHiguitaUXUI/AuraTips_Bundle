@@ -39,7 +39,7 @@ export function ClinicalAssistantDrawer({
     {
       id: "welcome",
       role: "assistant",
-      content: `¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Estoy aquí para acompañarte paso a paso con los protocolos de la **Dra. Mariana Gómez** en tu **Día ${recoveryDay}** de ${
+      content: `¡Hola! Bienvenido(a) a AuraTips, tu asistente clínico de recuperación. Estoy aquí para acompañarte paso a paso con las pautas clínicas de la **especialista** en tu **Día ${recoveryDay}** de ${
         procedureTitle ? `*${procedureTitle}*` : "tu procedimiento"
       }.\n\n¿Tienes alguna inquietud sobre cómo evoluciona tu recuperación o las pautas recomendadas para hoy?`,
       timestamp: "Ahora",
@@ -211,7 +211,7 @@ export function ClinicalAssistantDrawer({
                       letterSpacing: "0.02em",
                     }}
                   >
-                    Dra. Mariana Gómez · Chat Clínico
+                    Chat Clínico · Asistencia Médica
                   </span>
                 </div>
                 <button
@@ -271,7 +271,7 @@ export function ClinicalAssistantDrawer({
           {/* Botón flotante de Chat (Launcher Window Trigger) */}
           <button
             onClick={() => setIsOpen(true)}
-            aria-label="Abrir ventana de chat clínico con Dra. Mariana Gómez"
+            aria-label="Abrir ventana de chat clínico con la especialista"
             style={{
               display: "flex",
               alignItems: "center",
@@ -363,7 +363,7 @@ export function ClinicalAssistantDrawer({
                 </span>
               </div>
               <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.95)", marginTop: "2px" }}>
-                ¿Dudas hoy? Habla con la Dra. Mariana
+                ¿Dudas hoy? Consulta a la especialista
               </span>
             </div>
 
@@ -468,7 +468,7 @@ export function ClinicalAssistantDrawer({
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#FAF8F5" }}>
-                  AuraTips • Dra. Mariana Gómez
+                  AuraTips • Chat con la Especialista
                 </h3>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", opacity: 0.9 }}>
                   <span
@@ -652,7 +652,7 @@ export function ClinicalAssistantDrawer({
                         }}
                       >
                         <ShieldAlertIcon size={14} color="#FFFFFF" />
-                        <span>Contactar a la Dra. Mariana Gómez (Atención Prioritaria)</span>
+                        <span>Contactar a la especialista (Atención Prioritaria)</span>
                       </a>
                       <p style={{ margin: "6px 0 0", fontSize: "12px", color: "var(--color-muted)" }}>
                         Atención prioritaria activada por coincidencia de 3 o más criterios de valoración médica.
@@ -683,7 +683,7 @@ export function ClinicalAssistantDrawer({
                   animation: "fadeIn 0.2s ease-out",
                 }}
               >
-                {/* Mini avatar clínico de la Dra. Mariana Gómez */}
+                {/* Mini avatar clínico de la especialista */}
                 <div
                   style={{
                     width: "32px",
@@ -731,7 +731,7 @@ export function ClinicalAssistantDrawer({
                     }}
                   >
                     <span style={{ fontSize: "12.5px", color: "var(--color-text)", fontWeight: 600 }}>
-                      Dra. Mariana Gómez está escribiendo
+                      La especialista está escribiendo
                     </span>
                     <div style={{ display: "inline-flex", alignItems: "center", gap: "4px", marginLeft: "2px" }}>
                       <span

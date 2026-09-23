@@ -50,11 +50,11 @@ export async function POST(request: Request) {
     console.error("Error in /api/chat:", error);
     return NextResponse.json({
       success: true,
-      reply: "He recibido tu consulta. En este momento se presentó una intermitencia técnica en la consulta de protocolos en línea, pero tu seguridad es lo más importante: si presentas dolor intenso o signos inusuales, comunícate de inmediato con la Dra. Mariana Gómez.",
+      reply: "He recibido tu consulta. En este momento se presentó una intermitencia técnica en la consulta de protocolos en línea, pero tu seguridad es lo más importante: si presentas dolor intenso o signos inusuales, comunícate de inmediato con la especialista.",
       isEmergency: false,
       recommendedDos: ["Mantener reposo relativo", "Aplicar compresas frías si hay molestia leve", "Contactar a la especialista"],
       recommendedDonts: ["No frotar ni masajear la zona tratada", "No realizar ejercicio de alto impacto"],
-      contactDoctorUrl: "https://wa.me/573001234567?text=Hola%20Dra.%20Mariana%20G%C3%B3mez,%20tengo%20una%20consulta%20m%C3%A9dica%20urgente%20desde%20AuraTips",
+      contactDoctorUrl: "https://wa.me/573001234567?text=URGENCIA%20MEDICA%20-%20Hola%20doctora,%20tengo%20una%20consulta%20urgente%20desde%20AuraTips",
     });
   }
 }

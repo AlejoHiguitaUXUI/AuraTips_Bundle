@@ -70,7 +70,7 @@ export default function NewCoursePage() {
             }}
           >
             <StethoscopeIcon size={13} />
-            <span>Dra. Mariana Gómez • Dirección de Protocolos Clínicos</span>
+            <span>Dirección de Protocolos Clínicos • Especialista</span>
           </span>
         </div>
         <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, letterSpacing: "-0.02em", margin: "0 0 6px" }}>

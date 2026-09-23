@@ -24,7 +24,7 @@ export async function SiteHeader() {
         userEmail.includes("mariana")
       ) {
         isSpecialist = true;
-        clinicalRoleLabel = "Dra. Mariana Gómez";
+        clinicalRoleLabel = "Dirección Clínica";
       } else {
         const { data: profile } = await supabase
           .from("profiles")
@@ -38,7 +38,7 @@ export async function SiteHeader() {
           profile?.display_name?.toLowerCase().includes("especialista")
         ) {
           isSpecialist = true;
-          clinicalRoleLabel = "Dra. Mariana Gómez";
+          clinicalRoleLabel = "Dirección Clínica";
         }
       }
     }

@@ -290,11 +290,11 @@ export function SymptomSafetyWidget({
         </div>
 
         <p style={{ fontSize: "12px", color: "var(--color-text-2)", margin: 0, lineHeight: 1.4 }}>
-          ¿Sientes dolor agudo persistente, palidez cutánea o alguna reacción inesperada? Conéctate de inmediato con la <strong>Dra. Mariana Gómez</strong>.
+          ¿Sientes dolor agudo persistente, palidez cutánea o alguna reacción inesperada? Conéctate de inmediato con la <strong>especialista</strong>.
         </p>
 
         <a
-          href="https://wa.me/573001234567?text=URGENCIA%20MEDICA%20-%20Hola%20Dra.%20Mariana%20G%C3%B3mez,%20tengo%20una%20consulta%20urgente%20sobre%20mi%20recuperaci%C3%B3n%20en%20AuraTips"
+          href="https://wa.me/573001234567?text=URGENCIA%20MEDICA%20-%20Hola%20doctora,%20tengo%20una%20consulta%20urgente%20sobre%20mi%20recuperaci%C3%B3n%20en%20AuraTips"
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-danger btn-sm"
@@ -309,7 +309,7 @@ export function SymptomSafetyWidget({
           }}
         >
           <MessageCircleIcon size={16} />
-          <span>Contactar a la Dra. Mariana Gómez (Urgencias)</span>
+          <span>Contactar a la especialista (Urgencias)</span>
         </a>
       </div>
     </div>

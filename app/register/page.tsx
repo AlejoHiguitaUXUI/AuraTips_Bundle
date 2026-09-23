@@ -52,7 +52,7 @@ export default function RegisterPage() {
         Crear Cuenta Clínica
       </h1>
       <p className="muted" style={{ fontSize: "var(--text-sm)", marginBottom: "20px" }}>
-        Crea tu cuenta para acceder a tus pautas de cuidado post-tratamiento, seguimiento diario y contacto clínico con la Dra. Mariana Gómez.
+        Crea tu cuenta para acceder a tus pautas de cuidado post-tratamiento, seguimiento diario y contacto clínico con la especialista.
       </p>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
