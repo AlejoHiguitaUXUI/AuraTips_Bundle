@@ -50,7 +50,7 @@ export async function SiteHeader() {
     <header className="site-header">
       <div className="container">
         {/* Logo */}
-        <Link href="/" className="site-logo" aria-label="AuraTips — Acompañamiento Clínico de Recuperación">
+        <Link href="/" className="site-logo" aria-label="AuraTips — By AuraMed Grupo Estético">
           <span
             className="site-logo-icon"
             aria-hidden="true"
@@ -66,20 +66,20 @@ export async function SiteHeader() {
           >
             <LeafIcon size={16} />
           </span>
-          <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+          <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.3 }}>
             <span style={{ fontWeight: 800, letterSpacing: "-0.02em", color: "var(--color-text)", fontSize: "1.05rem" }}>
               AuraTips
             </span>
             <span
               style={{
-                fontSize: "12px",
+                fontSize: "10px",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
                 color: "var(--color-brand)",
                 fontWeight: 600,
               }}
             >
-              Acompañamiento Clínico
+              By AuraMed Grupo Estético
             </span>
           </span>
         </Link>
