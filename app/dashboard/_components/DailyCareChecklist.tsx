@@ -12,7 +12,6 @@ import {
   ShieldCheckIcon,
   DumbbellIcon,
   SparklesIcon,
-  ClipboardCheckIcon,
 } from "@/components/icons";
 
 interface FormattedGuideline {
@@ -465,7 +464,6 @@ export function DailyCareChecklist({
   const legacyStorageKey = `aesthetica_daily_checklist_${procedureSlug}_day_${currentDay}`;
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
   const [showGuidelines, setShowGuidelines] = useState(true);
-  const [guidelineFilter, setGuidelineFilter] = useState<"all" | "dos" | "donts">("all");
 
   // Load persisted state
   useEffect(() => {
@@ -760,44 +758,10 @@ export function DailyCareChecklist({
               role="region"
               aria-label="Contenido de pautas médicas detalladas"
             >
-              {/* Barra de Filtro Segmentado por Tipo */}
-              <div className="guidelines-filter-bar" role="tablist" aria-label="Filtro de directrices">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={guidelineFilter === "all"}
-                  onClick={() => setGuidelineFilter("all")}
-                  className={`guideline-filter-pill ${guidelineFilter === "all" ? "active" : ""}`}
-                >
-                  <ClipboardCheckIcon size={13} />
-                  <span>Todas ({activeDos.length + activeDonts.length})</span>
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={guidelineFilter === "dos"}
-                  onClick={() => setGuidelineFilter("dos")}
-                  className={`guideline-filter-pill ${guidelineFilter === "dos" ? "active" : ""}`}
-                >
-                  <CheckCircle2Icon size={13} />
-                  <span>Qué Hacer ({activeDos.length})</span>
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={guidelineFilter === "donts"}
-                  onClick={() => setGuidelineFilter("donts")}
-                  className={`guideline-filter-pill ${guidelineFilter === "donts" ? "active" : ""}`}
-                >
-                  <BanIcon size={13} />
-                  <span>Qué Evitar ({activeDonts.length})</span>
-                </button>
-              </div>
-
               {/* Lista Desplegable de Directrices Clínicas Sin Contenedor de Cajas */}
-              <div className={`guidelines-unboxed-grid ${guidelineFilter === "all" ? "comparative" : ""}`}>
+              <div className="guidelines-unboxed-grid comparative">
                 {/* Columna / Pautas de Qué Hacer */}
-                {(guidelineFilter === "all" || guidelineFilter === "dos") && activeDos.length > 0 && (
+                {activeDos.length > 0 && (
                   <div className="guidelines-group">
                     <div className="guidelines-group-header">
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -806,7 +770,6 @@ export function DailyCareChecklist({
                           Pautas Recomendadas
                         </h4>
                       </div>
-                      <span className="guideline-count-tag do">{activeDos.length} pautas</span>
                     </div>
 
                     <ul className="guidelines-bullet-list">
@@ -835,7 +798,7 @@ export function DailyCareChecklist({
                 )}
 
                 {/* Columna / Restricciones de Qué Evitar */}
-                {(guidelineFilter === "all" || guidelineFilter === "donts") && activeDonts.length > 0 && (
+                {activeDonts.length > 0 && (
                   <div className="guidelines-group">
                     <div className="guidelines-group-header">
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -844,7 +807,6 @@ export function DailyCareChecklist({
                           Restricciones Clínicas
                         </h4>
                       </div>
-                      <span className="guideline-count-tag dont">{activeDonts.length} restricciones</span>
                     </div>
 
                     <ul className="guidelines-bullet-list">
