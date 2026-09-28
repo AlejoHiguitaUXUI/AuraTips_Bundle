@@ -6,6 +6,18 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ---
 
+## [1.3.1] - 2026-09-28
+
+### 🔧 Corregido (Fixed)
+
+- **Conflicto de enrutamiento dinámico en Next.js App Router (`/courses/[slug]` vs `/courses/[id]`):**
+  - Se resolvió el error crítico `[Error: You cannot use different slug names for the same dynamic path ('id' !== 'slug')]` unificando la resolución por slug semántico y por UUID dentro de `app/courses/[slug]/page.tsx`.
+  - Se eliminó la carpeta duplicada en conflicto `app/courses/[id]`.
+  - Se solucionó la falla de compilación de estilos (HTTP 404 en `layout.css` y `page.css`) y el efecto FOUC en el frontend.
+- **Configuración de Supabase CLI (`supabase/config.toml`):**
+  - Se inicializó la configuración completa de Supabase CLI v2.118 preservando la configuración de la Edge Function `[functions.embed-course]`.
+  - Se agregó `supabase/.gitignore`.
+
 ## [1.3.0] - 2026-09-28
 
 ### 🚀 Añadido (Added)
