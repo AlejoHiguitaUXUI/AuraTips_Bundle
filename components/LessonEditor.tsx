@@ -174,13 +174,16 @@ export function LessonEditor({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          {/* BLOCKING A2: aria-expanded + aria-label en botón de colapso */}
           <button
             type="button"
             className="btn-ghost btn btn-sm"
             onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
+            aria-label={isExpanded ? `Colapsar pauta: ${title || "sin título"}` : `Expandir pauta: ${title || "sin título"}`}
             style={{ padding: "4px 8px", fontSize: "12px" }}
           >
-            {isExpanded ? "▲" : "▼"}
+            <span aria-hidden="true">{isExpanded ? "▲" : "▼"}</span>
           </button>
           <strong style={{ fontSize: "15px", color: "var(--color-text)" }}>
             {title || "Pauta de cuidado sin título"}
@@ -280,10 +283,12 @@ export function LessonEditor({
           {/* Fila 1: Título y Fase Temporal */}
           <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
             <div>
-              <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+              {/* A3: label htmlFor + id único */}
+              <label htmlFor={`lesson-title-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
                 Título de la Pauta / Protocolo
               </label>
               <input
+                id={`lesson-title-${lesson.id}`}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="ej. Postura erguida y gesticulación guiada"
@@ -292,10 +297,11 @@ export function LessonEditor({
             </div>
 
             <div>
-              <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+              <label htmlFor={`lesson-timeline-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
                 Fase Temporal (Timeline)
               </label>
               <input
+                id={`lesson-timeline-${lesson.id}`}
                 value={timelineTag}
                 onChange={(e) => setTimelineTag(e.target.value)}
                 placeholder="Día 0 / Días 1-3 / Días 4-14"
@@ -304,10 +310,11 @@ export function LessonEditor({
             </div>
 
             <div>
-              <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+              <label htmlFor={`lesson-caretype-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
                 Tipo de Cuidado
               </label>
               <select
+                id={`lesson-caretype-${lesson.id}`}
                 value={careType}
                 onChange={(e) => setCareType(e.target.value)}
                 style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid var(--color-border)" }}
@@ -331,6 +338,7 @@ export function LessonEditor({
               }}
             >
               <label
+                htmlFor={`lesson-dos-${lesson.id}`}
                 style={{
                   fontSize: "12px",
                   fontWeight: 700,
@@ -342,6 +350,7 @@ export function LessonEditor({
                 Pautas recomendadas (Qué hacer) — Una por línea
               </label>
               <textarea
+                id={`lesson-dos-${lesson.id}`}
                 rows={3}
                 value={dosText}
                 onChange={(e) => setDosText(e.target.value)}
@@ -359,6 +368,7 @@ export function LessonEditor({
               }}
             >
               <label
+                htmlFor={`lesson-donts-${lesson.id}`}
                 style={{
                   fontSize: "12px",
                   fontWeight: 700,
@@ -370,6 +380,7 @@ export function LessonEditor({
                 Acciones a evitar (Qué evitar) — Una por línea
               </label>
               <textarea
+                id={`lesson-donts-${lesson.id}`}
                 rows={3}
                 value={dontsText}
                 onChange={(e) => setDontsText(e.target.value)}
@@ -381,10 +392,11 @@ export function LessonEditor({
 
           {/* Fila 3: Checklist Diario del Paciente */}
           <div>
-            <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+            <label htmlFor={`lesson-checklist-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
               Lista de Verificación del Paciente (Checklist diario) — Una tarea por línea
             </label>
             <textarea
+              id={`lesson-checklist-${lesson.id}`}
               rows={2}
               value={checklistText}
               onChange={(e) => setChecklistText(e.target.value)}
@@ -419,8 +431,10 @@ export function LessonEditor({
             </label>
 
             <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, minWidth: "220px" }}>
-              <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>Contacto SOS:</span>
+              {/* A3 SOS: span → label con htmlFor */}
+              <label htmlFor={`lesson-sos-${lesson.id}`} style={{ fontSize: "12px", color: "var(--color-muted)" }}>Contacto SOS:</label>
               <input
+                id={`lesson-sos-${lesson.id}`}
                 value={emergencyContacts}
                 onChange={(e) => setEmergencyContacts(e.target.value)}
                 placeholder="+57 300 912 3456 (Especialista de guardia)"
@@ -432,10 +446,11 @@ export function LessonEditor({
           {/* Fila 5: Indicaciones Detalladas (Markdown) y Video */}
           <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px" }}>
             <div>
-              <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+              <label htmlFor={`lesson-body-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
                 Instrucciones Clínicas Detalladas (Markdown)
               </label>
               <textarea
+                id={`lesson-body-${lesson.id}`}
                 rows={3}
                 value={bodyMd}
                 onChange={(e) => setBodyMd(e.target.value)}
@@ -445,10 +460,11 @@ export function LessonEditor({
             </div>
 
             <div>
-              <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
+              <label htmlFor={`lesson-youtube-${lesson.id}`} style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
                 Video de Guía (YouTube URL opcional)
               </label>
               <input
+                id={`lesson-youtube-${lesson.id}`}
                 value={youtubeUrl}
                 onChange={(e) => setYoutubeUrl(e.target.value)}
                 placeholder="https://www.youtube.com/watch?v=..."

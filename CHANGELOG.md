@@ -6,7 +6,43 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ---
 
+## [1.3.0] - 2026-09-28
+
+### 🚀 Añadido (Added)
+
+- **Página de detalle de procedimiento por UUID (`app/courses/[id]/page.tsx`):**
+  - Nueva ruta `/courses/[id]` que resuelve un procedimiento por su **UUID de Supabase** (complementa la ruta existente por slug `/courses/[slug]`).
+  - `generateMetadata` dinámica con `title`, `description` (mínimo 50 caracteres garantizado), Open Graph completo (`og:title`, `og:description`, `og:image`) y `alternates.canonical` apuntando al slug canónico.
+  - JSON-LD `MedicalProcedure` (schema.org) con `procedureType: "https://schema.org/TherapeuticProcedure"`, `additionalType` con la categoría del procedimiento, `performer` (Physician) y `publisher` (Organization AuraTips).
+  - Fallback total al dataset clínico local (`lib/clinical-data.ts`) cuando Supabase está offline — sin degradación de UX.
+  - Arquitectura de datos unificada: función `fetchCourse(id)` abstrae Supabase + dataset local en un único objeto `UnifiedCourse`.
+  - Breadcrumb semántico con `<ol>` + `aria-label="Migas de pan"` y `aria-current="page"`.
+  - Hero con `next/image` (prop `fill`, `priority`, `sizes`, `objectFit: "cover"`) y `alt` descriptivo.
+  - Ribbon de métricas clínicas con `role="region"` + `aria-label` y `aria-label` en el indicador de escala de molestia.
+  - Sección de signos de alarma con `aria-labelledby` y listado semántico `<ul>/<li>`.
+  - Bloque de inscripción `EnrollButton` condicional a datos en Supabase.
+  - Línea de tiempo de fases con links `aria-label` descriptivos por lección.
+  - Sección de experiencias/reseñas con `ReviewForm` + `ReviewList`.
+
+### 🔧 Corregido (Fixed) — Auditoría Tech Lead
+
+- **[S5 — important] `<h1>` siempre presente:**
+  - El `<h1>` fue desacoplado del bloque condicional de `cover_url`. Ahora se renderiza siempre: visualmente oculto (`sr-only`) cuando hay imagen (el hero lo muestra decorativamente como `<p class="procedure-hero-title" aria-hidden>`), y visible con tipografía completa cuando no hay portada.
+  - CSS añadido en `globals.css`: `.procedure-hero-card .procedure-hero-title` replica el aspecto visual del `h1` original.
+
+- **[S3 — important] Description mínima de 50 caracteres:**
+  - En `generateMetadata`, la descripción de Supabase se valida contra `rawDesc.length >= 50`; si es más corta, se usa el fallback explícito de 107 caracteres en lugar del texto corto.
+
+- **[S7 — nit] `procedureType` con URL estándar de schema.org:**
+  - El JSON-LD ahora usa `procedureType: "https://schema.org/TherapeuticProcedure"` y `additionalType` con la categoría libre (`encodeURIComponent(course.category)`), maximizando la elegibilidad para rich snippets médicos de Google.
+
+- **[A6 — nit] `:focus-visible` en `.stage-lesson-link`:**
+  - Añadido en `app/globals.css`: `outline: 2px solid var(--color-brand)` con `outline-offset: 3px` y supresión limpia del outline en interacción con ratón (`:focus:not(:focus-visible)`). Cumple WCAG 2.1 criterio 2.4.11.
+
+---
+
 ## [1.2.0] - 2026-09-23
+
 
 ### 🚀 Añadido (Added)
 - **Microservicio de Voz y Texto en Tiempo Real AURA (`microservicio-voice`):**

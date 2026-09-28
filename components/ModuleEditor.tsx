@@ -163,7 +163,9 @@ export function ModuleEditor({
           </button>
         </div>
 
-        <span
+        {/* A3: label asociado al input con htmlFor + id único por módulo */}
+        <label
+          htmlFor={`module-title-${mod.id}`}
           style={{
             fontSize: "12px",
             fontWeight: 700,
@@ -173,9 +175,10 @@ export function ModuleEditor({
           }}
         >
           Etapa:
-        </span>
+        </label>
 
         <input
+          id={`module-title-${mod.id}`}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={saveTitle}

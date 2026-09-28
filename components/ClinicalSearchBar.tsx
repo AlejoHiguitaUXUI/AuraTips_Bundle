@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SearchIcon, XIcon, ClockIcon, SparklesIcon, ArrowRightIcon, PhoneIcon } from "@/components/icons";
 import { EdyVoiceWidget } from "@/components/voice/EdyVoiceWidget";
+import FocusTrap from "focus-trap-react";
 
 interface SearchResult {
   id: string;
@@ -144,6 +145,7 @@ export function ClinicalSearchBar() {
           <input
             ref={inputRef}
             type="text"
+            role="combobox"
             className="clinical-search-input"
             placeholder="Buscar procedimiento, síntoma o duda post..."
             value={query}
@@ -153,6 +155,14 @@ export function ClinicalSearchBar() {
               if (results.length > 0) setIsOpen(true);
             }}
             aria-label="Buscar procedimientos y pautas de cuidado"
+            aria-autocomplete="list"
+            aria-controls="clinical-search-listbox"
+            aria-expanded={isOpen}
+            aria-activedescendant={
+              isOpen && selectedIndex >= 0 && results[selectedIndex]
+                ? `clinical-result-${results[selectedIndex].id}`
+                : undefined
+            }
             autoComplete="off"
             spellCheck="false"
           />
@@ -236,6 +246,7 @@ export function ClinicalSearchBar() {
               type="button"
               onClick={() => handleQuickTag(tag.query)}
               className="clinical-quick-tag-chip"
+              aria-label={`Buscar: ${tag.label}`}
             >
               <span>{tag.label}</span>
             </button>
@@ -245,7 +256,11 @@ export function ClinicalSearchBar() {
 
       {/* Panel Flotante de Resultados RAG (Spotlight) */}
       {isOpen && (
-        <div className="clinical-search-dropdown" role="listbox">
+        <div
+          id="clinical-search-listbox"
+          className="clinical-search-dropdown"
+          role="listbox"
+        >
           <div className="clinical-search-dropdown-header">
             <span className="clinical-search-dropdown-title">
               <SparklesIcon size={13} />
@@ -275,8 +290,9 @@ export function ClinicalSearchBar() {
               {results.map((r, index) => {
                 const isSelected = index === selectedIndex;
                 return (
-                  <Link
+                <Link
                     key={r.id}
+                    id={`clinical-result-${r.id}`}
                     href={`/courses/${r.slug}`}
                     onClick={() => setIsOpen(false)}
                     className={`clinical-search-item ${isSelected ? "is-selected" : ""}`}
@@ -319,33 +335,41 @@ export function ClinicalSearchBar() {
         </div>
       )}
 
-      {/* Modal de Voz en Vivo con AURA */}
+      {/* BLOCKING A10: FocusTrap en el modal de voz — WCAG 2.1.2 */}
       {isVoiceOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Llamada de voz con AURA"
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(10, 25, 18, 0.65)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-            padding: "16px",
-            animation: "fadeIn 0.2s ease-out",
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setIsVoiceOpen(false);
+        <FocusTrap
+          focusTrapOptions={{
+            onDeactivate: () => setIsVoiceOpen(false),
+            clickOutsideDeactivates: true,
+            returnFocusOnDeactivate: true,
           }}
         >
-          <div style={{ maxWidth: "520px", width: "100%", position: "relative" }}>
-            <EdyVoiceWidget onClose={() => setIsVoiceOpen(false)} />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Llamada de voz con AURA"
+            style={{
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "rgba(10, 25, 18, 0.65)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 9999,
+              padding: "16px",
+              animation: "fadeIn 0.2s ease-out",
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIsVoiceOpen(false);
+            }}
+          >
+            <div style={{ maxWidth: "520px", width: "100%", position: "relative" }}>
+              <EdyVoiceWidget onClose={() => setIsVoiceOpen(false)} />
+            </div>
           </div>
-        </div>
+        </FocusTrap>
       )}
     </div>
   );

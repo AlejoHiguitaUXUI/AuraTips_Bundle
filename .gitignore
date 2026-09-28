@@ -39,10 +39,12 @@ next-env.d.ts
 # vercel
 .vercel
 
-# editor
+# editor & agent credentials
 .vscode/*
 !.vscode/extensions.json
 .idea
+.agents/mcp_config.json
+mcp-server/
 
 # supabase
 supabase/.temp/

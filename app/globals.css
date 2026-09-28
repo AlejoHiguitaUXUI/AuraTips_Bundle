@@ -2085,6 +2085,17 @@ textarea {
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
+/* S5: título decorativo del hero (aria-hidden) — misma apariencia que el h1 original */
+.procedure-hero-card .procedure-hero-title {
+  color: #FFFFFF !important;
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 4px 0 8px 0;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .procedure-hero-card p {
   color: rgba(255, 255, 255, 0.92) !important;
   font-size: 13.5px;
@@ -2337,6 +2348,16 @@ textarea {
 .stage-lesson-link:hover {
   background-color: var(--color-brand-soft);
   color: var(--color-brand);
+}
+
+/* A6: foco de teclado visible — WCAG 2.1 2.4.11 */
+.stage-lesson-link:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: var(--radius-lg);
+}
+.stage-lesson-link:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* =========================================================

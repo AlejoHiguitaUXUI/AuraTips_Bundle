@@ -23,13 +23,18 @@ export function ReviewList({ reviews }: { reviews: Review[] }) {
               <strong style={{ color: "var(--color-text)", fontSize: "14px" }}>
                 {author?.display_name ?? "Paciente de AuraTips"}
               </strong>
-              <div style={{ display: "flex", alignItems: "center", gap: "2px", color: "var(--color-gold-text, #997316)" }}>
+              {/* A8: aria-label en el contenedor; estrellas individuales aria-hidden */}
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "2px", color: "var(--color-gold-text, #997316)" }}
+                aria-label={`Calificación: ${r.rating} de 5 estrellas`}
+              >
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon
                     key={i}
                     size={12}
                     fill={i < r.rating ? "currentColor" : "none"}
                     color={i < r.rating ? "currentColor" : "var(--color-border)"}
+                    aria-hidden="true"
                   />
                 ))}
                 <span style={{ fontSize: "12px", color: "var(--color-muted)", marginLeft: "6px" }}>

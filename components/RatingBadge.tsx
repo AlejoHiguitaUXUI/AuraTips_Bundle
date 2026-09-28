@@ -16,10 +16,15 @@ export function RatingBadge({
   }
 
   return (
-    <span className="rating-badge" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-      <StarIcon size={12} fill="currentColor" />
-      <span>{avgRating.toFixed(1)}</span>
-      <span className="count">({reviewCount})</span>
+    /* A8: aria-label único para AT; contenido visual queda aria-hidden */
+    <span
+      className="rating-badge"
+      style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
+      aria-label={`Calificación promedio: ${avgRating.toFixed(1)} de 5 (${reviewCount} reseñas)`}
+    >
+      <StarIcon size={12} fill="currentColor" aria-hidden="true" />
+      <span aria-hidden="true">{avgRating.toFixed(1)}</span>
+      <span className="count" aria-hidden="true">({reviewCount})</span>
     </span>
   );
 }
