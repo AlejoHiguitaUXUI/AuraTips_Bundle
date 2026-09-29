@@ -12,6 +12,7 @@
     "test:integration": "vitest run integration",
     "test:watch": "vitest",
     "test:e2e": "playwright test e2e/eduplatform-flujo.spec.ts --project=chromium",
+    "test:e2e:report": "playwright test e2e/eduplatform-flujo.spec.ts --project=chromium --reporter=html && playwright show-report",
     "seed": "node --env-file=.env.local scripts/seed.mjs"
   },
   "dependencies": {

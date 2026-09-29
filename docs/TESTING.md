@@ -51,6 +51,11 @@ npm run test:e2e
 ```
 *Las sesiones autenticadas se almacenan automáticamente de forma aislada en `e2e/.auth/` (ignorado en git) y no ensucian la raíz del repositorio.*
 
+Para ejecutar y abrir automáticamente el **reporte interactivo visual de Playwright** en el navegador:
+```bash
+npm run test:e2e:report
+```
+
 ---
 
 ## 3. Ejecución Asíncrona en Background
