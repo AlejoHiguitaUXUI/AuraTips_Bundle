@@ -50,6 +50,7 @@ export async function POST(request: Request) {
         slug,
         description,
         cover_url: coverUrl,
+        price: typeof body.price === "number" ? Math.max(0, body.price) : 0,
         status: "draft",
       })
       .select("id, slug")

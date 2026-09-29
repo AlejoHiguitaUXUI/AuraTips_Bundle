@@ -62,3 +62,15 @@ __pycache__/
 *.ses
 :memory:.ses
 
+# Playwright & Testing artifacts
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/
+/e2e-videos/
+**/.auth/
+e2e/.auth/
+*.webm
+*.mp4
+*.mkv

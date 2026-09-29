@@ -74,6 +74,7 @@ export function EdyVoiceWidget({
 
   return (
     <div
+      data-testid="edy-voice-widget"
       style={{
         borderRadius: "16px",
         backgroundColor: "var(--color-surface, #18221D)",

@@ -103,7 +103,7 @@ export async function searchCoursesBySimilarity(
             .from('courses')
             .select('id, title, slug, description, price, category, recovery_time, pain_level, results_duration, alarm_signs, cover_url')
             .eq('status', 'published')
-            .or(`title.ilike.%${encodeURIComponent(query.trim())}%,description.ilike.%${encodeURIComponent(query.trim())}%`)
+            .or(`title.ilike.%${query.trim()}%,description.ilike.%${query.trim()}%`)
             .limit(limit);
 
         if (!error && courses && courses.length > 0) {

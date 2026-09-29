@@ -4,6 +4,7 @@ import { RatingBadge } from "@/components/RatingBadge";
 import { ClinicalSearchBar } from "@/components/ClinicalSearchBar";
 import { CLINICAL_PROCEDURES, getProcedureBySlug } from "@/lib/clinical-data";
 import { ClinicalPill } from "@/components/ClinicalPill";
+import { filterCourses, getPublishedCourses } from "@/lib/queries";
 import {
   LeafIcon,
   ClockIcon,
@@ -32,11 +33,7 @@ export default async function CatalogPage({
   let dbCourses: any[] | null = null;
   try {
     const supabase = await createClient();
-    const { data } = await supabase
-      .from("courses")
-      .select("id, title, slug, cover_url, description, owner_id, category, recovery_time, pain_level, results_duration, profiles ( display_name )")
-      .eq("status", "published");
-    dbCourses = data;
+    dbCourses = await getPublishedCourses(supabase);
   } catch (err) {
     console.warn("CatalogPage: Supabase query failed, falling back to local clinical data:", err);
   }
@@ -79,10 +76,9 @@ export default async function CatalogPage({
     return 0;
   });
 
-  const filteredProcedures =
-    currentCategory === "Todos"
-      ? procedures
-      : procedures.filter((p) => p.category.toLowerCase() === currentCategory.toLowerCase());
+  const filteredProcedures = filterCourses(procedures, {
+    category: currentCategory,
+  });
 
   const categories = [
     { name: "Todos", icon: <SparklesIcon size={16} /> },
@@ -162,13 +158,18 @@ export default async function CatalogPage({
           </Link>
         </div>
       ) : (
-        <section className="catalog-grid stagger animate-slide-up" aria-label="Catálogo de procedimientos">
+        <section
+          data-testid="catalog-grid"
+          className="catalog-grid stagger animate-slide-up"
+          aria-label="Catálogo de procedimientos"
+        >
           {filteredProcedures.map((proc) => {
             const painMeter = "●".repeat(proc.pain_level) + "○".repeat(5 - proc.pain_level);
 
             return (
               <Link
                 key={proc.id}
+                data-testid="procedure-card"
                 href={`/courses/${proc.slug}`}
                 className="procedure-card"
                 aria-label={`Protocolo de ${proc.title}`}

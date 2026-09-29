@@ -142,6 +142,7 @@ export default async function TeachingDashboard() {
         </div>
         <Link
           href="/dashboard/teaching/new"
+          data-testid="new-course-button"
           className="btn"
           style={{
             backgroundColor: "var(--color-brand, #20503b)",

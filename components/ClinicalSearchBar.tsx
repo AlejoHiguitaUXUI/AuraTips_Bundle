@@ -146,6 +146,7 @@ export function ClinicalSearchBar() {
             ref={inputRef}
             type="text"
             role="combobox"
+            data-testid="clinical-search-input"
             className="clinical-search-input"
             placeholder="Buscar procedimiento, síntoma o duda post..."
             value={query}
@@ -205,6 +206,7 @@ export function ClinicalSearchBar() {
           <button
             type="button"
             className="aura-call-cta-btn"
+            data-testid="edy-voice-button"
             onClick={() => setIsVoiceOpen(true)}
             aria-label="Hablar en vivo con la asistente clínica AURA"
           >
@@ -258,6 +260,7 @@ export function ClinicalSearchBar() {
       {isOpen && (
         <div
           id="clinical-search-listbox"
+          data-testid="clinical-search-dropdown"
           className="clinical-search-dropdown"
           role="listbox"
         >
@@ -293,6 +296,7 @@ export function ClinicalSearchBar() {
                 <Link
                     key={r.id}
                     id={`clinical-result-${r.id}`}
+                    data-testid="clinical-search-item"
                     href={`/courses/${r.slug}`}
                     onClick={() => setIsOpen(false)}
                     className={`clinical-search-item ${isSelected ? "is-selected" : ""}`}
@@ -339,15 +343,19 @@ export function ClinicalSearchBar() {
       {isVoiceOpen && (
         <FocusTrap
           focusTrapOptions={{
-            onDeactivate: () => setIsVoiceOpen(false),
-            clickOutsideDeactivates: true,
             returnFocusOnDeactivate: true,
+            allowOutsideClick: true,
+            escapeDeactivates: false,
           }}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-label="Llamada de voz con AURA"
+            tabIndex={-1}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setIsVoiceOpen(false);
+            }}
             style={{
               position: "fixed",
               inset: 0,

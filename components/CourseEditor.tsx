@@ -249,6 +249,7 @@ export function CourseEditor({
         >
           <div>
             <span
+              data-testid="course-status-badge"
               style={{
                 fontSize: "12px",
                 fontWeight: 700,
@@ -260,6 +261,7 @@ export function CourseEditor({
           </div>
           <button
             type="button"
+            data-testid="publish-course-button"
             className="btn btn-sm secondary"
             onClick={togglePublish}
           >

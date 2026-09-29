@@ -439,6 +439,7 @@ export default async function CourseDetailPage({ params }: Props) {
              Cuando hay imagen de portada se oculta visualmente (sr-only) para evitar
              duplicado; la portada muestra el título decorativo dentro del hero. */}
         <h1
+          data-testid="course-page-title"
           className={course.cover_url ? "sr-only" : undefined}
           style={!course.cover_url ? { fontSize: "2rem", fontWeight: 800, marginBottom: "8px" } : undefined}
         >

@@ -108,6 +108,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
 
   return (
     <div
+      data-testid="active-procedure-card"
       className="bento-card bento-active-procedure"
       style={{
         display: "flex",
@@ -231,6 +232,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
 
         <div style={{ flex: 1, minWidth: 220 }}>
           <h2
+            data-testid="active-procedure-title"
             style={{
               fontSize: "var(--text-xl)",
               fontWeight: 800,

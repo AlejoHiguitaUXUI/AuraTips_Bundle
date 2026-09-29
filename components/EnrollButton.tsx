@@ -39,7 +39,10 @@ export function EnrollButton({
 
   if (enrolled) {
     return (
-      <p style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-brand)", fontWeight: 700 }}>
+      <p
+        data-testid="enrolled-status"
+        style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-brand)", fontWeight: 700 }}
+      >
         <CheckCircle2Icon size={16} />
         <span>Protocolo activo en tu seguimiento</span>
       </p>
@@ -65,7 +68,12 @@ export function EnrollButton({
   return (
     <div>
       {error && <div className="error">{error}</div>}
-      <button className="btn" onClick={enroll} disabled={pending}>
+      <button
+        data-testid="enroll-button"
+        className="btn"
+        onClick={enroll}
+        disabled={pending}
+      >
         {pending ? "Activando…" : "Activar Acompañamiento Clínico"}
       </button>
     </div>

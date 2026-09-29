@@ -10,6 +10,7 @@ export default function NewCoursePage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
+  const [price, setPrice] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -25,6 +26,7 @@ export default function NewCoursePage() {
         title,
         description,
         cover_url: coverUrl,
+        price: Number(price) || 0,
       }),
     });
     const json = await res.json();
@@ -117,6 +119,7 @@ export default function NewCoursePage() {
             </label>
             <input
               id="title"
+              data-testid="course-title-input"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -134,10 +137,30 @@ export default function NewCoursePage() {
             </label>
             <textarea
               id="description"
+              data-testid="course-description-input"
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe el objetivo del tratamiento, zonas intervenidas y consideraciones generales para el paciente..."
+              style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid var(--color-border)" }}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="price"
+              style={{ fontWeight: 700, fontSize: "13px", display: "block", marginBottom: "6px", color: "var(--color-text)" }}
+            >
+              Precio (COP) — 0 para gratuito
+            </label>
+            <input
+              id="price"
+              data-testid="course-price-input"
+              type="number"
+              min="0"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              placeholder="0"
               style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid var(--color-border)" }}
             />
           </div>
@@ -151,6 +174,7 @@ export default function NewCoursePage() {
             </label>
             <input
               id="cover_url"
+              data-testid="course-cover-input"
               type="text"
               value={coverUrl}
               onChange={(e) => setCoverUrl(e.target.value)}
@@ -165,6 +189,7 @@ export default function NewCoursePage() {
             </Link>
             <button
               className="btn"
+              data-testid="course-submit-button"
               type="submit"
               disabled={pending || !title.trim()}
               style={{
