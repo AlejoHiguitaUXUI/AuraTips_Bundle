@@ -157,12 +157,12 @@
   --footer-border-width:     1px;
 
   /* Aurora Canvas Opacity (User Configured) */
-  --aurora-opacity-light:    0.77;
+  --aurora-opacity-light:    0.7;
   --aurora-opacity-dark:     0.99;
 
   /* Main Cards Glassmorphism (Light Mode - User Configured) */
   --card-glass-bg:           rgba(250, 248, 245, 0.42);
-  --card-glass-border:       rgba(194, 155, 56, 0);
+  --card-glass-border:       rgba(194, 155, 56, 0.15);
   --card-glass-blur:         17px;
   --card-glass-saturate:     180%;
   --card-border-width:       1px;
@@ -3373,6 +3373,8 @@ textarea {
   position: relative;
   max-width: 1140px;
   margin: 0 auto var(--space-7);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .editorial-arches-gallery {
@@ -3381,6 +3383,16 @@ textarea {
   height: 440px;
   margin: 0 auto var(--space-5);
   display: block;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.editorial-arches-gallery.is-dragging {
+  cursor: grabbing;
+}
+
+.editorial-arches-gallery.is-dragging * {
+  cursor: grabbing !important;
 }
 
 /* Base Arch Card — Uniform Architectural Geometry with Permanent Clipping */
@@ -3397,10 +3409,13 @@ textarea {
   border: 1.5px solid rgba(194, 155, 56, 0.28);
   box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.3);
   background-color: var(--color-surface-2);
-  cursor: pointer;
+  cursor: grab;
   padding: 0;
   outline: none;
   flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
   
   /* Absolute Positioning & Hardware Acceleration for Smooth DOM Animations */
   position: absolute;

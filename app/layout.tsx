@@ -5,7 +5,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { GlobalAurora } from "@/components/GlobalAurora";
 import { ScrollEnhancements } from "@/components/ScrollEnhancements";
-import { DarkBackgroundDevTool } from "@/components/DarkBackgroundDevTool";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -63,7 +62,6 @@ export default function RootLayout({
       <body>
         <GlobalAurora />
         <ScrollEnhancements />
-        <DarkBackgroundDevTool />
         <div style={{ position: "relative", zIndex: 1, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <SiteHeader />
           <main className="container" style={{ paddingBlock: "var(--space-8)", flex: 1 }}>

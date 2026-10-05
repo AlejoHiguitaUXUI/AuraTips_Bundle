@@ -103,8 +103,15 @@ const PROCEDURES: Procedure[] = [
 export function EditorialHero() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Drag interaction tracking refs
+  const dragStartXRef = React.useRef(0);
+  const dragCurrentXRef = React.useRef(0);
+  const dragStartTimeRef = React.useRef(0);
+  const isDraggingRef = React.useRef(false);
+  const hasMovedRef = React.useRef(false);
+  const galleryRef = React.useRef<HTMLDivElement>(null);
 
   // Reference for detecting wrap-arounds to kill the flying animation
   const prevActiveIndexRef = React.useRef(activeIndex);
@@ -122,22 +129,93 @@ export function EditorialHero() {
     setActiveIndex((prev) => (prev - 1 + len) % len);
   }, [len]);
 
-  // Rotación automática cada 3.8s, pausada al pasar el cursor o interactuar
+  // Rotación automática cada 3.8s, pausada al pasar el cursor o arrastrar activamente
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || isDragging) return;
     const interval = setInterval(handleNext, 3800);
     return () => clearInterval(interval);
-  }, [isPaused, handleNext]);
+  }, [isPaused, isDragging, handleNext]);
 
-  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
-  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > 50) handleNext();
-    if (distance < -50) handlePrev();
-    setTouchStart(0);
-    setTouchEnd(0);
+  // Pointer drag event handlers (Supports Desktop Mouse + Mobile/Tablet Touch)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Only respond to primary mouse button or touch
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    dragStartXRef.current = e.clientX;
+    dragCurrentXRef.current = e.clientX;
+    dragStartTimeRef.current = Date.now();
+    
+    // Capture pointer on gallery element
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // Ignored if capture unsupported
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    dragCurrentXRef.current = e.clientX;
+    const deltaX = e.clientX - dragStartXRef.current;
+
+    // Filter out micro-movements to avoid accidental drag activation
+    if (!hasMovedRef.current && Math.abs(deltaX) > 6) {
+      hasMovedRef.current = true;
+      setIsDragging(true);
+    }
+
+    // Step-drag threshold: if dragged sufficiently (>48px), immediately trigger in-situ step
+    if (hasMovedRef.current && Math.abs(deltaX) >= 48) {
+      if (deltaX < 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+      // Re-anchor start point so continuous drag moves to subsequent slides cleanly
+      dragStartXRef.current = e.clientX;
+      dragStartTimeRef.current = Date.now();
+    }
+  };
+
+  const handlePointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+
+    try {
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
+    } catch {
+      // Ignored
+    }
+
+    const deltaX = dragCurrentXRef.current - dragStartXRef.current;
+    const deltaTime = Math.max(Date.now() - dragStartTimeRef.current, 1);
+    const velocity = deltaX / deltaTime; // px per ms
+
+    // If released with a quick swipe flick (<48px but fast)
+    if (hasMovedRef.current && Math.abs(deltaX) > 18) {
+      if (deltaX < 0 && velocity < -0.28) {
+        handleNext();
+      } else if (deltaX > 0 && velocity > 0.28) {
+        handlePrev();
+      }
+    }
+
+    isDraggingRef.current = false;
+    setIsDragging(false);
+
+    // Reset moved flag on next tick to allow clicks
+    setTimeout(() => {
+      hasMovedRef.current = false;
+    }, 40);
+  };
+
+  const handleCardClick = (index: number) => {
+    // Prevent switching card if this was a drag gesture
+    if (hasMovedRef.current) return;
+    setActiveIndex(index);
   };
 
   return (
@@ -165,18 +243,24 @@ export function EditorialHero() {
           Portal clínico exclusivo de acompañamiento paso a paso, cronogramas de desinflamación y pautas de seguridad médica supervisadas por la Dra. Mariana Gómez.
         </p>
 
-        {/* Carrusel de 5 Arcos Orgánicos con Profundidad y Nitidez Dinámica */}
+        {/* Carrusel Draggable de 5 Arcos Orgánicos con Profundidad y Nitidez Dinámica */}
         <div
           className="editorial-carousel-container"
           onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onMouseLeave={() => {
+            if (!isDragging) setIsPaused(false);
+          }}
           role="region"
           aria-label="Carrusel interactivo de procedimientos y tratamientos de AuraMed"
         >
-          <div className="editorial-arches-gallery">
+          <div
+            ref={galleryRef}
+            className={`editorial-arches-gallery ${isDragging ? "is-dragging" : ""}`}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUpOrCancel}
+            onPointerCancel={handlePointerUpOrCancel}
+          >
             {PROCEDURES.map((proc, index) => {
               let offset = index - activeIndex;
               // Circular offset normalization for infinite loop feel
@@ -206,7 +290,6 @@ export function EditorialHero() {
               else if (prevOffset > 2) prevSlotStatus = "hidden-right";
 
               const isWrapping = slotStatus.startsWith("hidden-") && prevSlotStatus.startsWith("hidden-") && slotStatus !== prevSlotStatus;
-
               const isCenter = offset === 0;
 
               return (
@@ -214,7 +297,7 @@ export function EditorialHero() {
                   key={proc.id}
                   type="button"
                   style={isWrapping ? { transition: "none" } : undefined}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => handleCardClick(index)}
                   className={`editorial-arch ${isCenter ? "active" : ""}`}
                   data-status={slotStatus}
                   aria-label={`Ver procedimiento ${proc.name} (${proc.category})`}
@@ -227,6 +310,7 @@ export function EditorialHero() {
                       fill
                       sizes="(max-width: 768px) 360px, (max-width: 1200px) 480px, 600px"
                       quality={100}
+                      draggable={false}
                       className="editorial-arch-img"
                       // Solo 12 fotos: se cargan todas de inmediato para que ninguna
                       // tarjeta entre al carrusel vacía. La prioridad es estática

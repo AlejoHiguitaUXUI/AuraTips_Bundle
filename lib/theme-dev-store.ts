@@ -50,14 +50,14 @@ export const DEFAULT_DARK_CONFIG: ThemeConfig = {
 
 // Luxury Clinical & Wellness Light Mode Configuration
 export const DEFAULT_LIGHT_CONFIG: ThemeConfig = {
-  // Soft Periwinkle Violet, Rose Petal Pink, Warm Golden Peach
+  // Soft Periwinkle Violet, Rose Petal Pink, Vibrant Sky Blue
   auroraStop1: "#B8A1FF",
   auroraStop2: "#F45B95",
-  auroraStop3: "#FBBF24",
-  auroraOpacity: 0.77,
-  auroraAmplitude: 1.45,
-  auroraBlend: 0.7,
-  auroraSpeed: 0.45,
+  auroraStop3: "#23a8fb",
+  auroraOpacity: 0.7,
+  auroraAmplitude: 0.8,
+  auroraBlend: 0.65,
+  auroraSpeed: 0.8,
 
   colorBase: "#FAF8F5",
   colorBase2: "#F2EEE8",
@@ -195,7 +195,7 @@ export const LIGHT_THEME_PRESETS: ThemePreset[] = [
     id: "light-original",
     name: "Aura Pastel Luxury (Original)",
     badge: "Actual",
-    description: "Lavanda suave, rosa pétalo y ámbar dorado cálido",
+    description: "Lavanda periwinkle, rosa pétalo y azul cielo vibrante",
     config: { ...DEFAULT_LIGHT_CONFIG },
   },
   {
