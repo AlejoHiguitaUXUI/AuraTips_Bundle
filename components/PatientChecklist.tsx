@@ -242,8 +242,8 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
               }}
             >
               <div>
-                <strong style={{ color: "#16a34a", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                  <CheckCircle2Icon size={14} color="#16a34a" />
+                <strong style={{ color: "var(--color-clinical-do-text)", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                  <CheckCircle2Icon size={14} color="var(--color-clinical-do-text)" />
                   <span>Pautas recomendadas (Qué hacer)</span>
                 </strong>
                 <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>
@@ -256,8 +256,8 @@ export function PatientChecklist({ lessonId, items, dos = [], donts = [] }: Pati
               </div>
 
               <div>
-                <strong style={{ color: "#dc2626", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                  <BanIcon size={14} color="#dc2626" />
+                <strong style={{ color: "var(--color-clinical-dont-text)", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                  <BanIcon size={14} color="var(--color-clinical-dont-text)" />
                   <span>Acciones a evitar (Qué evitar)</span>
                 </strong>
                 <ul style={{ paddingLeft: "16px", margin: 0, color: "var(--color-text)", lineHeight: 1.4 }}>

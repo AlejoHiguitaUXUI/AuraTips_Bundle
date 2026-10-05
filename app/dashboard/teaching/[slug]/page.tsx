@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CourseEditor } from "@/components/CourseEditor";
 import { getProcedureBySlug } from "@/lib/clinical-data";
+import { getClinicalRole } from "@/lib/auth-role";
 
 export default async function EditCoursePage({
   params,
@@ -16,6 +17,11 @@ export default async function EditCoursePage({
 
   if (!user) {
     redirect(`/login?next=/dashboard/teaching/${slug}`);
+  }
+
+  const { isSpecialist } = await getClinicalRole(supabase, user);
+  if (!isSpecialist) {
+    redirect("/dashboard/learning");
   }
 
   const { data: dbCourse } = await supabase

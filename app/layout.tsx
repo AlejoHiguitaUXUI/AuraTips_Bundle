@@ -3,6 +3,8 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { GlobalAurora } from "@/components/GlobalAurora";
+import { ScrollEnhancements } from "@/components/ScrollEnhancements";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -58,11 +60,15 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <SiteHeader />
-        <main className="container" style={{ paddingBlock: "var(--space-8)" }}>
-          {children}
-        </main>
-        <SiteFooter />
+        <GlobalAurora />
+        <ScrollEnhancements />
+        <div style={{ position: "relative", zIndex: 1, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          <SiteHeader />
+          <main className="container" style={{ paddingBlock: "var(--space-8)", flex: 1 }}>
+            {children}
+          </main>
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );

@@ -476,6 +476,54 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             </div>
           </div>
         )}
+
+        {/* Banner sutil: Conoce otros procedimientos de AuraMed */}
+        <div
+          className="glass-card"
+          style={{
+            borderRadius: "var(--radius-xl)",
+            padding: "var(--space-4) var(--space-5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "var(--space-3)",
+            marginTop: "var(--space-4)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(194, 155, 56, 0.15)",
+                color: "var(--color-gold-text, #997316)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <SparklesIcon size={18} />
+            </div>
+            <div>
+              <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
+                ¿Pensando en tu próximo tratamiento estético?
+              </strong>
+              <span style={{ fontSize: "12px", color: "var(--color-text-2)", fontWeight: 500 }}>
+                Descubre los cuidados y beneficios de otros tratamientos en AuraMed.
+              </span>
+            </div>
+          </div>
+          <Link
+            href="/procedimientos"
+            className="btn btn-sm secondary"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", textDecoration: "none" }}
+          >
+            <span>Conoce otros procedimientos</span>
+            <ArrowRightIcon size={13} />
+          </Link>
+        </div>
       </div>
 
       <ClinicalAssistantDrawer

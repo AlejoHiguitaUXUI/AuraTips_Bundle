@@ -119,7 +119,7 @@ export function ClinicalSearchBar() {
     } else if (e.key === "Enter" && selectedIndex >= 0 && results[selectedIndex]) {
       e.preventDefault();
       setIsOpen(false);
-      router.push(`/courses/${results[selectedIndex].slug}`);
+      router.push(`/procedimientos?proc=${results[selectedIndex].slug}`);
     }
   };
 
@@ -127,7 +127,7 @@ export function ClinicalSearchBar() {
     e.preventDefault();
     if (selectedIndex >= 0 && results[selectedIndex]) {
       setIsOpen(false);
-      router.push(`/courses/${results[selectedIndex].slug}`);
+      router.push(`/procedimientos?proc=${results[selectedIndex].slug}`);
     } else if (query.trim()) {
       handleSearch(query);
     } else {
@@ -297,7 +297,7 @@ export function ClinicalSearchBar() {
                     key={r.id}
                     id={`clinical-result-${r.id}`}
                     data-testid="clinical-search-item"
-                    href={`/courses/${r.slug}`}
+                    href={`/procedimientos?proc=${r.slug}`}
                     onClick={() => setIsOpen(false)}
                     className={`clinical-search-item ${isSelected ? "is-selected" : ""}`}
                     role="option"

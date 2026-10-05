@@ -65,16 +65,18 @@ The system SHALL expose each user's profile with display name, bio, and avatar. 
 - **WHEN** anyone views a course detail page
 - **THEN** the course author's display name and avatar are visible without requiring sign-in
 
-### Requirement: Every user is both author and learner
+### Requirement: Control de Acceso Basado en Roles Clínicos (RBAC) — v1.4.0
 
-The system SHALL NOT assign a fixed role to a user. Any authenticated user SHALL be able to author courses and to enroll in courses. There is no separate instructor application or approval step.
+El sistema SHALL implementar una arquitectura de roles clínicos diferenciados (`patient`, `specialist`, `admin`) respaldada por RLS en Supabase Postgres y funciones de seguridad (`is_specialist()`, `get_my_role()`). La tabla `profiles` SHALL extenderse con `role`, `phone`, `notification_preferences` (jsonb con flags WhatsApp/Email), `medical_license` e `invited_by`.
 
-#### Scenario: New user publishes without approval
+#### Scenario: Especialista accede a gestión de protocolos
+- **WHEN** un usuario con rol `specialist` ingresa a `/dashboard/teaching` o invoca rutas de creación/edición de protocolos
+- **THEN** el sistema concede acceso completo al editor de protocolos, asignación de tratamientos y métricas clínicas
 
-- **WHEN** a user who has never created a course before creates and publishes one
-- **THEN** the course becomes publicly listed with no intermediate approval
+#### Scenario: Paciente intenta acceder a gestión clínica
+- **WHEN** un usuario con rol `patient` intenta navegar a `/dashboard/teaching`
+- **THEN** el sistema deniega el acceso y lo redirige automáticamente a su portal de cuidados (`/dashboard/learning` o `/`)
 
-#### Scenario: Author enrolls in another course
-
-- **WHEN** a user who owns published courses enrolls in a different author's course
-- **THEN** the enrollment succeeds and the user has both authored courses and enrollments
+#### Scenario: Actualización de perfil clínico con preferencias WhatsApp
+- **WHEN** un paciente o especialista actualiza su teléfono y preferencias de notificación en `/dashboard/profile`
+- **THEN** el sistema persiste el número telefónico y el objeto de preferencias para alertas de desinflamación y seguimiento clínico sin permitir la auto-escalación del rol

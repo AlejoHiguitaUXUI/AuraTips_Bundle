@@ -8,10 +8,12 @@ import {
 } from "@/components/icons";
 
 export const metadata = {
-  title: "Dirección de Protocolos Clínicos · AuraTips | Dra. Mariana Gómez",
+  title: "Protocolos Clínicos · Gestión y Pautas Médicas | Dra. Mariana Gómez",
   description:
-    "Panel médico de administración de protocolos de recuperación, pautas clínicas y criterios de seguridad.",
+    "Panel médico de administración y edición de protocolos de recuperación, pautas clínicas y criterios de seguridad.",
 };
+
+import { getClinicalRole } from "@/lib/auth-role";
 
 export default async function TeachingDashboard() {
   const supabase = await createClient();
@@ -23,6 +25,11 @@ export default async function TeachingDashboard() {
     redirect("/login?next=/dashboard/teaching");
   }
 
+  const { isSpecialist } = await getClinicalRole(supabase, user);
+  if (!isSpecialist) {
+    redirect("/dashboard/learning");
+  }
+
   // RLS scopes to owner_id
   const { data: courses, error } = await supabase
     .from("courses")
@@ -31,6 +38,19 @@ export default async function TeachingDashboard() {
     .order("updated_at", { ascending: false });
 
   const publishedCount = (courses ?? []).filter((c) => c.status === "published").length;
+
+  // Enrollments / Pacientes en seguimiento clínico
+  let activePatients: any[] = [];
+  try {
+    const { data: enrolledData } = await supabase
+      .from("enrollments")
+      .select("id, enrolled_at, user_id, courses ( title, slug ), profiles ( display_name )")
+      .order("enrolled_at", { ascending: false })
+      .limit(8);
+    activePatients = enrolledData || [];
+  } catch (err) {
+    console.warn("TeachingDashboard: Could not fetch active enrollments:", err);
+  }
 
   return (
     <section>
@@ -76,7 +96,7 @@ export default async function TeachingDashboard() {
                 color: "var(--color-gold-light, #E6CA85)",
               }}
             >
-              Dirección de Protocolos Clínicos · AuraTips
+              Protocolos Clínicos · AuraTips
             </span>
             <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, margin: "2px 0 0", color: "#FAF8F5" }}>
               Dra. Mariana Gómez
@@ -88,7 +108,22 @@ export default async function TeachingDashboard() {
         </div>
 
         {/* Indicadores rápidos */}
-        <div style={{ display: "flex", gap: "16px" }}>
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              padding: "10px 16px",
+              borderRadius: "var(--radius-md)",
+              textAlign: "center",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+            }}
+          >
+            <strong style={{ fontSize: "20px", display: "block", color: "#FAF8F5" }}>
+              {activePatients.length}
+            </strong>
+            <span style={{ fontSize: "12px", opacity: 0.8 }}>Pacientes Asignados</span>
+          </div>
+
           <div
             style={{
               background: "rgba(255, 255, 255, 0.1)",
@@ -120,6 +155,65 @@ export default async function TeachingDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Sección Pacientes en Seguimiento Activo */}
+      {activePatients.length > 0 && (
+        <div
+          style={{
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border)",
+            borderRadius: "var(--radius-xl)",
+            padding: "var(--space-5) var(--space-6)",
+            marginBottom: "var(--space-6)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-3)" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }} />
+              Pacientes con Procedimiento Activo
+            </h2>
+            <span className="badge badge-brand">{activePatients.length} en recuperación</span>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--space-3)" }}>
+            {activePatients.map((ep) => {
+              const patientName = (ep.profiles as any)?.display_name || "Paciente AuraMed";
+              const procTitle = (ep.courses as any)?.title || "Procedimiento Asignado";
+              return (
+                <div
+                  key={ep.id}
+                  style={{
+                    padding: "12px 16px",
+                    borderRadius: "var(--radius-md)",
+                    background: "var(--color-bg)",
+                    border: "1px solid var(--color-border)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <strong style={{ display: "block", fontSize: "var(--text-sm)" }}>{patientName}</strong>
+                    <span style={{ fontSize: "12px", color: "var(--color-brand)" }}>{procTitle}</span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      padding: "2px 8px",
+                      borderRadius: "999px",
+                      background: "rgba(34, 197, 94, 0.12)",
+                      color: "#16a34a",
+                      fontWeight: 600,
+                    }}
+                  >
+                    En seguimiento
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Barra de Título y Nuevo Protocolo */}
       <div

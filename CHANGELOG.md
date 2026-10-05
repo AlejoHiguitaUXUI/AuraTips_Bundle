@@ -4,6 +4,56 @@ Todas las modificaciones notables realizadas en este proyecto están documentada
 
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y este proyecto se adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [1.4.0] - 2026-10-04
+
+### 🚀 Añadido (Added)
+
+- **Hero Editorial de Alta Gama y Carrusel Orgánico de 5 Arcos (`components/EditorialHero.tsx`):**
+  - Rediseño editorial centrado en el titular "Cuidado & Recuperación" con tipografía serif y balance visual sin elementos distractores.
+  - Carrusel continuo de 5 arcos visibles en pantalla con geometría fija (`border-radius: 140px 140px 32px 32px !important`), aceleración por hardware mediante `translateZ(0)` y `transform-origin: bottom center`.
+  - Sistema de profundidad visual con desenfoque progresivo (`filter: blur(0px)` en tarjeta central, `1.8px` en laterales inmediatos y `3.5px` en extremos).
+  - Transiciones continuas e infinitas con curva `cubic-bezier(0.4, 0, 0.2, 1)`, rotación automática cada 3.8s, navegación bidireccional por vectores SVG, indicadores interactivos y soporte de gestos táctiles (touch swipe).
+  - Estrategia de carga anticipada (`loading="eager"` / `priority`) para la totalidad de las 12 imágenes del carrusel, eliminando retrasos y arcos oscuros durante la rotación.
+
+- **Fondo Atmosférico Procedural Shader (`components/Aurora.tsx` & `components/GlobalAurora.tsx`):**
+  - Renderizado procedural WebGL continuo con paleta adaptativa para modos claro y oscuro, aportando profundidad luminosa a la interfaz general.
+
+- **Catálogo Comercial y Editorial Público (`app/courses/page.tsx`):**
+  - Nueva ruta `/courses` ("Conoce otros procedimientos") accesible desde la cabecera y el panel de paciente, presentando el catálogo oficial de tratamientos de AuraMed.
+  - Filtrado dinámico en cliente por categorías médicas (Facial, Corporal y Reducción, Capilar).
+  - Fichas informativas con tiempos de recuperación estimados, escala de molestia y enlaces a protocolos y agendamiento.
+
+- **Arquitectura de Roles Clínicos (RBAC) y Persistencia Supabase (`supabase/migrations/0008_...sql`):**
+  - Implementación de roles en base de datos: `patient` (Paciente en Cuidados), `specialist` (Dirección Clínica) y `admin`.
+  - Extensión de la tabla `profiles` con `role`, `phone`, `notification_preferences` (jsonb con flags WhatsApp/Email), `medical_license` e `invited_by`.
+  - Ampliación de la tabla `enrollments` con fecha de intervención (`procedure_date`), especialista asignador (`assigned_by`), notas médicas personalizadas y caché de día actual de recuperación.
+  - Políticas RLS y funciones de seguridad PostgreSQL (`is_specialist()`, `get_my_role()`, prevención de escalación de privilegios).
+  - Helper universal de resolución de roles clínicos `lib/auth-role.ts`.
+
+- **Editor Clínico en 3 Pasos (Wizard Guiado) y Gestor de Portadas:**
+  - Transformación del editor de cursos en un wizard médico secuencial en `components/CourseEditor.tsx`, `components/ModuleEditor.tsx` y `components/LessonEditor.tsx`:
+    - **Paso 1: Ficha Médica y Portada** (categoría, tiempos de reposo, escala de molestia, tipo de anestesia y selección de fotografía médica).
+    - **Paso 2: Cronograma Timeline de Fases** (definición y reordenamiento de etapas temporales).
+    - **Paso 3: Pautas Clínicas, Checklists y Alarmas** (pautas Do's / Don'ts, signos de alarma, contactos de emergencia y lista de verificación).
+  - Componente `components/CoverImageUploader.tsx` con tres modos: galería predefinida de procedimientos, subida de fotografía clínica directa y enlace URL.
+  - Endpoint seguro `POST /api/upload` con validación estricta de permisos de especialista, cuota máxima de 5 MB y tipos MIME admitidos (JPEG, PNG, WEBP, GIF, AVIF).
+
+- **Perfil Clínico y Preferencias de Notificación (`components/ProfileForm.tsx` & `app/dashboard/profile/page.tsx`):**
+  - Formulario de perfil con soporte para número telefónico y activación de notificaciones de desinflamación y cuidados vía WhatsApp.
+  - Badges semánticos de rol clínico en el dashboard ("Dirección Clínica" vs "Paciente en Cuidados").
+
+- **Nuevos Íconos SVG para Flujos Clínicos (`components/icons/index.tsx`):**
+  - Incorporación de `BellIcon`, `PlusIcon`, `PencilIcon`, `ImageIcon`, `UploadCloudIcon` y `SaveIcon`.
+
+### 🔧 Corregido y Optimizado (Fixed & Optimized)
+
+- **Accesibilidad y Contraste de Color Clínico WCAG AAA (`app/globals.css`, `components/PatientChecklist.tsx`):**
+  - Tokens específicos para Alertas SOS (`--color-clinical-alarm-*`), Acciones Recomendadas (`--color-clinical-do-*`) y Acciones Prohibidas (`--color-clinical-dont-*`), alcanzando ratios de contraste superiores a 7:1 y 9:1 tanto en modo claro como oscuro.
+- **Rendimiento y Suavidad de Arcos en Carrusel:**
+  - Erradicación de transiciones bruscas de border-radius al hacer hover mediante `isolation: isolate` y clipping permanente con máscara radial.
+- **Estabilidad del Servidor de Desarrollo:**
+  - Eliminación de bloqueos y errores 500 derivados de colisiones concurrentes en la caché `.next`.
+
 ---
 
 ## [1.3.1] - 2026-09-28

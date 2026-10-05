@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getClinicalRole } from "@/lib/auth-role";
 import { RatingBadge } from "@/components/RatingBadge";
 import { EnrollButton } from "@/components/EnrollButton";
 import { ReviewList } from "@/components/ReviewList";
@@ -56,6 +57,7 @@ async function fetchCourse(slugOrId: string): Promise<{
   clinicalProc: (typeof CLINICAL_PROCEDURES)[number] | null;
   user: any | null;
   isOwner: boolean;
+  isSpecialist: boolean;
   modulesData: any[];
   ratingRow: any | null;
   isEnrolled: boolean;
@@ -63,12 +65,18 @@ async function fetchCourse(slugOrId: string): Promise<{
 }> {
   let user: any = null;
   let dbCourse: any = null;
+  let isSpecialist = false;
   const isUUID = UUID_REGEX.test(slugOrId);
 
   try {
     const supabase = await createClient();
     const { data: authData } = await supabase.auth.getUser();
     user = authData?.user ?? null;
+
+    if (user) {
+      const roleInfo = await getClinicalRole(supabase, user);
+      isSpecialist = roleInfo.isSpecialist;
+    }
 
     const selectQuery =
       "id, title, slug, description, cover_url, status, owner_id, category, recovery_time, pain_level, duration_minutes, results_duration, anesthesia_type, alarm_signs, profiles ( display_name, bio, avatar_url )";
@@ -174,7 +182,6 @@ async function fetchCourse(slugOrId: string): Promise<{
         care_type: l.care_type,
       })),
     }));
-    isEnrolled = true;
   }
 
   return {
@@ -182,6 +189,7 @@ async function fetchCourse(slugOrId: string): Promise<{
     clinicalProc,
     user,
     isOwner,
+    isSpecialist,
     modulesData,
     ratingRow,
     isEnrolled,
@@ -328,6 +336,7 @@ export default async function CourseDetailPage({ params }: Props) {
     clinicalProc,
     user,
     isOwner,
+    isSpecialist,
     modulesData,
     ratingRow,
     isEnrolled,
@@ -336,6 +345,13 @@ export default async function CourseDetailPage({ params }: Props) {
 
   if (!dbCourse && !clinicalProc) {
     notFound();
+  }
+
+  // Pacientes o visitantes no asignados al protocolo no deben ingresar a la vista clínica interna:
+  // Se les redirige a la ficha informativa de procedimientos con el modal abierto.
+  if (!isSpecialist && !isOwner && !isEnrolled) {
+    const targetSlug = dbCourse?.slug || clinicalProc?.slug || slugOrId;
+    redirect(`/procedimientos?proc=${encodeURIComponent(targetSlug)}`);
   }
 
   const FALLBACK_COVER =
@@ -416,11 +432,11 @@ export default async function CourseDetailPage({ params }: Props) {
           >
             <li>
               <Link
-                href="/"
+                href="/procedimientos"
                 style={{ color: "var(--color-muted)", textDecoration: "none" }}
-                aria-label="Volver a la página principal de procedimientos"
+                aria-label="Volver al catálogo de otros procedimientos"
               >
-                ← Procedimientos
+                ← Otros procedimientos
               </Link>
             </li>
             <li aria-hidden="true" style={{ color: "var(--color-muted)" }}>/</li>

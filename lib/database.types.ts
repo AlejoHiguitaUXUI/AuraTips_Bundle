@@ -7,6 +7,8 @@
 export type CourseStatus = "draft" | "published";
 export type EnrollmentStatus = "active";
 
+export type UserRole = "patient" | "specialist" | "admin";
+
 export interface Database {
   public: {
     Tables: {
@@ -14,6 +16,11 @@ export interface Database {
         Row: {
           id: string;
           display_name: string;
+          role: UserRole;
+          phone: string | null;
+          notification_preferences: { whatsapp?: boolean; email?: boolean } | null;
+          medical_license: string | null;
+          invited_by: string | null;
           bio: string | null;
           avatar_url: string | null;
           created_at: string;
@@ -22,11 +29,21 @@ export interface Database {
         Insert: {
           id: string;
           display_name: string;
+          role?: UserRole;
+          phone?: string | null;
+          notification_preferences?: { whatsapp?: boolean; email?: boolean } | null;
+          medical_license?: string | null;
+          invited_by?: string | null;
           bio?: string | null;
           avatar_url?: string | null;
         };
         Update: {
           display_name?: string;
+          role?: UserRole;
+          phone?: string | null;
+          notification_preferences?: { whatsapp?: boolean; email?: boolean } | null;
+          medical_license?: string | null;
+          invited_by?: string | null;
           bio?: string | null;
           avatar_url?: string | null;
         };
@@ -201,9 +218,28 @@ export interface Database {
           course_id: string;
           status: EnrollmentStatus;
           enrolled_at: string;
+          procedure_date?: string | null;
+          assigned_by?: string | null;
+          personal_notes?: string | null;
+          current_day_cache?: number | null;
         };
-        Insert: { id?: string; user_id: string; course_id: string };
-        Update: { status?: EnrollmentStatus };
+        Insert: {
+          id?: string;
+          user_id: string;
+          course_id: string;
+          status?: EnrollmentStatus;
+          procedure_date?: string | null;
+          assigned_by?: string | null;
+          personal_notes?: string | null;
+          current_day_cache?: number | null;
+        };
+        Update: {
+          status?: EnrollmentStatus;
+          procedure_date?: string | null;
+          assigned_by?: string | null;
+          personal_notes?: string | null;
+          current_day_cache?: number | null;
+        };
         Relationships: [
           {
             foreignKeyName: "enrollments_user_id_fkey";

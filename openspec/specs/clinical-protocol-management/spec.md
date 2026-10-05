@@ -38,3 +38,23 @@ El sistema SHALL servir portadas fotográficas clínicas de alta resolución gen
 #### Scenario: Carga de portada de procedimiento
 - **WHEN** se visualiza la tarjeta de un procedimiento o su página de protocolo
 - **THEN** la imagen local responde con código HTTP 200 sin enlaces rotos ni dependencias de CDNs externas
+
+### Requirement: Editor de Protocolos en 3 Pasos (Wizard Clínico) — v1.4.0
+El sistema SHALL estructurar la creación y edición de protocolos en un wizard guiado de 3 pasos exclusivo para especialistas:
+- **Paso 1: Ficha Médica y Portada**: Título, categoría clínica, descripción, parámetros de recuperación (molestia, reposo, anestesia) y fotografía médica oficial vía `CoverImageUploader`.
+- **Paso 2: Cronograma Timeline de Fases**: Definición visual de etapas temporales (Día 0, Días 1-3, Días 4-14, etc.) con reordenamiento interactivo.
+- **Paso 3: Pautas Clínicas, Checklists y Alarmas**: Detalle granular de tareas obligatorias del paciente, recomendaciones de cuidado (Do's), restricciones críticas (Don'ts), signos de alarma y contactos SOS.
+
+#### Scenario: Especialista completa el flujo guiado
+- **WHEN** la especialista avanza secuencialmente a través de los pasos 1, 2 y 3 y guarda los cambios
+- **THEN** el sistema valida y persiste la estructura completa de etapas y pautas clínicas asociadas al procedimiento
+
+### Requirement: Gestor de Fotografía Médica y Subida Local (`CoverImageUploader` & `/api/upload`) — v1.4.0
+El sistema SHALL permitir la selección y carga de fotografías médicas a través de un componente con tres modos operativos:
+1. Galería predefinida de tratamientos de AuraMed.
+2. Subida de archivo fotográfico clínico directo mediante `POST /api/upload`, validado para especialistas (máx. 5 MB, tipos JPEG/PNG/WEBP/GIF/AVIF) y almacenado localmente en `public/uploads/`.
+3. Entrada manual de URL para recursos externos verificados.
+
+#### Scenario: Especialista sube fotografía clínica
+- **WHEN** un usuario autenticado con rol `specialist` sube una imagen válida a través de `/api/upload`
+- **THEN** el archivo es guardado en disco con nombre único seguro y se devuelve la URL pública correspondiente

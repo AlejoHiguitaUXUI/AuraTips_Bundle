@@ -44,36 +44,48 @@ async function getOrCreateUser(email, password, userMetadata, profileData) {
     });
   }
 
-  // Actualizar perfil clínico
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .upsert({
-      id: user.id,
-      display_name: profileData.display_name,
-      bio: profileData.bio,
-      avatar_url: profileData.avatar_url,
-      updated_at: new Date().toISOString(),
-    });
+  // Actualizar perfil clínico con soporte resiliente de columnas
+  const baseProfile = {
+    id: user.id,
+    display_name: profileData.display_name,
+    bio: profileData.bio,
+    avatar_url: profileData.avatar_url,
+    updated_at: new Date().toISOString(),
+  };
 
+  const extendedProfile = {
+    ...baseProfile,
+    ...(profileData.role ? { role: profileData.role } : {}),
+    ...(profileData.phone ? { phone: profileData.phone } : {}),
+    ...(profileData.medical_license ? { medical_license: profileData.medical_license } : {}),
+  };
+
+  let { error: profileError } = await supabase.from("profiles").upsert(extendedProfile);
   if (profileError) {
-    console.error(`Error actualizando perfil para ${email}:`, profileError);
-    throw profileError;
+    const { error: fallbackErr } = await supabase.from("profiles").upsert(baseProfile);
+    if (fallbackErr) {
+      console.error(`Error actualizando perfil para ${email}:`, fallbackErr);
+      throw fallbackErr;
+    }
   }
 
-  console.log(`Perfil actualizado: ${profileData.display_name} (${email})`);
+  console.log(`Perfil actualizado: ${profileData.display_name} (${email}) [Rol: ${userMetadata.role || "patient"}]`);
   return user;
 }
 
 async function main() {
   console.log("=== INICIANDO SEED CLÍNICO AURATIPS (20 PROCEDIMIENTOS) ===");
 
-  // 1. Usuarios
+  // 1. Usuarios con Roles Clínicos (RBAC)
   const instructor = await getOrCreateUser(
     "especialista@auratips.io",
     "Password123!",
-    { full_name: "Dra. Mariana Gómez" },
+    { full_name: "Dra. Mariana Gómez", role: "specialist", user_type: "Dirección Clínica" },
     {
       display_name: "Dra. Mariana Gómez",
+      role: "specialist",
+      medical_license: "RM-482910-ANT",
+      phone: "+57 310 987 6543",
       bio: "Médica Especialista en Medicina Estética Facial y Armonización. Directora de Protocolos Clínicos en AuraTips & AuraMed Medellín.",
       avatar_url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop&q=80",
     }
@@ -82,9 +94,11 @@ async function main() {
   const patient = await getOrCreateUser(
     "paciente@auratips.io",
     "Password123!",
-    { full_name: "Ana Gómez" },
+    { full_name: "Ana Gómez", role: "patient", user_type: "Paciente en Cuidados" },
     {
       display_name: "Ana Gómez",
+      role: "patient",
+      phone: "+57 300 123 4567",
       bio: "Paciente en seguimiento activo de cuidados post-tratamiento estético.",
       avatar_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80",
     }

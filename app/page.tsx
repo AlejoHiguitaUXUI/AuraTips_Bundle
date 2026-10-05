@@ -1,241 +1,784 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { RatingBadge } from "@/components/RatingBadge";
-import { ClinicalSearchBar } from "@/components/ClinicalSearchBar";
-import { CLINICAL_PROCEDURES, getProcedureBySlug } from "@/lib/clinical-data";
-import { ClinicalPill } from "@/components/ClinicalPill";
-import { filterCourses, getPublishedCourses } from "@/lib/queries";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getClinicalRole } from "@/lib/auth-role";
+import LearningDashboard from "@/app/dashboard/learning/page";
+import { EditorialHero } from "@/components/EditorialHero";
 import {
   LeafIcon,
+  ShieldCheckIcon,
   ClockIcon,
-  ActivityIcon,
   StethoscopeIcon,
-  ArrowRightIcon,
   SparklesIcon,
-  SyringeIcon,
-  SmileIcon,
+  ArrowRightIcon,
+  PhoneIcon,
+  ChevronRightIcon,
+  MessageCircleIcon,
+  UserCheckIcon,
+  PlusIcon,
+  PencilIcon,
 } from "@/components/icons";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
-  title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
+  title: "AuraTips · Acompañamiento Clínico | AuraMed Grupo Estético",
   description:
-    "Protocolos médicos paso a paso para tu recuperación estética. Guía experta y supervisión médica de la Dra. Mariana Gómez: tiempos de desinflamación y pautas de cuidado.",
+    "Portal clínico exclusivo de acompañamiento y seguimiento post-procedimiento estético bajo la supervisión médica de la Dra. Mariana Gómez.",
 };
 
-export default async function CatalogPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ category?: string }>;
-}) {
-  const resolvedParams = searchParams ? await searchParams : {};
-  const currentCategory = resolvedParams.category || "Todos";
+interface HomePageProps {
+  searchParams?: Promise<{ demo?: string; category?: string }>;
+}
 
-  let dbCourses: any[] | null = null;
-  try {
-    const supabase = await createClient();
-    dbCourses = await getPublishedCourses(supabase);
-  } catch (err) {
-    console.warn("CatalogPage: Supabase query failed, falling back to local clinical data:", err);
-  }
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Conectar con los datos de Supabase y enriquecer con los metadatos clínicos
-  const procedures = (dbCourses && dbCourses.length > 0)
-    ? dbCourses.map((c) => {
-        const spec = getProcedureBySlug(c.slug);
-        return {
-          id: c.id,
-          title: c.title,
-          slug: c.slug,
-          category: c.category || spec?.category || "Facial",
-          description: c.description || spec?.description || "",
-          cover_url: c.cover_url || spec?.cover_url || "/images/botox.jpg",
-          recovery_time: c.recovery_time || spec?.recovery_time || "24 a 48 horas",
-          pain_level: c.pain_level ?? spec?.pain_level ?? 2,
-          results_duration: c.results_duration || spec?.results_duration || "6 a 12 meses",
-          author_name: Array.isArray(c.profiles) ? c.profiles[0]?.display_name : c.profiles?.display_name || spec?.doctor_name || "Dra. Mariana Gómez",
-        };
-      })
-    : CLINICAL_PROCEDURES.map((p) => ({
-        id: p.id,
-        title: p.title,
-        slug: p.slug,
-        category: p.category,
-        description: p.description,
-        cover_url: p.cover_url,
-        recovery_time: p.recovery_time,
-        pain_level: p.pain_level,
-        results_duration: p.results_duration,
-        author_name: p.doctor_name || "Dra. Mariana Gómez",
-      }));
+  // 1. CASO PACIENTE AUTENTICADO:
+  // Renderizar directamente "Mi Recuperación" en la raíz (URL limpia /)
+  if (user) {
+    const { isSpecialist } = await getClinicalRole(supabase, user);
 
-  // Ordenar conforme al catálogo clínico oficial (Facial -> Corporal -> Capilar)
-  procedures.sort((a, b) => {
-    const idxA = CLINICAL_PROCEDURES.findIndex((p) => p.slug === a.slug);
-    const idxB = CLINICAL_PROCEDURES.findIndex((p) => p.slug === b.slug);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    return 0;
-  });
+    if (!isSpecialist) {
+      return <LearningDashboard searchParams={searchParams as any} />;
+    }
 
-  const filteredProcedures = filterCourses(procedures, {
-    category: currentCategory,
-  });
+    // 2. CASO ESPECIALISTA (DRA. MARIANA):
+    // Renderizar directamente el Centro de Mando en la raíz (URL limpia /)
+    const { data: courses } = await supabase
+      .from("courses")
+      .select("id, title, slug, status, category, recovery_time, updated_at")
+      .order("updated_at", { ascending: false });
 
-  const categories = [
-    { name: "Todos", icon: <SparklesIcon size={16} /> },
-    { name: "Facial", icon: <SmileIcon size={16} /> },
-    { name: "Corporal y Reducción", icon: <ActivityIcon size={16} /> },
-    { name: "Capilar", icon: <LeafIcon size={16} /> },
-  ];
+    const totalCourses = courses?.length || 0;
+    const publishedCount = (courses ?? []).filter((c) => c.status === "published").length;
 
-  return (
-    <>
-      {/* Hero Especializado en Acompañamiento Clínico AuraTips */}
-      <section className="aesthetic-hero animate-fade-in" aria-labelledby="hero-heading">
-        <div className="aesthetic-badge">
-          <LeafIcon size={14} /> AuraTips · Acompañamiento Clínico de Recuperación
+    let activePatients: any[] = [];
+    try {
+      const adminClient = createAdminClient();
+      const { data: enrolledData } = await adminClient
+        .from("enrollments")
+        .select(
+          "id, user_id, course_id, status, enrolled_at, courses ( id, title, slug, category, recovery_time ), profiles ( display_name )"
+        )
+        .order("enrolled_at", { ascending: false });
+
+      if (enrolledData && enrolledData.length > 0) {
+        let userMap = new Map();
+        try {
+          const { data: authUsers } = await adminClient.auth.admin.listUsers();
+          userMap = new Map((authUsers?.users || []).map((u) => [u.id, u]));
+        } catch (e) {
+          console.warn("Could not list auth users for phone enrich:", e);
+        }
+
+        activePatients = enrolledData.map((ep: any) => {
+          const authUser = userMap.get(ep.user_id);
+          const patientName =
+            ep.profiles?.display_name ||
+            authUser?.user_metadata?.full_name ||
+            authUser?.user_metadata?.display_name ||
+            "Paciente AuraMed";
+          const patientPhone =
+            authUser?.user_metadata?.phone || "+57 300 123 4567";
+
+          return {
+            ...ep,
+            patientName,
+            patientPhone,
+          };
+        });
+      }
+    } catch (err) {
+      console.warn("HomePage (Specialist): Error fetching active enrollments:", err);
+    }
+
+    const uniquePatientsCount = new Set(activePatients.map((p) => p.user_id)).size;
+
+    return (
+      <div className="animate-fade-in" style={{ paddingBottom: "var(--space-12)" }}>
+        {/* Banner de Bienvenida Centro de Mando */}
+        <div className="command-center-hero">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "var(--space-5)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+              <div
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(194, 155, 56, 0.25) 0%, rgba(24, 60, 44, 0.8) 100%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FAF8F5",
+                  border: "2px solid rgba(194, 155, 56, 0.75)",
+                  boxShadow: "0 6px 16px rgba(0, 0, 0, 0.25)",
+                  flexShrink: 0,
+                }}
+              >
+                <StethoscopeIcon size={30} />
+              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.09em",
+                      color: "#E6CA85",
+                    }}
+                  >
+                    Centro de Mando · Dirección Clínica AuraTips
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      padding: "2px 8px",
+                      borderRadius: "var(--radius-full)",
+                      background: "rgba(194, 155, 56, 0.2)",
+                      border: "1px solid rgba(194, 155, 56, 0.4)",
+                      color: "#F3E3B6",
+                    }}
+                  >
+                    RM-482910-ANT
+                  </span>
+                </div>
+                <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, margin: 0, color: "#FAF8F5", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
+                  Dra. Mariana Gómez
+                </h1>
+                <p style={{ margin: "6px 0 0", fontSize: "14px", color: "rgba(250, 248, 245, 0.88)", maxWidth: "560px", lineHeight: 1.45 }}>
+                  Supervisión médica integral, seguimiento post-procedimiento y evolución clínica activa de pacientes de AuraMed.
+                </p>
+              </div>
+            </div>
+
+            {/* Estado de Turno / Badge Clínico */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                background: "rgba(0, 0, 0, 0.25)",
+                backdropFilter: "blur(12px)",
+                padding: "8px 16px",
+                borderRadius: "var(--radius-full)",
+                border: "1px solid rgba(194, 155, 56, 0.3)",
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#22c55e",
+                  boxShadow: "0 0 8px #22c55e",
+                  display: "inline-block",
+                }}
+              />
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "#FAF8F5" }}>
+                Supervisión Médica Activa
+              </span>
+            </div>
+          </div>
         </div>
-        <h1 id="hero-heading">Tu recuperación y cuidado estético, guiados con calidez y rigor médico.</h1>
-        <p>
-          Protocolos personalizados bajo la dirección de la especialista: líneas de tiempo de desinflamación, pautas recomendadas (qué hacer), acciones a evitar en las primeras 48 horas y signos de observación para tu máxima tranquilidad.
-        </p>
 
-        {/* Buscador Clínico RAG & Asistente Semántico */}
-        <ClinicalSearchBar />
-      </section>
-
-      {/* Selector de Categorías Estilo Mangomint */}
-      <nav className="category-filter-bar" aria-label="Filtrar por categoría médica">
-        {categories.map((cat) => {
-          const isActive = currentCategory.toLowerCase() === cat.name.toLowerCase();
-          const href = cat.name === "Todos" ? "/" : `/?category=${encodeURIComponent(cat.name)}`;
-          return (
-            <ClinicalPill
-              key={cat.name}
-              href={href}
-              icon={cat.icon}
-              label={cat.name}
-              isActive={isActive}
-            />
-          );
-        })}
-      </nav>
-
-      {/* Grid de Procedimientos Clínicos */}
-      {filteredProcedures.length === 0 ? (
+        {/* Barra de Acciones Rápidas */}
         <div
           style={{
-            textAlign: "center",
-            padding: "var(--space-12) var(--space-4)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "var(--space-6)",
+            flexWrap: "wrap",
+            gap: "var(--space-3)",
+          }}
+        >
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+            <Link
+              href="/dashboard/teaching/new"
+              className="btn-clinical-primary"
+              title="Crear un nuevo protocolo clínico para pacientes"
+            >
+              <PlusIcon size={16} />
+              <span>Nuevo Protocolo Clínico</span>
+            </Link>
+
+            <Link
+              href="/dashboard/teaching"
+              className="btn-clinical-secondary"
+              title="Ir al panel de gestión y edición de protocolos"
+            >
+              <span>Gestionar Protocolos Clínicos</span>
+              <ArrowRightIcon size={14} />
+            </Link>
+          </div>
+
+          <Link
+            href="/procedimientos"
+            style={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "var(--color-brand)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              textDecoration: "none",
+              padding: "6px 12px",
+              borderRadius: "var(--radius-md)",
+              transition: "background var(--dur-fast)",
+            }}
+          >
+            <span>Ver catálogo &quot;Conoce otros procedimientos&quot;</span>
+            <ChevronRightIcon size={14} />
+          </Link>
+        </div>
+
+        {/* Métricas Clínicas Principales (KPI Strip) */}
+        <div className="kpi-grid">
+          <div className="kpi-card">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "var(--space-2)" }}>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Pacientes en Recuperación
+              </span>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "var(--radius-md)",
+                  background: "rgba(34, 197, 94, 0.12)",
+                  color: "#16a34a",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <UserCheckIcon size={20} />
+              </div>
+            </div>
+            <div>
+              <strong style={{ fontSize: "var(--text-3xl)", fontWeight: 800, color: "var(--color-text)", lineHeight: 1 }}>
+                {uniquePatientsCount}
+              </strong>
+              <div style={{ marginTop: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
+                <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                  {activePatients.length} tratamientos en seguimiento
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="kpi-card">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "var(--space-2)" }}>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Biblioteca de Protocolos
+              </span>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "var(--radius-md)",
+                  background: "rgba(194, 155, 56, 0.15)",
+                  color: "var(--color-gold-text, #997316)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ShieldCheckIcon size={20} />
+              </div>
+            </div>
+            <div>
+              <strong style={{ fontSize: "var(--text-3xl)", fontWeight: 800, color: "var(--color-text)", lineHeight: 1 }}>
+                {totalCourses}
+              </strong>
+              <div style={{ marginTop: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                  Faciales, corporales y dermoestética
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="kpi-card">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "var(--space-2)" }}>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Pautas Disponibles
+              </span>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "var(--radius-md)",
+                  background: "rgba(56, 189, 248, 0.12)",
+                  color: "#0284c7",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <SparklesIcon size={20} />
+              </div>
+            </div>
+            <div>
+              <strong style={{ fontSize: "var(--text-3xl)", fontWeight: 800, color: "var(--color-text)", lineHeight: 1 }}>
+                {publishedCount}
+              </strong>
+              <div style={{ marginTop: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0284c7" }} />
+                <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                  100% verificadas para consulta
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECCIÓN PRINCIPAL: MONITOR DE PACIENTES EN RECUPERACIÓN ACTIVA */}
+        <section style={{ marginBottom: "var(--space-8)" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "var(--space-4)",
+              flexWrap: "wrap",
+              gap: "var(--space-2)",
+              padding: "4rem 0 1rem 0",
+            }}
+          >
+            <div>
+              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    background: "#22c55e",
+                    boxShadow: "0 0 8px rgba(34, 197, 94, 0.6)",
+                  }}
+                />
+                Pacientes en Recuperación Activa
+              </h2>
+              <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", margin: "3px 0 0" }}>
+                Supervisión médica del día de evolución, pautas asignadas y contacto clínico directo.
+              </p>
+            </div>
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                padding: "4px 12px",
+                borderRadius: "var(--radius-full)",
+                background: "rgba(34, 197, 94, 0.12)",
+                color: "#16a34a",
+                border: "1px solid rgba(34, 197, 94, 0.3)",
+              }}
+            >
+              {activePatients.length} tratamientos en seguimiento
+            </span>
+          </div>
+
+          {activePatients.length === 0 ? (
+            <div
+              className="empty-state"
+              style={{
+                padding: "var(--space-10) var(--space-6)",
+                textAlign: "center",
+                background: "var(--color-surface)",
+                borderRadius: "var(--radius-xl)",
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              <div
+                style={{
+                  width: "56px",
+                  height: "56px",
+                  borderRadius: "50%",
+                  background: "var(--color-brand-soft)",
+                  color: "var(--color-brand)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto var(--space-3)",
+                }}
+              >
+                <UserCheckIcon size={28} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, margin: "0 0 6px" }}>
+                No hay pacientes con procedimientos activos en este momento
+              </h3>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--color-muted)", margin: "0 auto var(--space-4)", maxWidth: "440px", lineHeight: 1.5 }}>
+                Cuando registres a un paciente tras su consulta médica, podrás monitorear aquí su evolución y pautas día a día.
+              </p>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(440px, 1fr))",
+                gap: "var(--space-4)",
+              }}
+            >
+              {activePatients.map((ep) => {
+                const patientName = ep.patientName;
+                const phone = ep.patientPhone;
+                const procTitle = (ep.courses as any)?.title || "Procedimiento Asignado";
+                const procCategory = (ep.courses as any)?.category || "Dermoestética";
+                const procSlug = (ep.courses as any)?.slug || "";
+                const recoveryEstimate = (ep.courses as any)?.recovery_time || "24 a 48 horas";
+
+                const procDate = new Date(ep.enrolled_at);
+                const elapsedDays = Math.max(0, Math.floor((Date.now() - procDate.getTime()) / (1000 * 60 * 60 * 24)));
+                const dayLabel = elapsedDays === 0 ? "Día 0 · Primeras 4 a 12 horas" : `Día ${elapsedDays + 1} de evolución`;
+
+                const phoneClean = phone.replace(/[^0-9]/g, "");
+                const waMessage = encodeURIComponent(
+                  `Hola ${patientName}, te saluda la Dra. Mariana Gómez de AuraMed. Queremos consultar cómo avanza tu evolución de ${procTitle}.`
+                );
+
+                const initials = patientName
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((n: string) => n[0])
+                  .join("")
+                  .toUpperCase() || "PA";
+
+                return (
+                  <div key={ep.id} className="patient-tracking-card">
+                    <div>
+                      {/* Cabecera Tarjeta Paciente */}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "var(--space-3)",
+                          paddingBottom: "var(--space-3)",
+                          borderBottom: "1px solid var(--color-border)",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <div
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              borderRadius: "50%",
+                              background: "rgba(32, 80, 59, 0.15)",
+                              border: "1.5px solid rgba(194, 155, 56, 0.4)",
+                              color: "var(--color-brand)",
+                              fontWeight: 800,
+                              fontSize: "13px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            {initials}
+                          </div>
+                          <div>
+                            <strong style={{ fontSize: "var(--text-base)", color: "var(--color-text)", display: "block", lineHeight: 1.2 }}>
+                              {patientName}
+                            </strong>
+                            <span style={{ fontSize: "12px", color: "var(--color-muted)", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                              <PhoneIcon size={11} />
+                              <span>{phone}</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        <span
+                          style={{
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            padding: "3px 10px",
+                            borderRadius: "var(--radius-full)",
+                            background: "rgba(34, 197, 94, 0.12)",
+                            color: "#16a34a",
+                            border: "1px solid rgba(34, 197, 94, 0.25)",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {dayLabel}
+                        </span>
+                      </div>
+
+                      {/* Procedimiento Clínico Asignado */}
+                      <div
+                        style={{
+                          background: "var(--color-bg)",
+                          padding: "10px 14px",
+                          borderRadius: "var(--radius-lg)",
+                          border: "1px solid var(--color-border)",
+                          marginBottom: "var(--space-3)",
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              fontWeight: 800,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.06em",
+                              color: "var(--color-brand)",
+                            }}
+                          >
+                            {procCategory}
+                          </span>
+                          <span style={{ fontSize: "11px", color: "var(--color-muted)", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                            <ClockIcon size={12} />
+                            <span>Reposo: {recoveryEstimate}</span>
+                          </span>
+                        </div>
+                        <strong style={{ display: "block", fontSize: "14px", color: "var(--color-text)", lineHeight: 1.3 }}>
+                          {procTitle}
+                        </strong>
+                      </div>
+
+                      {/* Pauta médica rápida */}
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--color-muted)",
+                          lineHeight: 1.5,
+                          marginBottom: "var(--space-4)",
+                          background: "var(--color-surface-2)",
+                          padding: "8px 12px",
+                          borderRadius: "var(--radius-md)",
+                          border: "1px dashed var(--color-border)",
+                        }}
+                      >
+                        <strong style={{ color: "var(--color-text-2)" }}>Pauta médica activa:</strong> Control de fotoprotección, pautas de frío/hielo local y verificación de confort.
+                      </div>
+                    </div>
+
+                    {/* Acciones para la Especialista */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        paddingTop: "var(--space-3)",
+                        borderTop: "1px solid var(--color-border)",
+                        gap: "8px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <a
+                        href={`https://wa.me/${phoneClean}?text=${waMessage}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-whatsapp-direct"
+                        title={`Escribir a WhatsApp a ${patientName}`}
+                      >
+                        <MessageCircleIcon size={14} />
+                        <span>Contactar por WhatsApp</span>
+                      </a>
+
+                      {procSlug && (
+                        <Link
+                          href={`/courses/${procSlug}`}
+                          style={{
+                            fontSize: "12px",
+                            color: "var(--color-brand)",
+                            fontWeight: 600,
+                            textDecoration: "none",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "3px",
+                          }}
+                        >
+                          <span>Ver pautas</span>
+                          <ArrowRightIcon size={12} />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* ACCESO RÁPIDO: PROTOCOLOS CLÍNICOS RECIENTES */}
+        <section
+          style={{
             background: "var(--color-surface)",
-            borderRadius: "var(--radius-xl)",
             border: "1px solid var(--color-border)",
-            marginBlock: "var(--space-6)",
+            borderRadius: "var(--radius-xl)",
+            padding: "var(--space-6)",
           }}
         >
           <div
             style={{
-              width: 52,
-              height: 52,
-              borderRadius: "var(--radius-full)",
-              background: "var(--color-brand-soft)",
-              color: "var(--color-brand)",
-              display: "inline-flex",
+              display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "var(--space-3)",
+              marginBottom: "var(--space-5)",
+              flexWrap: "wrap",
+              gap: "var(--space-3)",
             }}
           >
-            <LeafIcon size={24} />
+            <div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, margin: 0 }}>
+                Protocolos Recientes
+              </h3>
+              <p style={{ color: "var(--color-muted)", fontSize: "13px", margin: "3px 0 0" }}>
+                Accede rápidamente a editar o revisar las pautas de tus procedimientos más utilizados.
+              </p>
+            </div>
+            <Link
+              href="/dashboard/teaching"
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "var(--color-brand)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "6px 12px",
+                borderRadius: "var(--radius-md)",
+                border: "1px solid var(--color-border)",
+                background: "var(--color-surface-2)",
+              }}
+            >
+              <span>Ver biblioteca completa ({totalCourses})</span>
+              <ChevronRightIcon size={14} />
+            </Link>
           </div>
-          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, margin: "0 0 8px", color: "var(--color-text)" }}>
-            No hay procedimientos en esta categoría
-          </h3>
-          <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", maxWidth: "440px", margin: "0 auto var(--space-4)" }}>
-            Actualmente no encontramos protocolos registrados bajo la categoría &ldquo;{currentCategory}&rdquo;.
-          </p>
-          <Link href="/" className="btn secondary btn-sm" style={{ textDecoration: "none" }}>
-            Ver todos los procedimientos
-          </Link>
-        </div>
-      ) : (
-        <section
-          data-testid="catalog-grid"
-          className="catalog-grid stagger animate-slide-up"
-          aria-label="Catálogo de procedimientos"
-        >
-          {filteredProcedures.map((proc) => {
-            const painMeter = "●".repeat(proc.pain_level) + "○".repeat(5 - proc.pain_level);
 
-            return (
-              <Link
-                key={proc.id}
-                data-testid="procedure-card"
-                href={`/courses/${proc.slug}`}
-                className="procedure-card"
-                aria-label={`Protocolo de ${proc.title}`}
-              >
-                {/* Thumbnail con Tag de Categoría */}
-                <div className="procedure-thumb-wrap">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={proc.cover_url}
-                    alt={proc.title}
-                    className="procedure-thumb"
-                    loading="lazy"
-                  />
-                  <span className="procedure-category-tag">{proc.category}</span>
-                </div>
-
-                {/* Contenido de la Tarjeta */}
-                <div className="procedure-card-body">
-                  <h2 className="procedure-card-title">{proc.title}</h2>
-                  <p className="procedure-card-desc">{proc.description}</p>
-
-                  {/* Métricas Clínicas Clave */}
-                  <div className="procedure-metrics">
-                    <div className="metric-item">
-                      <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                        <ClockIcon size={13} /> Reposo estimado
-                      </span>
-                      <span className="metric-value">{proc.recovery_time}</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                        <ActivityIcon size={13} /> Molestia esperada
-                      </span>
-                      <span className="metric-value" title={`Nivel ${proc.pain_level} de 5`} style={{ color: "var(--color-brand)" }}>
-                        {painMeter} <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>({proc.pain_level}/5)</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Footer con Especialista y CTA */}
-                  <div className="procedure-card-footer">
-                    <div className="doctor-avatar-tag" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <StethoscopeIcon size={14} style={{ color: "var(--color-brand)" }} />
-                      <span>{proc.author_name || "Dra. Mariana Gómez"}</span>
-                    </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "var(--space-4)",
+            }}
+          >
+            {(courses ?? []).slice(0, 4).map((c) => (
+              <div key={c.id} className="protocol-quick-card">
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "6px",
+                    }}
+                  >
                     <span
                       style={{
-                        fontSize: "12px",
-                        fontWeight: 600,
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
                         color: "var(--color-brand)",
-                        display: "flex",
+                      }}
+                    >
+                      {c.category}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        color: "#16a34a",
+                        fontWeight: 700,
+                        display: "inline-flex",
                         alignItems: "center",
                         gap: "4px",
                       }}
                     >
-                      <span>Ver Protocolo</span>
-                      <ArrowRightIcon size={13} />
+                      <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e" }} />
+                      Activo
                     </span>
                   </div>
+
+                  <strong
+                    style={{
+                      display: "block",
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                      lineHeight: 1.35,
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {c.title}
+                  </strong>
+
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      fontSize: "11px",
+                      color: "var(--color-muted)",
+                    }}
+                  >
+                    <ClockIcon size={12} />
+                    <span>Reposo: {c.recovery_time || "24 a 48h"}</span>
+                  </div>
                 </div>
-              </Link>
-            );
-          })}
+
+                <div
+                  style={{
+                    paddingTop: "var(--space-3)",
+                    borderTop: "1px solid var(--color-border)",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Link
+                    href={`/dashboard/teaching/${c.slug}`}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      padding: "6px 12px",
+                      borderRadius: "var(--radius-md)",
+                      background: "rgba(194, 155, 56, 0.12)",
+                      color: "var(--color-gold-text, #997316)",
+                      border: "1px solid rgba(194, 155, 56, 0.35)",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      transition: "all var(--dur-fast)",
+                    }}
+                    title={`Editar protocolo de ${c.title}`}
+                  >
+                    <PencilIcon size={12} />
+                    <span>Editar pautas</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
-      )}
-    </>
+      </div>
+    );
+  }
+
+  // 3. CASO VISITANTE (NO AUTENTICADO):
+  // Renderizar la landing pública sobria de AuraTips
+  return (
+    <div className="animate-fade-in" style={{ paddingBottom: "var(--space-12)" }}>
+      {/* Hero Principal Editorial con Arcos de Procedimientos y Acceso a Cuidados */}
+      <EditorialHero />
+
+
+    </div>
   );
 }
-

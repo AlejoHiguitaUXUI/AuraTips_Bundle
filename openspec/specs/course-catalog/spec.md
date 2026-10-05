@@ -109,3 +109,26 @@ All procedure detail pages MUST emit a `<script type="application/ld+json">` blo
 | `performer` | if author present | `Physician` with `name` and `jobTitle` |
 | `publisher` | ✅ | `Organization` (AuraTips) |
 
+### Requirement: Hero Editorial y Carrusel Orgánico de 5 Arcos (`EditorialHero`) — v1.4.0
+
+El sistema SHALL presentar en la página principal una sección hero editorial de alta gama con:
+1. Titular editorial estilizado ("Cuidado & Recuperación") con tipografía serif y balance visual.
+2. Carrusel continuo de 5 arcos visibles en pantalla con geometría fija (`border-radius: 140px 140px 32px 32px`), aceleración por hardware (`translateZ(0)`, `transform-origin: bottom center`) y desenfoque por profundidad escalonado (`0px` en tarjeta central, `1.8px` en laterales inmediatos, `3.5px` en extremos).
+3. Transiciones continuas e infinitas con timing `cubic-bezier(0.4, 0, 0.2, 1)`, rotación automática cada 3.8s, soporte táctil (swipe), y controles manuales bidireccionales con vectores SVG y dots de paginación interactivos.
+4. Precarga inmediata (`loading="eager"` / `priority`) de la totalidad del banco fotográfico del carrusel para evitar tarjetas oscuras o sin imagen durante el ciclo de rotación.
+
+#### Scenario: Visualización y navegación del carrusel hero
+- **WHEN** un usuario accede al home o interactúa con los controles del carrusel
+- **THEN** la tarjeta activa se expande hacia arriba con nitidez total mientras las tarjetas adyacentes se escalan y desenfocan proporcionalmente sin cortes visuales ni retrasos en la carga de fotos
+
+### Requirement: Catálogo Comercial y Editorial 'Conoce otros procedimientos' (`/courses`) — v1.4.0
+
+El sistema SHALL proveer una ruta pública `/courses` accesible desde el header y los dashboards que presente el catálogo médico-estético integral de AuraMed:
+- Filtro interactivo por categorías médicas (Facial, Corporal, Capilar).
+- Tarjetas con fotografía clínica local, tiempo de recuperación, nivel de molestia y categoría.
+- Enlace directo a la guía clínica del procedimiento o a los canales de contacto de AuraMed.
+
+#### Scenario: Navegación por catálogo comercial
+- **WHEN** un paciente o visitante ingresa a `/courses` y filtra por categoría
+- **THEN** se despliegan únicamente los procedimientos coincidentes con diseño de cuadrícula responsive y tipografía adaptativa
+

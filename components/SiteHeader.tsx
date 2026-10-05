@@ -4,6 +4,8 @@ import { SignOutButton } from "@/components/SignOutButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LeafIcon, StethoscopeIcon, UserCheckIcon } from "@/components/icons";
 
+import { getClinicalRole } from "@/lib/auth-role";
+
 export async function SiteHeader() {
   let user: any = null;
   let isSpecialist = false;
@@ -17,30 +19,9 @@ export async function SiteHeader() {
     user = authUser;
 
     if (user) {
-      const userEmail = user.email?.toLowerCase() ?? "";
-      if (
-        userEmail.includes("especialista") ||
-        userEmail.includes("doctor") ||
-        userEmail.includes("mariana")
-      ) {
-        isSpecialist = true;
-        clinicalRoleLabel = "Dirección Clínica";
-      } else {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("display_name")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (
-          profile?.display_name?.toLowerCase().includes("dra") ||
-          profile?.display_name?.toLowerCase().includes("mariana") ||
-          profile?.display_name?.toLowerCase().includes("especialista")
-        ) {
-          isSpecialist = true;
-          clinicalRoleLabel = "Dirección Clínica";
-        }
-      }
+      const roleInfo = await getClinicalRole(supabase, user);
+      isSpecialist = roleInfo.isSpecialist;
+      clinicalRoleLabel = roleInfo.label;
     }
   } catch (error) {
     console.warn("SiteHeader: Supabase unavailable, rendering guest header state:", error);
@@ -86,58 +67,62 @@ export async function SiteHeader() {
 
         {/* Navigation */}
         <nav className="site-nav" aria-label="Navegación principal">
-          <Link href="/">Procedimientos</Link>
+          <Link href="/procedimientos" title="Conoce otros procedimientos de AuraMed">
+            Otros procedimientos
+          </Link>
 
           {user ? (
             <>
-              <Link href="/dashboard/learning">Mis Cuidados</Link>
-              <Link href="/dashboard/teaching">Dirección Clínica</Link>
-
-              {/* Badge de Rol Clínico */}
               {isSpecialist ? (
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "4px 10px",
-                    borderRadius: "var(--radius-full)",
-                    background: "rgba(194, 155, 56, 0.14)",
-                    color: "var(--color-gold-text, #997316)",
-                    border: "1px solid rgba(194, 155, 56, 0.35)",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    letterSpacing: "0.02em",
-                  }}
-                  title="Dirección de Protocolos Clínicos"
-                >
-                  <StethoscopeIcon size={13} />
-                  <span>{clinicalRoleLabel}</span>
-                </span>
+                <>
+                  <Link href="/dashboard/teaching">Protocolos Clínicos</Link>
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 10px",
+                      borderRadius: "var(--radius-full)",
+                      background: "rgba(194, 155, 56, 0.14)",
+                      color: "var(--color-gold-text, #997316)",
+                      border: "1px solid rgba(194, 155, 56, 0.35)",
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      letterSpacing: "0.02em",
+                    }}
+                    title="Dirección de Protocolos Clínicos"
+                  >
+                    <StethoscopeIcon size={13} />
+                    <span>{clinicalRoleLabel}</span>
+                  </span>
+                </>
               ) : (
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "4px 10px",
-                    borderRadius: "var(--radius-full)",
-                    background: "var(--color-brand-soft)",
-                    color: "var(--color-brand)",
-                    border: "1px solid var(--color-brand-border)",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                  }}
-                  title="Paciente en seguimiento clínico activo"
-                >
-                  <UserCheckIcon size={13} />
-                  <span>{clinicalRoleLabel}</span>
-                </span>
+                <>
+                  <Link href="/">Mi Recuperación</Link>
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 10px",
+                      borderRadius: "var(--radius-full)",
+                      background: "var(--color-brand-soft)",
+                      color: "var(--color-brand)",
+                      border: "1px solid var(--color-brand-border)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                    }}
+                    title="Paciente en seguimiento clínico activo"
+                  >
+                    <UserCheckIcon size={13} />
+                    <span>{clinicalRoleLabel}</span>
+                  </span>
+                </>
               )}
 
               <span className="site-nav-divider" aria-hidden="true" />
               <Link href="/dashboard/profile" className="btn-ghost btn btn-sm">
-                Perfil
+                Mi Perfil
               </Link>
               <SignOutButton />
             </>

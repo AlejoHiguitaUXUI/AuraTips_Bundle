@@ -3,15 +3,7 @@ import { LeafIcon, StethoscopeIcon, ShieldCheckIcon, MessageCircleIcon } from "@
 
 export function SiteFooter() {
   return (
-    <footer
-      style={{
-        borderTop: "1px solid var(--color-border)",
-        background: "var(--color-surface)",
-        paddingTop: "var(--space-12)",
-        paddingBottom: "var(--space-8)",
-        marginTop: "var(--space-12)",
-      }}
-    >
+    <footer className="site-footer">
       <div className="container">
         <div
           style={{
@@ -82,26 +74,26 @@ export function SiteFooter() {
                 marginBottom: "var(--space-3)",
               }}
             >
-              Protocolos de Recuperación
+              Procedimientos Médicos
             </h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
               <li>
-                <Link href="/courses/toxina-botulinica-botox-facial" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+                <Link href="/procedimientos?proc=toxina-botulinica-botox-facial" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
                   Toxina Botulínica Facial
                 </Link>
               </li>
               <li>
-                <Link href="/courses/acido-hialuronico-labios-russian-lips" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+                <Link href="/procedimientos?proc=acido-hialuronico-labios-russian-lips" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
                   Ácido Hialurónico en Labios
                 </Link>
               </li>
               <li>
-                <Link href="/courses/rinomodelacion-sin-cirugia-acido-hialuronico" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+                <Link href="/procedimientos?proc=rinomodelacion-sin-cirugia-acido-hialuronico" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
                   Rinomodelación sin Cirugía
                 </Link>
               </li>
               <li>
-                <Link href="/courses/peeling-quimico-medico-facial" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+                <Link href="/procedimientos?proc=peeling-quimico-medico-facial" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
                   Peeling Químico Médico
                 </Link>
               </li>
@@ -195,7 +187,7 @@ export function SiteFooter() {
         {/* Disclaimer Médico y Copyright */}
         <div
           style={{
-            borderTop: "1px solid var(--color-border)",
+            borderTop: "1px solid var(--glass-bar-border)",
             paddingTop: "var(--space-6)",
             display: "flex",
             flexDirection: "column",

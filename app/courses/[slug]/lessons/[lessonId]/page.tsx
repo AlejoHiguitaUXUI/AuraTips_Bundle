@@ -84,19 +84,19 @@ export default async function LessonPage({
         return (
           <section style={{ maxWidth: "800px", margin: "0 auto", padding: "40px 16px" }}>
             <p style={{ marginBottom: "16px" }}>
-              <Link href={`/courses/${courseSlug}`} style={{ color: "var(--color-muted)" }}>
-                ← Volver a {courseTitle}
+              <Link href={`/procedimientos?proc=${courseSlug}`} style={{ color: "var(--color-muted)" }}>
+                ← Volver a Procedimientos
               </Link>
             </p>
             <h1>{lesson.title}</h1>
             <div className="empty-state" style={{ marginTop: "24px" }}>
               <p>
                 {user
-                  ? "Debes activar la guía de este procedimiento para acceder a sus pautas detalladas."
-                  : "Inicia sesión para registrar tu progreso y ver este protocolo."}
+                  ? "Este protocolo de cuidados está reservado para pacientes asignados a este tratamiento."
+                  : "Inicia sesión para consultar tus cuidados médicos asignados."}
               </p>
-              <Link href={`/courses/${courseSlug}`} className="btn" style={{ marginTop: "16px" }}>
-                Ver Procedimiento
+              <Link href={`/procedimientos?proc=${courseSlug}`} className="btn" style={{ marginTop: "16px" }}>
+                Conocer más del Procedimiento
               </Link>
             </div>
           </section>
