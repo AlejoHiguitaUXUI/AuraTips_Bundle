@@ -171,11 +171,11 @@
   --card-title-color:        #183C2C;
   --card-text-color:         #577063;
 
-  /* Integrative Luxury Scrollbar Tokens */
+  /* Minimalist Neutral Scrollbar Tokens (Light Mode - 10% black tone / subtle gray) */
   --scrollbar-width:         6px;
   --scrollbar-track:         transparent;
-  --scrollbar-thumb:         rgba(194, 155, 56, 0.35);
-  --scrollbar-thumb-hover:   rgba(194, 155, 56, 0.70);
+  --scrollbar-thumb:         rgba(0, 0, 0, 0.10);
+  --scrollbar-thumb-hover:   rgba(0, 0, 0, 0.20);
 }
 
 /* =========================================================
@@ -237,6 +237,9 @@
   --gradient-surface:    linear-gradient(180deg, #15201B 0%, #0C120F 100%);
   --shadow-brand:        0 4px 14px 0 rgba(68,182,133,0.3);
 
+  /* Aurora WebGL Background Opacity (Dark Mode) */
+  --aurora-opacity-dark:     0.95;
+
   /* Header Glassmorphism (User Configured — Dark Mode) */
   --header-glass-bg:         rgba(12, 18, 15, 0.51);
   --header-glass-border:     rgba(226, 194, 110, 0.20);
@@ -262,11 +265,11 @@
   --card-title-color:        #FFFFFF;
   --card-text-color:         rgba(255, 255, 255, 0.80);
 
-  /* Integrative Luxury Scrollbar Tokens (Dark Mode) */
+  /* Minimalist Neutral Scrollbar Tokens (Dark Mode - subtle translucent gray) */
   --scrollbar-width:         6px;
   --scrollbar-track:         transparent;
-  --scrollbar-thumb:         rgba(226, 194, 110, 0.30);
-  --scrollbar-thumb-hover:   rgba(226, 194, 110, 0.65);
+  --scrollbar-thumb:         rgba(255, 255, 255, 0.12);
+  --scrollbar-thumb-hover:   rgba(255, 255, 255, 0.22);
 }
 
 /* Explicit Dark Mode Text Contrast Guarantees */
@@ -318,7 +321,7 @@
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: var(--radius-full, 9999px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none;
   transition: background var(--dur-base) var(--ease-out);
 }
 
@@ -2270,38 +2273,6 @@ textarea {
   margin-bottom: var(--space-2);
 }
 
-/* Selector clínico de procedimiento activo en Learning Dashboard */
-.procedure-switcher-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  font-size: var(--text-min);
-  font-weight: 500;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  text-decoration: none !important;
-  transition: all var(--dur-fast) var(--ease-out);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.procedure-switcher-pill:hover {
-  background: var(--color-surface-2) !important;
-  color: var(--color-brand) !important;
-  border-color: var(--color-brand) !important;
-  text-decoration: none !important;
-  transform: translateY(-1px);
-}
-
-.procedure-switcher-pill.active {
-  background: rgba(32, 80, 59, 0.12) !important;
-  color: var(--color-brand) !important;
-  border-color: var(--color-brand) !important;
-  font-weight: 700;
-}
 
 .procedure-hero-card h1 {
   color: #FFFFFF !important;

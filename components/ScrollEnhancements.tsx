@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 
 export function ScrollEnhancements() {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -12,14 +11,6 @@ export function ScrollEnhancements() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const totalHeight =
-            document.documentElement.scrollHeight - window.innerHeight;
-          const currentProgress =
-            totalHeight > 0
-              ? Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100))
-              : 0;
-
-          setScrollProgress(currentProgress);
           setShowBackToTop(window.scrollY > 380);
           ticking = false;
         });
@@ -42,37 +33,7 @@ export function ScrollEnhancements() {
 
   return (
     <>
-      {/* 1. Hilo de Progreso de Lectura Integrado en el Header */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "65px", // Justo en el borde inferior del header
-          left: 0,
-          right: 0,
-          height: "2.5px",
-          zIndex: 9998,
-          pointerEvents: "none",
-          background: "transparent",
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            width: `${scrollProgress}%`,
-            background:
-              "linear-gradient(90deg, #20503B 0%, #C29B38 50%, #E2C26E 100%)",
-            boxShadow:
-              scrollProgress > 1
-                ? "0 0 10px rgba(226, 194, 110, 0.7), 0 0 4px rgba(194, 155, 56, 0.9)"
-                : "none",
-            transition: "width 0.1s cubic-bezier(0.16, 1, 0.3, 1)",
-            borderRadius: "0 9999px 9999px 0",
-          }}
-        />
-      </div>
-
-      {/* 2. Botón Cápsula Flotante 'Volver Arriba' (Luxury Glass) */}
+      {/* Botón Cápsula Flotante 'Volver Arriba' (Luxury Glass) */}
       <button
         onClick={scrollToTop}
         aria-label="Volver al inicio de la página"

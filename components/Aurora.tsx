@@ -112,7 +112,8 @@ void main() {
     float energy = clamp(max(intensity, 0.0), 0.0, 1.0);
     float coverage = clamp(auroraAlpha * (0.55 + 0.45 * energy), 0.0, 0.95);
     vec3 chroma = pow(clamp(rampColor * 1.15, 0.0, 1.0), vec3(0.92));
-    fragColor = vec4(chroma, coverage * 0.96);
+    float alpha = coverage * 0.96;
+    fragColor = vec4(chroma * alpha, alpha);
   } else {
     fragColor = vec4(auroraColor * auroraAlpha, min(auroraAlpha * 1.25, 0.95));
   }
@@ -141,7 +142,44 @@ export default function Aurora(props: AuroraProps) {
 
     let renderer: Renderer | null = null;
     let program: Program | undefined;
+    let mesh: Mesh | undefined;
     let animateId = 0;
+    let lastFrame = 0;
+    let lastStopsKey = '';
+    // Each Aurora frame forces every backdrop-filter (glass) layer above it to re-blur,
+    // so frame count directly drives GPU cost. The aurora moves slowly: 20fps looks identical.
+    const FRAME_INTERVAL = 1000 / 20;
+    const RENDER_SCALE = 0.35; // Soft gradient: render at low res and let CSS upscale
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function syncUniforms(t: number) {
+      if (!program) return;
+      const p = propsRef.current;
+      const { time = t * 0.01, speed = 1.0 } = p;
+      program.uniforms.uTime.value = time * speed * 0.1;
+      program.uniforms.uAmplitude.value = p.amplitude ?? 1.0;
+      program.uniforms.uBlend.value = p.blend ?? blend;
+      program.uniforms.uLightMode.value = (p.lightMode ?? lightMode) ? 1 : 0;
+      const stops = p.colorStops ?? colorStops;
+      const key = stops.join('|');
+      if (key !== lastStopsKey) {
+        lastStopsKey = key;
+        program.uniforms.uColorStops.value = stops.map((hex: string) => {
+          const c = new Color(hex);
+          return [c.r, c.g, c.b];
+        });
+      }
+    }
+
+    function draw(t: number) {
+      if (!program || !renderer || !mesh) return;
+      try {
+        syncUniforms(t);
+        renderer.render({ scene: mesh });
+      } catch {
+        // Context lost or animation frame issue
+      }
+    }
 
     function resize() {
       if (!ctn || !renderer) return;
@@ -150,16 +188,36 @@ export default function Aurora(props: AuroraProps) {
       if (width === 0 || height === 0) return;
       renderer.setSize(width, height);
       if (program) {
-        program.uniforms.uResolution.value = [width, height];
+        program.uniforms.uResolution.value = [width * RENDER_SCALE, height * RENDER_SCALE];
       }
+      if (reducedMotion) draw(0);
     }
+
+    const update = (t: number) => {
+      animateId = requestAnimationFrame(update);
+      if (t - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = t;
+      draw(t);
+    };
+
+    const start = () => {
+      if (reducedMotion || animateId) return;
+      animateId = requestAnimationFrame(update);
+    };
+    const stop = () => {
+      if (animateId) cancelAnimationFrame(animateId);
+      animateId = 0;
+    };
+    const onVisibility = () => (document.hidden ? stop() : start());
 
     try {
       renderer = new Renderer({
         alpha: true,
         premultipliedAlpha: true,
-        antialias: true
-      });
+        antialias: false,
+        dpr: RENDER_SCALE,
+        powerPreference: 'low-power'
+      } as any);
       const gl = renderer.gl;
       if (!gl) return;
 
@@ -169,16 +227,12 @@ export default function Aurora(props: AuroraProps) {
       gl.canvas.style.backgroundColor = 'transparent';
 
       window.addEventListener('resize', resize);
+      document.addEventListener('visibilitychange', onVisibility);
 
       const geometry = new Triangle(gl);
       if (geometry.attributes.uv) {
         delete (geometry.attributes as any).uv;
       }
-
-      const colorStopsArray = colorStops.map(hex => {
-        const c = new Color(hex);
-        return [c.r, c.g, c.b];
-      });
 
       program = new Program(gl, {
         vertex: VERT,
@@ -186,45 +240,29 @@ export default function Aurora(props: AuroraProps) {
         uniforms: {
           uTime: { value: 0 },
           uAmplitude: { value: amplitude },
-          uColorStops: { value: colorStopsArray },
-          uResolution: { value: [ctn.offsetWidth || 1, ctn.offsetHeight || 1] },
+          uColorStops: { value: [[0, 0, 0], [0, 0, 0], [0, 0, 0]] },
+          uResolution: { value: [(ctn.offsetWidth || 1) * RENDER_SCALE, (ctn.offsetHeight || 1) * RENDER_SCALE] },
           uBlend: { value: blend },
           uLightMode: { value: lightMode ? 1 : 0 }
         }
       });
 
-      const mesh = new Mesh(gl, { geometry, program });
+      mesh = new Mesh(gl, { geometry, program });
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
       ctn.appendChild(gl.canvas);
 
-      const update = (t: number) => {
-        animateId = requestAnimationFrame(update);
-        const { time = t * 0.01, speed = 1.0 } = propsRef.current;
-        if (program && renderer) {
-          try {
-            program.uniforms.uTime.value = time * speed * 0.1;
-            program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
-            program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
-            program.uniforms.uLightMode.value = (propsRef.current.lightMode ?? lightMode) ? 1 : 0;
-            const stops = propsRef.current.colorStops ?? colorStops;
-            program.uniforms.uColorStops.value = stops.map((hex: string) => {
-              const c = new Color(hex);
-              return [c.r, c.g, c.b];
-            });
-            renderer.render({ scene: mesh });
-          } catch (renderErr) {
-            // Context lost or animation frame issue
-          }
-        }
-      };
-      animateId = requestAnimationFrame(update);
       resize();
+      if (reducedMotion) draw(0);
+      else if (!document.hidden) start();
     } catch (err) {
       console.warn("Aurora WebGL initialization skipped or failed:", err);
     }
 
     return () => {
-      if (animateId) cancelAnimationFrame(animateId);
+      stop();
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVisibility);
       if (renderer) {
         try {
           if (ctn && renderer.gl.canvas.parentNode === ctn) {
@@ -236,8 +274,10 @@ export default function Aurora(props: AuroraProps) {
         }
       }
     };
+    // Create the WebGL context ONCE. All props are read live via propsRef in the render loop;
+    // previously depending on [amplitude] destroyed/recreated the context on every slider tick.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amplitude]);
+  }, []);
 
   return <div ref={ctnDom} className="aurora-container" />;
 }

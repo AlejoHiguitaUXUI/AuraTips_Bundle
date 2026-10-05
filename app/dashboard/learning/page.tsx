@@ -10,7 +10,6 @@ import { ClinicalAssistantDrawer } from "../_components/ClinicalAssistantDrawer"
 import {
   LeafIcon,
   SyringeIcon,
-  SmileIcon,
   SparklesIcon,
   ArrowRightIcon,
   ClipboardCheckIcon,
@@ -349,7 +348,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
           </p>
         </div>
 
-        {/* Demo Switcher Pill / Treatment Count */}
+        {/* Treatment Count / Demo Status */}
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", flexWrap: "wrap" }}>
           {demoProcedure ? (
             <Link href="/dashboard/learning" className="btn-ghost btn btn-sm">
@@ -360,30 +359,6 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
               {enrollments?.length ?? 0} Procedimiento{enrollments?.length !== 1 ? "s" : ""}
             </span>
           )}
-
-          {/* Quick switch between clinical procedures */}
-          <div style={{ display: "flex", gap: "6px" }}>
-            {CLINICAL_PROCEDURES.map((p) => {
-              const isActive = activeProcedure.slug === p.slug;
-              return (
-                <Link
-                  key={p.id}
-                  href={`/dashboard/learning?demo=${p.slug}`}
-                  className={`procedure-switcher-pill ${isActive ? "active" : ""}`}
-                  title={`Ver cuidados de ${p.title}`}
-                >
-                  {p.category === "Inyectables" ? (
-                    <SyringeIcon size={13} />
-                  ) : p.category === "Dermoestética" ? (
-                    <SparklesIcon size={13} />
-                  ) : (
-                    <SmileIcon size={13} />
-                  )}
-                  <span>{p.title.split(" ")[0]}</span>
-                </Link>
-              );
-            })}
-          </div>
         </div>
       </div>
 
