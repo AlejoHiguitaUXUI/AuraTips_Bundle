@@ -171,6 +171,12 @@
   --card-title-color:        #183C2C;
   --card-text-color:         #577063;
 
+  /* Glass Inputs & Sub-Cards (Light Mode) */
+  --glass-input-bg:          rgba(250, 248, 245, 0.40);
+  --glass-input-border:      rgba(194, 155, 56, 0.22);
+  --glass-subcard-bg:        rgba(250, 248, 245, 0.32);
+  --glass-subcard-active:    rgba(32, 80, 59, 0.10);
+
   /* Minimalist Neutral Scrollbar Tokens (Light Mode - 10% black tone / subtle gray) */
   --scrollbar-width:         6px;
   --scrollbar-track:         transparent;
@@ -264,6 +270,12 @@
   --card-glass-shadow:       0 12px 24px -2px rgba(0, 0, 0, 0.4);
   --card-title-color:        #FFFFFF;
   --card-text-color:         rgba(255, 255, 255, 0.80);
+
+  /* Glass Inputs & Sub-Cards (Dark Mode) */
+  --glass-input-bg:          rgba(15, 23, 20, 0.45);
+  --glass-input-border:      rgba(226, 194, 110, 0.18);
+  --glass-subcard-bg:        rgba(87, 112, 99, 0.18);
+  --glass-subcard-active:    rgba(68, 182, 133, 0.15);
 
   /* Minimalist Neutral Scrollbar Tokens (Dark Mode - subtle translucent gray) */
   --scrollbar-width:         6px;
@@ -3017,6 +3029,75 @@ textarea {
   flex-wrap: wrap;
 }
 
+/* Care Guideline Navigation Tabs */
+.care-guideline-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+  padding: 4px 16px 0;
+  background: var(--color-surface-2);
+  overflow-x: auto;
+}
+
+.care-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.care-tab-btn:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.care-tab-btn.active {
+  color: var(--color-brand);
+  border-bottom-color: var(--color-brand);
+  font-weight: 700;
+  background: var(--color-surface);
+}
+
+.care-tab-btn.sos-active {
+  color: var(--color-clinical-alarm-icon);
+  border-bottom-color: var(--color-clinical-alarm-icon);
+  font-weight: 700;
+  background: var(--color-surface);
+}
+
+.care-tab-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.care-tab-badge.highlight {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  border-color: var(--color-brand-border);
+}
+
+.care-tab-badge.danger {
+  background: var(--color-clinical-alarm-tag-bg);
+  color: var(--color-clinical-alarm-tag-text);
+  border-color: var(--color-clinical-alarm-tag-border);
+}
+
 /* =========================================================
    ACCESSIBLE CLINICAL SEMAPHORE & ALERTS (WCAG 2.1 AAA)
    ========================================================= */
@@ -3251,6 +3332,30 @@ textarea {
   border: var(--card-border-width, 1px) solid var(--card-glass-border, var(--glass-border-custom, var(--glass-border))) !important;
   box-shadow: var(--card-glass-shadow, var(--glass-shadow)) !important;
   border-radius: var(--card-border-radius, var(--radius-lg)) !important;
+}
+
+/* Glass Inputs & Textareas inside Glass Cards/Panels */
+.glass-card input,
+.glass-card textarea,
+.glass-card select,
+.glass-panel input,
+.glass-panel textarea,
+.glass-panel select {
+  background: var(--glass-input-bg, rgba(250, 248, 245, 0.40)) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--glass-input-border, var(--card-glass-border)) !important;
+  color: var(--color-text) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+.glass-card input:focus,
+.glass-card textarea:focus,
+.glass-panel input:focus,
+.glass-panel textarea:focus {
+  background: var(--glass-input-bg, rgba(250, 248, 245, 0.60)) !important;
+  border-color: var(--color-brand) !important;
+  box-shadow: 0 0 0 3px rgba(32, 80, 59, 0.18) !important;
 }
 
 .procedure-card-title,

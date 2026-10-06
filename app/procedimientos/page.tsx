@@ -9,7 +9,6 @@ import { ProcedureCatalog, ProcedureItem } from "@/components/ProcedureCatalog";
 import {
   LeafIcon,
   ActivityIcon,
-  StethoscopeIcon,
   SparklesIcon,
   SmileIcon,
   ShieldCheckIcon,
@@ -110,42 +109,6 @@ export default async function ProcedimientosPage({
 
   return (
     <div className="animate-fade-in" style={{ paddingBottom: "var(--space-12)" }}>
-      {/* Banner Exclusivo para la Especialista si está conectada */}
-      {isSpecialist && (
-        <div
-          style={{
-            background: "rgba(194, 155, 56, 0.12)",
-            border: "1px solid rgba(194, 155, 56, 0.35)",
-            borderRadius: "var(--radius-lg)",
-            padding: "10px 18px",
-            marginBottom: "var(--space-4)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "8px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <StethoscopeIcon size={16} style={{ color: "var(--color-gold-text, #997316)" }} />
-            <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--color-gold-text, #997316)" }}>
-              Modo Dirección Clínica activo: Tienes atajos directos de [Editar Pautas] en cada procedimiento.
-            </span>
-          </div>
-          <Link
-            href="/dashboard/teaching"
-            className="btn btn-sm"
-            style={{
-              fontSize: "12px",
-              padding: "4px 12px",
-              textDecoration: "none",
-            }}
-          >
-            ← Volver a Dirección Clínica
-          </Link>
-        </div>
-      )}
-
       {/* Encabezado Editorial "Conoce otros procedimientos" (Con Vidrio Esmerilado Frosted Glass & Alto Contraste) */}
       <section
         className="glass-panel"

@@ -10,6 +10,7 @@ import {
   SendIcon,
 } from "@/components/icons";
 import { EdyVoiceWidget } from "@/components/voice/EdyVoiceWidget";
+import { createClient } from "@/lib/supabase/browser";
 
 interface Message {
   id: string;
@@ -26,13 +27,56 @@ interface ClinicalAssistantDrawerProps {
   procedureSlug?: string;
   procedureTitle?: string;
   recoveryDay?: number;
+  isSpecialist?: boolean;
 }
 
 export function ClinicalAssistantDrawer({
   procedureSlug,
   procedureTitle,
   recoveryDay = 2,
+  isSpecialist = false,
 }: ClinicalAssistantDrawerProps) {
+  const [isSpecialistUser, setIsSpecialistUser] = useState(isSpecialist);
+
+  useEffect(() => {
+    if (isSpecialist) {
+      setIsSpecialistUser(true);
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) return;
+        const role = user.user_metadata?.role;
+        const email = user.email?.toLowerCase() ?? "";
+        if (
+          role === "specialist" ||
+          role === "admin" ||
+          email.includes("especialista") ||
+          email.includes("doctor") ||
+          email.includes("mariana")
+        ) {
+          setIsSpecialistUser(true);
+          return;
+        }
+
+        supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .maybeSingle()
+          .then(({ data }) => {
+            if (data?.role === "specialist" || data?.role === "admin") {
+              setIsSpecialistUser(true);
+            }
+          });
+      });
+    } catch {
+      // client check fallback
+    }
+  }, [isSpecialist]);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [input, setInput] = useState("");
@@ -132,6 +176,10 @@ export function ClinicalAssistantDrawer({
     "¿Qué analgésico puedo tomar para la molestia?",
     "¿Puedo hacer ejercicio o ir al gimnasio?",
   ];
+
+  if (isSpecialistUser) {
+    return null;
+  }
 
   return (
     <>

@@ -25,16 +25,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Inicio de sesión requerido." }, { status: 401 });
     }
 
-    const { isSpecialist } = await getClinicalRole(supabase, user);
-    if (!isSpecialist) {
-      return NextResponse.json(
-        { error: "Acceso denegado: solo especialistas pueden subir fotografías clínicas." },
-        { status: 403 }
-      );
-    }
-
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
+    const uploadType = (formData.get("type") as string) || "profile";
 
     if (!file || typeof file === "string") {
       return NextResponse.json(
@@ -64,7 +57,8 @@ export async function POST(request: Request) {
     const originalExt = path.extname(file.name) || ".jpg";
     const safeExt = originalExt.toLowerCase();
     const sanitizedBase = path.basename(file.name, originalExt).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 30);
-    const uniqueFilename = `cover_${Date.now()}_${sanitizedBase}${safeExt}`;
+    const prefix = uploadType === "avatar" ? "avatar" : "upload";
+    const uniqueFilename = `${prefix}_${Date.now()}_${sanitizedBase}${safeExt}`;
 
     // Target directory: public/uploads
     const uploadsDir = path.join(process.cwd(), "public", "uploads");

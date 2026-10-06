@@ -185,14 +185,14 @@ export function ModuleEditor({
                 htmlFor={`stage-title-${mod.id}`}
                 style={{ fontSize: "11px", fontWeight: 700, color: "var(--color-muted)", textTransform: "uppercase", display: "block" }}
               >
-                Título de la Etapa de Recuperación
+                Fase Temporal Clínica (Línea de Tiempo)
               </label>
               <input
                 id={`stage-title-${mod.id}`}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={saveTitle}
-                placeholder="ej. Fase Inmediata: Primeras 4 Horas"
+                placeholder="ej. Inmediato: Día 0 (Primeras 24 Horas)"
                 style={{
                   width: "100%",
                   fontWeight: 700,
@@ -306,7 +306,7 @@ export function ModuleEditor({
             style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12px" }}
           >
             <PlusIcon size={14} />
-            <span>+ Añadir Pauta a esta Etapa</span>
+            <span>Añadir Pauta a esta Etapa</span>
           </button>
 
           {onSelectForEdit && (
@@ -390,7 +390,7 @@ export function ModuleEditor({
             color: "var(--color-brand)",
           }}
         >
-          Etapa:
+          Fase Temporal:
         </label>
 
         <input
@@ -398,7 +398,7 @@ export function ModuleEditor({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={saveTitle}
-          placeholder="ej. Fase Inmediata: Primeras 4 Horas"
+          placeholder="ej. Inmediato: Día 0 (Primeras 24 Horas)"
           style={{
             flex: 1,
             minWidth: "220px",
@@ -501,7 +501,7 @@ export function ModuleEditor({
         onClick={addLesson}
       >
         <PlusIcon size={16} />
-        <span>+ Añadir Pauta de Cuidado a esta Etapa</span>
+        <span>Añadir Pauta de Cuidado a esta Etapa</span>
       </button>
     </div>
   );

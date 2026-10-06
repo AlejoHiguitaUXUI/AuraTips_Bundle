@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { youTubeEmbedUrl } from "@/lib/youtube";
 import { PatientChecklist } from "@/components/PatientChecklist";
 import { getProcedureBySlug } from "@/lib/clinical-data";
+import { getClinicalRole } from "@/lib/auth-role";
 import { ClinicalAssistantDrawer } from "@/app/dashboard/_components/ClinicalAssistantDrawer";
 import {
   ClockIcon,
@@ -21,11 +22,17 @@ export default async function LessonPage({
   const { slug, lessonId } = await params;
   let user: any = null;
   let dbCourse: any = null;
+  let isSpecialist = false;
 
   try {
     const supabase = await createClient();
     const { data: authData } = await supabase.auth.getUser();
     user = authData?.user ?? null;
+
+    if (user) {
+      const roleInfo = await getClinicalRole(supabase, user);
+      isSpecialist = roleInfo.isSpecialist;
+    }
 
     // 1. Intentar cargar desde Supabase
     const { data } = await supabase
@@ -274,11 +281,14 @@ export default async function LessonPage({
         </span>
       </footer>
 
-      <ClinicalAssistantDrawer
-        procedureSlug={courseSlug}
-        procedureTitle={courseTitle}
-        recoveryDay={timelineTag.includes("0") ? 0 : 2}
-      />
+      {!isSpecialist && (
+        <ClinicalAssistantDrawer
+          procedureSlug={courseSlug}
+          procedureTitle={courseTitle}
+          recoveryDay={timelineTag.includes("0") ? 0 : 2}
+          isSpecialist={isSpecialist}
+        />
+      )}
     </article>
   );
 }

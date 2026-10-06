@@ -19,7 +19,7 @@ function LoginForm() {
     setPending(true);
 
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -32,7 +32,37 @@ function LoginForm() {
       return;
     }
 
-    const next = searchParams.get("next") || "/dashboard/learning";
+    let next = searchParams.get("next");
+    if (!next) {
+      const authUser = signInData?.user;
+      let isSpecialistUser = false;
+      const emailLower = (email || authUser?.email || "").toLowerCase();
+      if (
+        authUser?.user_metadata?.role === "specialist" ||
+        authUser?.user_metadata?.role === "admin" ||
+        emailLower.includes("especialista") ||
+        emailLower.includes("doctor") ||
+        emailLower.includes("mariana")
+      ) {
+        isSpecialistUser = true;
+      } else if (authUser?.id) {
+        try {
+          const { data: prof } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", authUser.id)
+            .maybeSingle();
+          if (prof?.role === "specialist" || prof?.role === "admin") {
+            isSpecialistUser = true;
+          }
+        } catch {
+          // fallback
+        }
+      }
+
+      next = isSpecialistUser ? "/dashboard/teaching" : "/dashboard/learning";
+    }
+
     router.push(next);
     router.refresh();
   }

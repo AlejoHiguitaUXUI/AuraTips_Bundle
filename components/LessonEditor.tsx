@@ -11,7 +11,12 @@ import {
   PlusIcon,
   XIcon,
   PhoneIcon,
+  ClipboardCheckIcon,
+  VideoIcon,
+  SparklesIcon,
 } from "@/components/icons";
+
+type CareTabType = "dos_donts" | "checklist" | "sos" | "detailed";
 
 export function LessonEditor({
   lesson,
@@ -34,6 +39,9 @@ export function LessonEditor({
   const [careType, setCareType] = useState(lesson.care_type || "general");
   const [bodyMd, setBodyMd] = useState(lesson.body_md || "");
   const [youtubeUrl, setYoutubeUrl] = useState(lesson.youtube_url || "");
+
+  // Internal Focused Tab
+  const [activeTab, setActiveTab] = useState<CareTabType>("dos_donts");
 
   // DOs state (tag list + new input + raw toggle)
   const initialDos = Array.isArray(lesson.dos)
@@ -253,7 +261,6 @@ export function LessonEditor({
           cursor: "pointer",
         }}
         onClick={(e) => {
-          // If click wasn't on button or input, toggle collapse
           if ((e.target as HTMLElement).tagName !== "BUTTON") {
             setIsExpanded(!isExpanded);
           }
@@ -322,7 +329,7 @@ export function LessonEditor({
           {/* Guidelines count summary when collapsed */}
           {!isExpanded && (
             <span style={{ fontSize: "12px", color: "var(--color-muted)", marginLeft: "auto" }}>
-              {dosList.length} DOs • {dontsList.length} DONTs • {checklist.length} checklist
+              {dosList.length} DOs • {dontsList.length} DONTs • {checklist.length} tareas
             </span>
           )}
         </div>
@@ -353,13 +360,97 @@ export function LessonEditor({
 
       {/* Cuerpo expandible */}
       {isExpanded && (
-        <div style={{ padding: "18px 20px", display: "flex", flexDirection: "column", gap: "18px" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {/* Sub-cabecera rápida: Título y Momento Temporal */}
+          <div
+            style={{
+              padding: "16px 20px 14px",
+              background: "var(--color-surface)",
+              borderBottom: "1px solid var(--color-border)",
+              display: "grid",
+              gridTemplateColumns: "2.2fr 1fr 1fr",
+              gap: "14px",
+            }}
+          >
+            <div>
+              <label
+                htmlFor={`lesson-title-${lesson.id}`}
+                style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "var(--color-muted)", display: "block", marginBottom: "4px" }}
+              >
+                Título de la Pauta / Protocolo
+              </label>
+              <input
+                id={`lesson-title-${lesson.id}`}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="ej. Postura de reposo y aplicación de compresas"
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid var(--color-border)",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                }}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor={`lesson-timeline-${lesson.id}`}
+                style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "var(--color-muted)", display: "block", marginBottom: "4px" }}
+              >
+                Momento Temporal
+              </label>
+              <input
+                id={`lesson-timeline-${lesson.id}`}
+                value={timelineTag}
+                onChange={(e) => setTimelineTag(e.target.value)}
+                placeholder="Día 0 / Días 1-3"
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid var(--color-border)",
+                  fontSize: "13px",
+                }}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor={`lesson-caretype-${lesson.id}`}
+                style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "var(--color-muted)", display: "block", marginBottom: "4px" }}
+              >
+                Tipo de Cuidado
+              </label>
+              <select
+                id={`lesson-caretype-${lesson.id}`}
+                value={careType}
+                onChange={(e) => setCareType(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid var(--color-border)",
+                  fontSize: "13px",
+                }}
+              >
+                <option value="general">General</option>
+                <option value="higiene">Higiene</option>
+                <option value="medicacion">Medicación / Analgesia</option>
+                <option value="alarma">Signo de Alarma</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Mensajes de Estado (Error / Guardado) */}
           {error && (
             <div
               className="clinical-alarm-box"
               style={{
+                margin: "12px 20px 0",
                 padding: "10px 14px",
-                marginBottom: 0,
                 fontSize: "13px",
               }}
             >
@@ -370,6 +461,7 @@ export function LessonEditor({
           {saved && (
             <div
               style={{
+                margin: "12px 20px 0",
                 padding: "8px 14px",
                 background: "rgba(34, 197, 94, 0.1)",
                 color: "#15803d",
@@ -386,175 +478,101 @@ export function LessonEditor({
             </div>
           )}
 
-          {/* Fila 1: Metadatos básicos */}
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "14px" }}>
-            <div>
-              <label
-                htmlFor={`lesson-title-${lesson.id}`}
-                style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}
-              >
-                Título de la Pauta / Protocolo
-              </label>
-              <input
-                id={`lesson-title-${lesson.id}`}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="ej. Postura de reposo y aplicación de compresas"
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "13px",
-                }}
-              />
-            </div>
+          {/* ──────────────────────────────────────────────────────────
+              PESTAÑAS DE EDICIÓN ENFOCADA (DESMENUZADO DE BLOQUES)
+              ────────────────────────────────────────────────────────── */}
+          <div className="care-guideline-tabs" style={{ marginTop: "4px" }}>
+            <button
+              type="button"
+              className={`care-tab-btn ${activeTab === "dos_donts" ? "active" : ""}`}
+              onClick={() => setActiveTab("dos_donts")}
+            >
+              <SparklesIcon size={14} />
+              <span>Recomendaciones & Restricciones</span>
+              <span className={`care-tab-badge ${dosList.length + dontsList.length > 0 ? "highlight" : ""}`}>
+                {dosList.length + dontsList.length}
+              </span>
+            </button>
 
-            <div>
-              <label
-                htmlFor={`lesson-timeline-${lesson.id}`}
-                style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}
-              >
-                Momento Temporal
-              </label>
-              <input
-                id={`lesson-timeline-${lesson.id}`}
-                value={timelineTag}
-                onChange={(e) => setTimelineTag(e.target.value)}
-                placeholder="Día 0 / Días 1-3 / Semana 2"
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "13px",
-                }}
-              />
-            </div>
+            <button
+              type="button"
+              className={`care-tab-btn ${activeTab === "checklist" ? "active" : ""}`}
+              onClick={() => setActiveTab("checklist")}
+            >
+              <ClipboardCheckIcon size={14} />
+              <span>Checklist Paciente</span>
+              <span className={`care-tab-badge ${checklist.length > 0 ? "highlight" : ""}`}>
+                {checklist.length}
+              </span>
+            </button>
 
-            <div>
-              <label
-                htmlFor={`lesson-caretype-${lesson.id}`}
-                style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}
-              >
-                Tipo de Cuidado
-              </label>
-              <select
-                id={`lesson-caretype-${lesson.id}`}
-                value={careType}
-                onChange={(e) => setCareType(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "13px",
-                }}
-              >
-                <option value="general">General</option>
-                <option value="higiene">Higiene</option>
-                <option value="medicacion">Medicación / Analgesia</option>
-                <option value="alarma">Signo de Alarma</option>
-              </select>
-            </div>
+            <button
+              type="button"
+              className={`care-tab-btn ${activeTab === "sos" ? "sos-active" : ""}`}
+              onClick={() => setActiveTab("sos")}
+            >
+              <ShieldAlertIcon size={14} color={isAlarm ? "var(--color-clinical-alarm-icon)" : "currentColor"} />
+              <span>Alerta SOS & Guardia</span>
+              {isAlarm && <span className="care-tab-badge danger">SOS Activo</span>}
+            </button>
+
+            <button
+              type="button"
+              className={`care-tab-btn ${activeTab === "detailed" ? "active" : ""}`}
+              onClick={() => setActiveTab("detailed")}
+            >
+              <VideoIcon size={14} />
+              <span>Instrucciones & Video</span>
+              {(bodyMd || youtubeUrl) && (
+                <span className="care-tab-badge highlight">Configurado</span>
+              )}
+            </button>
           </div>
 
-          {/* Fila 2: Semáforo Clínico (Pautas recomendadas DOs vs Acciones a evitar DONTs) */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-            {/* PANEL DOs (Recomendaciones) — WCAG 2.1 AAA */}
-            <div
-              className="clinical-dos-box"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span className="clinical-dos-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <CheckCircle2Icon size={14} color="var(--color-clinical-do-text)" />
-                  Pautas Recomendadas (Qué hacer)
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setRawDosMode(!rawDosMode)}
+          {/* Contenido según la Pestaña Activa */}
+          <div style={{ padding: "18px 20px" }}>
+            {/* PESTAÑA 1: DOs & DONTs (Semáforo Clínico) */}
+            {activeTab === "dos_donts" && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                {/* PANEL DOs (Recomendaciones) */}
+                <div
+                  className="clinical-dos-box"
                   style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "11px",
-                    color: "var(--color-muted)",
-                    cursor: "pointer",
-                    textDecoration: "underline",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
                   }}
                 >
-                  {rawDosMode ? "Modo Interactivo" : "Pegar varias líneas"}
-                </button>
-              </div>
-
-              {rawDosMode ? (
-                <textarea
-                  rows={4}
-                  value={rawDosText}
-                  onChange={(e) => handleRawDosChange(e.target.value)}
-                  placeholder="Dormir con cabeza ligeramente elevada&#10;Aplicar compresa fría seca por 10 min&#10;Consumir abundante agua"
-                  style={{
-                    width: "100%",
-                    padding: "8px 10px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--color-clinical-do-border)",
-                    background: "var(--color-surface)",
-                    color: "var(--color-text)",
-                    fontSize: "12px",
-                  }}
-                />
-              ) : (
-                <>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", minHeight: "36px" }}>
-                    {dosList.length === 0 ? (
-                      <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
-                        Sin pautas agregadas aún.
-                      </span>
-                    ) : (
-                      dosList.map((item, idx) => (
-                        <span
-                          key={idx}
-                          className="clinical-dos-tag"
-                        >
-                          <span>✓ {item}</span>
-                          <button
-                            type="button"
-                            onClick={() => removeDoItem(idx)}
-                            aria-label={`Eliminar pauta: ${item}`}
-                            style={{
-                              background: "transparent",
-                              border: "none",
-                              cursor: "pointer",
-                              padding: "0",
-                              display: "inline-flex",
-                              color: "inherit",
-                            }}
-                          >
-                            <XIcon size={12} />
-                          </button>
-                        </span>
-                      ))
-                    )}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="clinical-dos-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <CheckCircle2Icon size={14} color="var(--color-clinical-do-text)" />
+                      Pautas Recomendadas (Qué hacer)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setRawDosMode(!rawDosMode)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        fontSize: "11px",
+                        color: "var(--color-muted)",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {rawDosMode ? "Modo Interactivo" : "Pegar varias líneas"}
+                    </button>
                   </div>
 
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    <input
-                      value={newDoInput}
-                      onChange={(e) => setNewDoInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addDoItem(newDoInput);
-                        }
-                      }}
-                      placeholder="+ Añadir recomendación clínica (Enter)..."
+                  {rawDosMode ? (
+                    <textarea
+                      rows={4}
+                      value={rawDosText}
+                      onChange={(e) => handleRawDosChange(e.target.value)}
+                      placeholder="Dormir con cabeza ligeramente elevada&#10;Aplicar compresa fría seca por 10 min&#10;Consumir abundante agua"
                       style={{
-                        flex: 1,
-                        padding: "6px 10px",
+                        width: "100%",
+                        padding: "8px 10px",
                         borderRadius: "6px",
                         border: "1px solid var(--color-clinical-do-border)",
                         background: "var(--color-surface)",
@@ -562,113 +580,113 @@ export function LessonEditor({
                         fontSize: "12px",
                       }}
                     />
-                    <button
-                      type="button"
-                      className="btn secondary btn-sm"
-                      onClick={() => addDoItem(newDoInput)}
-                      style={{ padding: "4px 10px", fontSize: "12px" }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+                  ) : (
+                    <>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", minHeight: "36px" }}>
+                        {dosList.length === 0 ? (
+                          <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
+                            Sin pautas agregadas aún.
+                          </span>
+                        ) : (
+                          dosList.map((item, idx) => (
+                            <span
+                              key={idx}
+                              className="clinical-dos-tag"
+                            >
+                              <span>✓ {item}</span>
+                              <button
+                                type="button"
+                                onClick={() => removeDoItem(idx)}
+                                aria-label={`Eliminar pauta: ${item}`}
+                                style={{
+                                  background: "transparent",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  padding: "0",
+                                  display: "inline-flex",
+                                  color: "inherit",
+                                }}
+                              >
+                                <XIcon size={12} />
+                              </button>
+                            </span>
+                          ))
+                        )}
+                      </div>
 
-            {/* PANEL DONTs (Restricciones) — WCAG 2.1 AAA */}
-            <div
-              className="clinical-donts-box"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span className="clinical-donts-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <BanIcon size={14} color="var(--color-clinical-dont-text)" />
-                  Acciones a Evitar (Restricciones)
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setRawDontsMode(!rawDontsMode)}
+                      <div style={{ display: "flex", gap: "6px" }}>
+                        <input
+                          value={newDoInput}
+                          onChange={(e) => setNewDoInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              addDoItem(newDoInput);
+                            }
+                          }}
+                          placeholder="+ Añadir recomendación clínica (Enter)..."
+                          style={{
+                            flex: 1,
+                            padding: "6px 10px",
+                            borderRadius: "6px",
+                            border: "1px solid var(--color-clinical-do-border)",
+                            background: "var(--color-surface)",
+                            color: "var(--color-text)",
+                            fontSize: "12px",
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="btn secondary btn-sm"
+                          onClick={() => addDoItem(newDoInput)}
+                          style={{ padding: "4px 10px", fontSize: "12px" }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* PANEL DONTs (Restricciones) */}
+                <div
+                  className="clinical-donts-box"
                   style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "11px",
-                    color: "var(--color-muted)",
-                    cursor: "pointer",
-                    textDecoration: "underline",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
                   }}
                 >
-                  {rawDontsMode ? "Modo Interactivo" : "Pegar varias líneas"}
-                </button>
-              </div>
-
-              {rawDontsMode ? (
-                <textarea
-                  rows={4}
-                  value={rawDontsText}
-                  onChange={(e) => handleRawDontsChange(e.target.value)}
-                  placeholder="No frotar ni masajear la zona&#10;No realizar actividad física de alto impacto&#10;Evitar saunas o exposición al sol"
-                  style={{
-                    width: "100%",
-                    padding: "8px 10px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--color-clinical-dont-border)",
-                    background: "var(--color-surface)",
-                    color: "var(--color-text)",
-                    fontSize: "12px",
-                  }}
-                />
-              ) : (
-                <>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", minHeight: "36px" }}>
-                    {dontsList.length === 0 ? (
-                      <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
-                        Sin restricciones agregadas aún.
-                      </span>
-                    ) : (
-                      dontsList.map((item, idx) => (
-                        <span
-                          key={idx}
-                          className="clinical-donts-tag"
-                        >
-                          <span>✕ {item}</span>
-                          <button
-                            type="button"
-                            onClick={() => removeDontItem(idx)}
-                            aria-label={`Eliminar restricción: ${item}`}
-                            style={{
-                              background: "transparent",
-                              border: "none",
-                              cursor: "pointer",
-                              padding: "0",
-                              display: "inline-flex",
-                              color: "inherit",
-                            }}
-                          >
-                            <XIcon size={12} />
-                          </button>
-                        </span>
-                      ))
-                    )}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="clinical-donts-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <BanIcon size={14} color="var(--color-clinical-dont-text)" />
+                      Acciones a Evitar (Restricciones)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setRawDontsMode(!rawDontsMode)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        fontSize: "11px",
+                        color: "var(--color-muted)",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {rawDontsMode ? "Modo Interactivo" : "Pegar varias líneas"}
+                    </button>
                   </div>
 
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    <input
-                      value={newDontInput}
-                      onChange={(e) => setNewDontInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addDontItem(newDontInput);
-                        }
-                      }}
-                      placeholder="+ Añadir restricción clínica (Enter)..."
+                  {rawDontsMode ? (
+                    <textarea
+                      rows={4}
+                      value={rawDontsText}
+                      onChange={(e) => handleRawDontsChange(e.target.value)}
+                      placeholder="No frotar ni masajear la zona&#10;No realizar actividad física de alto impacto&#10;Evitar saunas o exposición al sol"
                       style={{
-                        flex: 1,
-                        padding: "6px 10px",
+                        width: "100%",
+                        padding: "8px 10px",
                         borderRadius: "6px",
                         border: "1px solid var(--color-clinical-dont-border)",
                         background: "var(--color-surface)",
@@ -676,286 +694,359 @@ export function LessonEditor({
                         fontSize: "12px",
                       }}
                     />
-                    <button
-                      type="button"
-                      className="btn secondary btn-sm"
-                      onClick={() => addDontItem(newDontInput)}
-                      style={{ padding: "4px 10px", fontSize: "12px" }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Fila 3: Checklist Diario del Paciente */}
-          <div
-            style={{
-              padding: "14px",
-              borderRadius: "var(--radius-lg)",
-              background: "var(--color-surface-2)",
-              border: "1px solid var(--color-border)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-text)" }}>
-                Checklist Interactivo del Paciente (Tareas que el paciente marca como cumplidas)
-              </span>
-              <button
-                type="button"
-                onClick={() => setRawChecklistMode(!rawChecklistMode)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  fontSize: "11px",
-                  color: "var(--color-muted)",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-              >
-                {rawChecklistMode ? "Modo Interactivo" : "Pegar varias líneas"}
-              </button>
-            </div>
-
-            {rawChecklistMode ? (
-              <textarea
-                rows={3}
-                value={rawChecklistText}
-                onChange={(e) => handleRawChecklistChange(e.target.value)}
-                placeholder="Aplicar frío local 10 min&#10;Tomar medicación recetada&#10;Lavar con limpiador suave"
-                style={{
-                  width: "100%",
-                  padding: "8px 10px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "12px",
-                }}
-              />
-            ) : (
-              <>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  {checklist.length === 0 ? (
-                    <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
-                      Sin tareas en el checklist aún. Agrega una abajo.
-                    </span>
                   ) : (
-                    checklist.map((task, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "6px 10px",
-                          borderRadius: "6px",
-                          background: "var(--color-surface)",
-                          border: "1px solid var(--color-border)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ width: "14px", height: "14px", border: "1.5px solid var(--color-brand)", borderRadius: "3px" }} />
-                          {task}
-                        </span>
+                    <>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", minHeight: "36px" }}>
+                        {dontsList.length === 0 ? (
+                          <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
+                            Sin restricciones agregadas aún.
+                          </span>
+                        ) : (
+                          dontsList.map((item, idx) => (
+                            <span
+                              key={idx}
+                              className="clinical-donts-tag"
+                            >
+                              <span>✕ {item}</span>
+                              <button
+                                type="button"
+                                onClick={() => removeDontItem(idx)}
+                                aria-label={`Eliminar restricción: ${item}`}
+                                style={{
+                                  background: "transparent",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  padding: "0",
+                                  display: "inline-flex",
+                                  color: "inherit",
+                                }}
+                              >
+                                <XIcon size={12} />
+                              </button>
+                            </span>
+                          ))
+                        )}
+                      </div>
+
+                      <div style={{ display: "flex", gap: "6px" }}>
+                        <input
+                          value={newDontInput}
+                          onChange={(e) => setNewDontInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              addDontItem(newDontInput);
+                            }
+                          }}
+                          placeholder="+ Añadir restricción clínica (Enter)..."
+                          style={{
+                            flex: 1,
+                            padding: "6px 10px",
+                            borderRadius: "6px",
+                            border: "1px solid var(--color-clinical-dont-border)",
+                            background: "var(--color-surface)",
+                            color: "var(--color-text)",
+                            fontSize: "12px",
+                          }}
+                        />
                         <button
                           type="button"
-                          onClick={() => removeChecklistItem(idx)}
-                          aria-label={`Eliminar tarea: ${task}`}
-                          style={{
-                            background: "transparent",
-                            border: "none",
-                            cursor: "pointer",
-                            padding: "2px",
-                            color: "var(--color-muted)",
-                          }}
+                          className="btn secondary btn-sm"
+                          onClick={() => addDontItem(newDontInput)}
+                          style={{ padding: "4px 10px", fontSize: "12px" }}
                         >
-                          <XIcon size={13} />
+                          +
                         </button>
                       </div>
-                    ))
+                    </>
                   )}
                 </div>
+              </div>
+            )}
 
-                <div style={{ display: "flex", gap: "6px", marginTop: "4px" }}>
-                  <input
-                    value={newChecklistInput}
-                    onChange={(e) => setNewChecklistInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        addChecklistItem(newChecklistInput);
-                      }
-                    }}
-                    placeholder="+ Agregar tarea al checklist del paciente (Enter)..."
+            {/* PESTAÑA 2: CHECKLIST DEL PACIENTE */}
+            {activeTab === "checklist" && (
+              <div
+                style={{
+                  padding: "16px",
+                  borderRadius: "var(--radius-lg)",
+                  background: "var(--color-surface-2)",
+                  border: "1px solid var(--color-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--color-text)", display: "block" }}>
+                      Checklist Interactivo del Paciente
+                    </span>
+                    <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                      Tareas puntuales que el paciente marcará como cumplidas en su rutina post-tratamiento.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setRawChecklistMode(!rawChecklistMode)}
                     style={{
-                      flex: 1,
-                      padding: "7px 10px",
+                      background: "none",
+                      border: "none",
+                      fontSize: "11px",
+                      color: "var(--color-muted)",
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {rawChecklistMode ? "Modo Interactivo" : "Pegar varias líneas"}
+                  </button>
+                </div>
+
+                {rawChecklistMode ? (
+                  <textarea
+                    rows={4}
+                    value={rawChecklistText}
+                    onChange={(e) => handleRawChecklistChange(e.target.value)}
+                    placeholder="Aplicar frío local 10 min&#10;Tomar medicación recetada&#10;Lavar con limpiador suave"
+                    style={{
+                      width: "100%",
+                      padding: "8px 10px",
                       borderRadius: "6px",
                       border: "1px solid var(--color-border)",
                       fontSize: "12px",
                     }}
                   />
-                  <button
-                    type="button"
-                    className="btn secondary btn-sm"
-                    onClick={() => addChecklistItem(newChecklistInput)}
-                    style={{ padding: "4px 12px", fontSize: "12px" }}
-                  >
-                    + Añadir
-                  </button>
-                </div>
-              </>
+                ) : (
+                  <>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {checklist.length === 0 ? (
+                        <span style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic", padding: "8px 0" }}>
+                          Sin tareas en el checklist aún. Agrega la primera abajo.
+                        </span>
+                      ) : (
+                        checklist.map((task, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              padding: "8px 12px",
+                              borderRadius: "6px",
+                              background: "var(--color-surface)",
+                              border: "1px solid var(--color-border)",
+                              fontSize: "13px",
+                            }}
+                          >
+                            <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                              <span style={{ width: "16px", height: "16px", border: "1.5px solid var(--color-brand)", borderRadius: "4px" }} />
+                              <span>{task}</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeChecklistItem(idx)}
+                              aria-label={`Eliminar tarea: ${task}`}
+                              style={{
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: "2px",
+                                color: "var(--color-muted)",
+                              }}
+                            >
+                              <XIcon size={14} />
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
+                      <input
+                        value={newChecklistInput}
+                        onChange={(e) => setNewChecklistInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addChecklistItem(newChecklistInput);
+                          }
+                        }}
+                        placeholder="+ Agregar tarea al checklist del paciente (Enter)..."
+                        style={{
+                          flex: 1,
+                          padding: "8px 12px",
+                          borderRadius: "6px",
+                          border: "1px solid var(--color-border)",
+                          fontSize: "13px",
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="btn secondary btn-sm"
+                        onClick={() => addChecklistItem(newChecklistInput)}
+                        style={{ padding: "6px 14px", fontSize: "12px", fontWeight: 600 }}
+                      >
+                        + Añadir
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             )}
-          </div>
 
-          {/* Fila 4: Alerta Médica SOS y Contacto de Emergencia */}
-          <div
-            style={{
-              padding: "12px 16px",
-              borderRadius: "var(--radius-lg)",
-              background: isAlarm ? "var(--color-clinical-alarm-bg)" : "var(--color-surface-2)",
-              border: isAlarm ? "1.5px solid var(--color-clinical-alarm-border)" : "1px solid var(--color-border)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "16px",
-              flexWrap: "wrap",
-            }}
-          >
-            <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", fontSize: "13px" }}>
-              <input
-                type="checkbox"
-                checked={isAlarm}
-                onChange={(e) => setIsAlarm(e.target.checked)}
-                style={{ width: "18px", height: "18px", accentColor: "var(--color-clinical-alarm-icon)" }}
-              />
-              <span style={{ fontWeight: 700, color: isAlarm ? "var(--color-clinical-alarm-text)" : "inherit" }}>
-                Activar como Criterio de Alerta Médica (SOS)
-              </span>
-            </label>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, minWidth: "240px" }}>
-              <PhoneIcon size={14} color="var(--color-muted)" />
-              <label htmlFor={`lesson-sos-${lesson.id}`} style={{ fontSize: "12px", color: "var(--color-muted)", whiteSpace: "nowrap" }}>
-                Línea de Guardia:
-              </label>
-              <input
-                id={`lesson-sos-${lesson.id}`}
-                value={emergencyContacts}
-                onChange={(e) => setEmergencyContacts(e.target.value)}
-                placeholder="+57 300 912 3456"
+            {/* PESTAÑA 3: ALERTA SOS & CONTACTO DE EMERGENCIA */}
+            {activeTab === "sos" && (
+              <div
                 style={{
-                  flex: 1,
-                  padding: "5px 10px",
-                  fontSize: "12px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--color-border)",
+                  padding: "16px 20px",
+                  borderRadius: "var(--radius-lg)",
+                  background: isAlarm ? "var(--color-clinical-alarm-bg)" : "var(--color-surface-2)",
+                  border: isAlarm ? "1.5px solid var(--color-clinical-alarm-border)" : "1px solid var(--color-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
                 }}
-              />
-            </div>
-          </div>
-
-          {/* Fila 5: Indicaciones Detalladas (Markdown) y Video de YouTube con Preview en Vivo */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "16px" }}>
-            <div>
-              <label
-                htmlFor={`lesson-body-${lesson.id}`}
-                style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}
               >
-                Instrucciones Clínicas Detalladas (Markdown para lectura o audio)
-              </label>
-              <textarea
-                id={`lesson-body-${lesson.id}`}
-                rows={6}
-                value={bodyMd}
-                onChange={(e) => setBodyMd(e.target.value)}
-                placeholder="Explicación fisiológica, cuidados específicos al dormir o higienizar..."
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "12px",
-                  lineHeight: "1.5",
-                }}
-              />
-            </div>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+                  <div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", fontSize: "14px", margin: 0 }}>
+                      <input
+                        type="checkbox"
+                        checked={isAlarm}
+                        onChange={(e) => setIsAlarm(e.target.checked)}
+                        style={{ width: "18px", height: "18px", accentColor: "var(--color-clinical-alarm-icon)" }}
+                      />
+                      <span style={{ fontWeight: 700, color: isAlarm ? "var(--color-clinical-alarm-text)" : "inherit" }}>
+                        Activar como Criterio de Alerta Médica (SOS)
+                      </span>
+                    </label>
+                    <p style={{ margin: "4px 0 0 28px", fontSize: "12px", color: "var(--color-muted)" }}>
+                      Al activarse, AuraTips destacará esta pauta con señalización prioritaria roja en el panel del paciente y en el chat clínico.
+                    </p>
+                  </div>
 
-            <div>
-              <label
-                htmlFor={`lesson-youtube-${lesson.id}`}
-                style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}
-              >
-                Video Guía de YouTube (URL)
-              </label>
-              <input
-                id={`lesson-youtube-${lesson.id}`}
-                value={youtubeUrl}
-                onChange={(e) => setYoutubeUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
-                style={{
-                  width: "100%",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "12px",
-                  marginBottom: "8px",
-                }}
-              />
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: "260px" }}>
+                    <PhoneIcon size={15} color="var(--color-muted)" />
+                    <label htmlFor={`lesson-sos-${lesson.id}`} style={{ fontSize: "12px", color: "var(--color-muted)", whiteSpace: "nowrap" }}>
+                      Línea de Guardia:
+                    </label>
+                    <input
+                      id={`lesson-sos-${lesson.id}`}
+                      value={emergencyContacts}
+                      onChange={(e) => setEmergencyContacts(e.target.value)}
+                      placeholder="+57 300 912 3456"
+                      style={{
+                        flex: 1,
+                        padding: "6px 10px",
+                        fontSize: "12px",
+                        borderRadius: "6px",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
-              {/* Live Video Preview Box */}
-              {validEmbedUrl ? (
-                <div
-                  style={{
-                    position: "relative",
-                    paddingBottom: "56.25%",
-                    height: 0,
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                    border: "1px solid var(--color-border)",
-                    background: "#000",
-                  }}
-                >
-                  <iframe
-                    src={validEmbedUrl}
-                    title="Vista previa del video explicativo"
+            {/* PESTAÑA 4: INSTRUCCIONES DETALLADAS & VIDEO */}
+            {activeTab === "detailed" && (
+              <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "16px" }}>
+                <div>
+                  <label
+                    htmlFor={`lesson-body-${lesson.id}`}
+                    style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "6px" }}
+                  >
+                    Instrucciones Clínicas Detalladas (Markdown para lectura o audio)
+                  </label>
+                  <textarea
+                    id={`lesson-body-${lesson.id}`}
+                    rows={7}
+                    value={bodyMd}
+                    onChange={(e) => setBodyMd(e.target.value)}
+                    placeholder="Explicación fisiológica, cuidados específicos al dormir o higienizar..."
                     style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
                       width: "100%",
-                      height: "100%",
-                      border: 0,
+                      padding: "10px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid var(--color-border)",
+                      fontSize: "12px",
+                      lineHeight: "1.5",
                     }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
                   />
                 </div>
-              ) : (
-                <div
-                  style={{
-                    height: "135px",
-                    borderRadius: "8px",
-                    border: "1px dashed var(--color-border)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "var(--color-muted)",
-                    fontSize: "12px",
-                    background: "var(--color-surface-2)",
-                    textAlign: "center",
-                    padding: "12px",
-                  }}
-                >
-                  Pega un enlace de YouTube para ver aquí el reproductor de video en vivo.
+
+                <div>
+                  <label
+                    htmlFor={`lesson-youtube-${lesson.id}`}
+                    style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "6px" }}
+                  >
+                    Video Guía de YouTube (URL)
+                  </label>
+                  <input
+                    id={`lesson-youtube-${lesson.id}`}
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    style={{
+                      width: "100%",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid var(--color-border)",
+                      fontSize: "12px",
+                      marginBottom: "8px",
+                    }}
+                  />
+
+                  {/* Live Video Preview Box */}
+                  {validEmbedUrl ? (
+                    <div
+                      style={{
+                        position: "relative",
+                        paddingBottom: "56.25%",
+                        height: 0,
+                        overflow: "hidden",
+                        borderRadius: "8px",
+                        border: "1px solid var(--color-border)",
+                        background: "#000",
+                      }}
+                    >
+                      <iframe
+                        src={validEmbedUrl}
+                        title="Vista previa del video explicativo"
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          border: 0,
+                        }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        height: "140px",
+                        borderRadius: "8px",
+                        border: "1px dashed var(--color-border)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--color-muted)",
+                        fontSize: "12px",
+                        background: "var(--color-surface-2)",
+                        textAlign: "center",
+                        padding: "12px",
+                      }}
+                    >
+                      Pega un enlace de YouTube para ver aquí el reproductor de video en vivo.
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Barra de Acciones de la Pauta */}
@@ -964,7 +1055,8 @@ export function LessonEditor({
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              paddingTop: "12px",
+              padding: "12px 20px",
+              background: "var(--color-surface-2)",
               borderTop: "1px solid var(--color-border)",
             }}
           >
@@ -976,7 +1068,7 @@ export function LessonEditor({
               style={{
                 backgroundColor: "var(--color-brand)",
                 color: "#ffffff",
-                padding: "8px 20px",
+                padding: "8px 22px",
                 fontWeight: 700,
               }}
             >

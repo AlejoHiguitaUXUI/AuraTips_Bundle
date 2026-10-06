@@ -743,6 +743,27 @@ export function UploadCloudIcon({ size = 16, strokeWidth = 1.75, ...props }: Ico
   );
 }
 
+// 33b. Video / YouTube Player
+export function VideoIcon({ size = 18, strokeWidth = 1.75, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="m22 8-6 4 6 4V8Z" />
+      <rect width="14" height="12" x="2" y="6" rx="2" ry="2" />
+    </svg>
+  );
+}
+
 // 34. Save Icon
 export function SaveIcon({ size = 16, strokeWidth = 1.75, ...props }: IconProps) {
   return (
@@ -764,4 +785,47 @@ export function SaveIcon({ size = 16, strokeWidth = 1.75, ...props }: IconProps)
     </svg>
   );
 }
+
+// 35. Camera Icon
+export function CameraIcon({ size = 18, strokeWidth = 1.75, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+      <circle cx="12" cy="13" r="3" />
+    </svg>
+  );
+}
+
+// 36. Mail Icon
+export function MailIcon({ size = 18, strokeWidth = 1.75, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
 

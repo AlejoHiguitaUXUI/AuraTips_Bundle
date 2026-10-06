@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getProcedureBySlug, CLINICAL_PROCEDURES, getPhaseForDay } from "@/lib/clinical-data";
+import { getClinicalRole } from "@/lib/auth-role";
 import { ActiveProcedureCard, ActiveProcedure } from "../_components/ActiveProcedureCard";
 import { DailyCareChecklist } from "../_components/DailyCareChecklist";
 import { SymptomSafetyWidget } from "../_components/SymptomSafetyWidget";
@@ -28,6 +29,7 @@ interface PageProps {
 export default async function LearningDashboard({ searchParams }: PageProps) {
   let user: any = null;
   let enrollments: any[] = [];
+  let isSpecialist = false;
 
   const resolvedSearchParams = await searchParams;
   const demoSlug = resolvedSearchParams?.demo;
@@ -40,6 +42,13 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
     user = authUser;
 
     if (user) {
+      const roleInfo = await getClinicalRole(supabase, user);
+      isSpecialist = roleInfo.isSpecialist;
+
+      if (isSpecialist && !demoSlug) {
+        redirect("/dashboard/teaching");
+      }
+
       const { data } = await supabase
         .from("enrollments")
         .select("id, enrolled_at, courses ( id, title, slug, cover_url, status )")
@@ -48,7 +57,8 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
         .order("enrolled_at", { ascending: false });
       enrollments = data || [];
     }
-  } catch (e) {
+  } catch (e: any) {
+    if (e?.digest?.startsWith("NEXT_REDIRECT")) throw e;
     console.warn("LearningDashboard: Supabase connection unavailable, using demo mode fallback:", e);
   }
 
@@ -236,11 +246,14 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             </div>
           </div>
         </div>
-        <ClinicalAssistantDrawer
-          procedureSlug="toxina-botulinica-botox-facial"
-          procedureTitle="Toxina Botulínica Facial (Botox)"
-          recoveryDay={1}
-        />
+        {!isSpecialist && (
+          <ClinicalAssistantDrawer
+            procedureSlug="toxina-botulinica-botox-facial"
+            procedureTitle="Toxina Botulínica Facial (Botox)"
+            recoveryDay={1}
+            isSpecialist={isSpecialist}
+          />
+        )}
       </section>
     );
   }
@@ -501,11 +514,14 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <ClinicalAssistantDrawer
-        procedureSlug={activeProcedure.slug}
-        procedureTitle={activeProcedure.title}
-        recoveryDay={currentDay}
-      />
+      {!isSpecialist && (
+        <ClinicalAssistantDrawer
+          procedureSlug={activeProcedure.slug}
+          procedureTitle={activeProcedure.title}
+          recoveryDay={currentDay}
+          isSpecialist={isSpecialist}
+        />
+      )}
     </section>
   );
 }

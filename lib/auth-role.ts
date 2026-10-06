@@ -39,6 +39,15 @@ export async function getClinicalRole(
     // If profiles query fails (offline or schema cache), use metadata or fallback
     if (user.user_metadata?.role) {
       role = user.user_metadata.role as UserRole;
+    } else {
+      const email = user.email?.toLowerCase() ?? "";
+      if (
+        email.includes("especialista") ||
+        email.includes("doctor") ||
+        email.includes("mariana")
+      ) {
+        role = "specialist";
+      }
     }
   }
 

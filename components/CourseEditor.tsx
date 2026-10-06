@@ -434,9 +434,9 @@ export function CourseEditor({
         >
           <span className="step-number">{currentStep > 2 ? "✓" : "2"}</span>
           <div className="step-info">
-            <span className="step-title">2. Cronograma</span>
+            <span className="step-title">2. Línea de Tiempo</span>
             <span className="step-subtitle">
-              {modules.length} {modules.length === 1 ? "Etapa temporal" : "Etapas temporales"}
+              {modules.length} {modules.length === 1 ? "Fase temporal" : "Fases temporales"}
             </span>
           </div>
         </button>
@@ -453,7 +453,7 @@ export function CourseEditor({
           <div className="step-info">
             <span className="step-title">3. Pautas Clínicas</span>
             <span className="step-subtitle">
-              {totalLessons} {totalLessons === 1 ? "Pauta y Checklist" : "Pautas y Checklist"}
+              {totalLessons} {totalLessons === 1 ? "Pauta en 4 áreas" : "Pautas en 4 áreas"}
             </span>
           </div>
         </button>
@@ -1136,7 +1136,7 @@ export function CourseEditor({
               style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: 600 }}
             >
               <PlusIcon size={15} />
-              <span>+ Añadir Nueva Etapa</span>
+              <span>Añadir Nueva Etapa</span>
             </button>
           </div>
 
@@ -1257,7 +1257,7 @@ export function CourseEditor({
               style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
             >
               <PlusIcon size={14} />
-              <span>+ Añadir Etapa</span>
+              <span>Añadir Etapa</span>
             </button>
           </div>
 
