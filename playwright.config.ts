@@ -58,5 +58,13 @@ export default defineConfig({
       dependencies: ['setup'],
     },
   ],
+
+  /* Run local dev server before starting the tests */
+  webServer: {
+    command: process.env.CI ? 'npm run start -- -p 3001' : 'npm run dev -- -p 3001',
+    url: BASE_URL,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
 });
 
