@@ -7,6 +7,7 @@ Ejecución:
 
 import os
 import sys
+import asyncio
 import logging
 
 # Agregar la ruta raíz (edy-service) al path para que Python encuentre la carpeta shared
@@ -31,7 +32,7 @@ print(f"LIVEKIT_API_KEY: {'[OK Cargado]' if os.getenv('LIVEKIT_API_KEY') else '[
 print(f"ELEVEN_API_KEY: {'[OK Cargado]' if os.getenv('ELEVEN_API_KEY') else '[FALTA]'} ({len(os.getenv('ELEVEN_API_KEY', ''))} chars)")
 print(f"ELEVEN_VOICE_ID: {os.getenv('ELEVEN_VOICE_ID', 'EXAVITQu4vr4xnSDxMaL')}")
 print(f"GEMINI_API_KEY: {'[OK Cargado]' if os.getenv('GEMINI_API_KEY') else '[FALTA]'} ({len(os.getenv('GEMINI_API_KEY', ''))} chars)")
-print(f"GEMINI_MODEL: {os.getenv('GEMINI_MODEL', 'gemini-3.6-flash')}")
+print(f"GEMINI_MODEL: {os.getenv('GEMINI_MODEL', 'gemini-3.5-flash-lite')}")
 print(f"PLATFORM_URL: {os.getenv('PLATFORM_URL')}")
 print("=" * 60)
 
@@ -45,9 +46,8 @@ try:
 
     def _make_llm():
         return google_plugin.LLM(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite"),
             api_key=os.getenv("GEMINI_API_KEY"),
-            thinking_config={"thinking_level": "minimal"},
             temperature=0.3,
         )
 
@@ -66,25 +66,28 @@ except ImportError:
 from shared.tools import TOOLS_LIVEKIT
 from shared.system_prompt import SYSTEM_PROMPT
 
-# Nota de estilo exclusiva para el canal de voz: frases cortas, sin markdown
+# Directivas de estilo optimizadas para canal de voz en tiempo real: respuestas ágiles y concisas
 VOICE_STYLE_NOTE = (
-    "\n\nIMPORTANTE (modo voz): Responde con frases cortas y naturales. "
-    "NO uses markdown, listas con viñetas, asteriscos ni encabezados. "
-    "Habla como lo harías en una conversación telefónica amigable."
+    "\n\nDIRECTRICES DE VOZ ULTRA-RÁPIDA EN TIEMPO REAL:"
+    "\n1. SÉ CONCISA: Responde en 1 o máximo 2 oraciones breves (máximo 25 a 30 palabras). Nunca des parrafadas largas."
+    "\n2. RESPUESTA INMEDIATA: Ya conoces los 20 procedimientos de AuraMed. Responde directamente con tu conocimiento sin titubear."
+    "\n3. CERO MARKDOWN: Prohibido usar asteriscos, viñetas o listas. Habla como en una conversación telefónica fluida y natural."
+    "\n4. DIÁLOGO ACTIVO: Termina con una pregunta corta para guiar al paciente (ej: '¿Quieres saber los tiempos de reposo?', '¿Te gustaría agendar valoración?')."
 )
 
 
-# Se agrega request_fnc para despachar explícitamente las llamadas entrantes
+# Se agrega request_fnc para aceptar las llamadas entrantes a la sala
 async def request_fnc(req: JobRequest) -> None:
-    logger.debug("📥 Recibido JobRequest. Aceptando el trabajo...")
+    logger.info(f"📥 Recibido JobRequest para sala: {req.job.room.name}. Aceptando como 'edy-voice-agent'...")
     await req.accept(
         name="edy-voice-agent",
+        identity="aura-voice-assistant",
     )
 
 
 async def entrypoint(ctx: JobContext):
-    logger.info(f"🚀 Iniciando sesión de voz. LLM backend: {_LLM_BACKEND}")
-    print(f"[edy-voice] Iniciando sesión de voz. LLM backend: {_LLM_BACKEND}")
+    logger.info(f"🚀 Iniciando sesión de voz en sala {ctx.room.name}. LLM backend: {_LLM_BACKEND}")
+    print(f"[aura-voice] Iniciando sesión de voz en sala {ctx.room.name}. LLM backend: {_LLM_BACKEND}")
 
     try:
         session = AgentSession(
@@ -93,21 +96,27 @@ async def entrypoint(ctx: JobContext):
                 api_key=os.getenv("ELEVEN_API_KEY"),
                 language_code="es",
                 server_vad={
-                    "vad_silence_threshold_secs": 0.5,
-                    "min_silence_duration_ms": 300,
+                    "vad_silence_threshold_secs": 0.3,
+                    "min_silence_duration_ms": 250,
                 },
             ),
             llm=_make_llm(),
             tts=elevenlabs.TTS(
                 api_key=os.getenv("ELEVEN_API_KEY"),
                 voice_id=os.getenv("ELEVEN_VOICE_ID", "EXAVITQu4vr4xnSDxMaL"),
-                model="eleven_turbo_v2_5",
+                model="eleven_flash_v2_5",
+                streaming_latency=3,
+                chunk_length_schedule=[50, 90, 140, 200],
             ),
-            vad=silero.VAD.load(),
+            vad=silero.VAD.load(
+                min_silence_duration=0.25,
+                min_speech_duration=0.05,
+                prefix_padding_duration=0.2,
+            ),
             turn_handling={
                 "endpointing": {
-                    "min_delay": 0.3,
-                    "max_delay": 1.0,
+                    "min_delay": 0.1,
+                    "max_delay": 0.5,
                 },
                 "preemptive_generation": {
                     "enabled": True,
@@ -122,17 +131,18 @@ async def entrypoint(ctx: JobContext):
 
         # Monitoreo de eventos clave para visibilidad en consola
         session.on("user_input_transcribed", lambda ev: logger.info(f"🗣️ Transcripción ({'final' if ev.is_final else 'parcial'}): {ev.transcript}"))
-        session.on("agent_state_changed", lambda ev: logger.info(f"🔄 Estado agente: {ev.old_state} -> {ev.new_state}"))
-        session.on("speech_created", lambda ev: logger.info(f"🔊 Generando audio de respuesta (id={ev.speech_handle.id})"))
-        session.on("error", lambda ev: logger.error(f"❌ Error en sesión ({ev.source}): {ev.error}"))
+        session.on("conversation_item_added", lambda ev: logger.info(f"💬 Conversación item: {getattr(ev, 'item', ev)}"))
 
-        logger.debug("⏳ Iniciando session.start()...")
+        logger.debug("⏳ Conectando agente a la sala LiveKit...")
         await session.start(agent=agent, room=ctx.room)
-        logger.info("✅ AgentSession iniciada correctamente. Esperando interacciones...")
+        logger.info("✅ AURA conectada a la sala WebRTC. Esperando interacciones...")
+
+        # Pausa para sincronización WebRTC de audio en el navegador
+        await asyncio.sleep(0.5)
 
         # Saludo inicial al conectarse para confirmar audio de inmediato
         session.say(
-            "¡Hola! Soy Aura, tu asesora médica y estética en AuraTips y AuraMed. ¿En qué procedimiento o cuidado te puedo orientar hoy?",
+            "¡Hola! Soy Aura, tu asesora médica y estética en AuraMed. ¿En qué procedimiento te puedo orientar hoy?",
             allow_interruptions=True,
         )
     except Exception as e:

@@ -1,7 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://kshdusmzwlglqywmjwmq.supabase.co";
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzaGR1c216d2xnbHF5d21qd21xIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4OTYwMjc2NiwiZXhwIjoyMTA1MTc4NzY2fQ.t6E-dX9_EfAVrNqIX5O_-M44iMMzGXIhvTkc2MKxadg";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !serviceRoleKey) {
+  console.error("❌ Error: NEXT_PUBLIC_SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY son requeridas en variables de entorno.");
+  process.exit(1);
+}
 
 const supabase = createClient(supabaseUrl, serviceRoleKey);
 
