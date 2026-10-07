@@ -5,6 +5,7 @@ import {
   StethoscopeIcon,
   ClockIcon,
   ChevronRightIcon,
+  PencilIcon,
 } from "@/components/icons";
 
 export const metadata = {
@@ -215,116 +216,187 @@ export default async function TeachingDashboard() {
         </div>
       )}
 
-      {/* Barra de Título y Nuevo Protocolo */}
-      <div
+      {/* Sección Dirección de Protocolos Clínicos (Manejo tipo Protocolos Recientes) */}
+      <section
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "var(--space-4)",
-          flexWrap: "wrap",
-          gap: "var(--space-3)",
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-xl)",
+          padding: "var(--space-6)",
         }}
       >
-        <div>
-          <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, letterSpacing: "-0.01em", margin: 0 }}>
-            Dirección de Protocolos Clínicos
-          </h2>
-          <p style={{ color: "var(--color-muted)", fontSize: "var(--text-sm)", marginTop: "2px" }}>
-            Gestión de pautas de cuidado post-tratamiento, cronogramas de recuperación, pautas recomendadas (qué hacer) y acciones a evitar (qué evitar).
-          </p>
-        </div>
-        <Link
-          href="/dashboard/teaching/new"
-          data-testid="new-course-button"
-          className="btn"
+        <div
           style={{
-            backgroundColor: "var(--color-brand, #20503b)",
-            color: "#ffffff",
-            padding: "8px 18px",
-            fontWeight: 600,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "var(--space-5)",
+            gap: "var(--space-4)",
+            flexWrap: "wrap",
           }}
         >
-          + Nuevo Protocolo Clínico
-        </Link>
-      </div>
-
-      {error && <div className="error">{error.message}</div>}
-
-      {!error && courses && courses.length === 0 && (
-        <div className="empty-state" style={{ padding: "var(--space-8)", textAlign: "center" }}>
-          <p style={{ marginBottom: "var(--space-3)" }}>Aún no has registrado ningún protocolo clínico de recuperación.</p>
-          <Link href="/dashboard/teaching/new" className="btn">
-            Crear tu primer protocolo médico
-          </Link>
-        </div>
-      )}
-
-      {courses && courses.length > 0 && (
-        <div className="grid" style={{ gap: "var(--space-3)" }}>
-          {courses.map((c) => (
+          <div style={{ flex: "1 1 500px", minWidth: "260px" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, margin: 0 }}>
+              Dirección de Protocolos Clínicos
+            </h2>
+            <p style={{ color: "var(--color-muted)", fontSize: "13px", margin: "4px 0 0", maxWidth: "720px", lineHeight: 1.45 }}>
+              Gestión de pautas de cuidado post-tratamiento, cronogramas de recuperación, pautas recomendadas (qué hacer) y acciones a evitar (qué evitar).
+            </p>
+          </div>
+          <div style={{ marginLeft: "auto", flexShrink: 0 }}>
             <Link
-              key={c.id}
-              href={`/dashboard/teaching/${c.slug}`}
-              className="card"
+              href="/dashboard/teaching/new"
+              data-testid="new-course-button"
+              className="btn"
               style={{
-                display: "flex",
-                justifyContent: "space-between",
+                backgroundColor: "var(--color-brand, #20503b)",
+                color: "#ffffff",
+                padding: "9px 20px",
+                fontWeight: 600,
+                fontSize: "14px",
+                borderRadius: "var(--radius-full, 999px)",
+                display: "inline-flex",
                 alignItems: "center",
-                color: "inherit",
-                textDecoration: "none",
-                padding: "var(--space-4) var(--space-5)",
-                borderRadius: "var(--radius-lg)",
-                transition: "all var(--dur-fast) ease",
-                backgroundColor: "var(--color-surface)",
-                border: "1px solid var(--color-border)",
+                gap: "6px",
+                whiteSpace: "nowrap",
+                boxShadow: "0 2px 8px rgba(32, 80, 59, 0.25)",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                  <strong style={{ fontSize: "var(--text-base)", color: "var(--color-text)" }}>{c.title}</strong>
-                  <span
+              + Nuevo Protocolo Clínico
+            </Link>
+          </div>
+        </div>
+
+        {error && <div className="error">{error.message}</div>}
+
+        {!error && courses && courses.length === 0 && (
+          <div className="empty-state" style={{ padding: "var(--space-8)", textAlign: "center" }}>
+            <p style={{ marginBottom: "var(--space-3)" }}>Aún no has registrado ningún protocolo clínico de recuperación.</p>
+            <Link href="/dashboard/teaching/new" className="btn">
+              Crear tu primer protocolo médico
+            </Link>
+          </div>
+        )}
+
+        {courses && courses.length > 0 && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "var(--space-4)",
+            }}
+          >
+            {courses.map((c) => {
+              const isPublished = c.status === "published";
+              return (
+                <div key={c.id} className="protocol-quick-card">
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: 800,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.06em",
+                          color: "var(--color-brand)",
+                        }}
+                      >
+                        {c.category || "Inyectables"}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          color: isPublished ? "#16a34a" : "#d97706",
+                          fontWeight: 700,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 5,
+                            height: 5,
+                            borderRadius: "50%",
+                            background: isPublished ? "#22c55e" : "#f59e0b",
+                          }}
+                        />
+                        {isPublished ? "Activo" : "Borrador"}
+                      </span>
+                    </div>
+
+                    <Link
+                      href={`/dashboard/teaching/${c.slug}`}
+                      style={{
+                        display: "block",
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        color: "var(--color-text)",
+                        lineHeight: 1.35,
+                        marginBottom: "8px",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {c.title}
+                    </Link>
+
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        fontSize: "11px",
+                        color: "var(--color-muted)",
+                      }}
+                    >
+                      <ClockIcon size={12} />
+                      <span>Reposo: {c.recovery_time || "24 a 48h"}</span>
+                    </div>
+                  </div>
+
+                  <div
                     style={{
-                      fontSize: "12px",
-                      padding: "2px 8px",
-                      borderRadius: "999px",
-                      background: "rgba(194, 155, 56, 0.1)",
-                      color: "var(--color-brand)",
-                      fontWeight: 600,
+                      paddingTop: "var(--space-3)",
+                      borderTop: "1px solid var(--color-border)",
+                      display: "flex",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    {c.category || "Inyectables"}
-                  </span>
+                    <Link
+                      href={`/dashboard/teaching/${c.slug}`}
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: 700,
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-md)",
+                        background: "rgba(194, 155, 56, 0.12)",
+                        color: "var(--color-gold-text, #997316)",
+                        border: "1px solid rgba(194, 155, 56, 0.35)",
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        transition: "all var(--dur-fast)",
+                      }}
+                      title={`Editar protocolo de ${c.title}`}
+                    >
+                      <PencilIcon size={12} />
+                      <span>Editar pautas</span>
+                    </Link>
+                  </div>
                 </div>
-                <div style={{ display: "flex", gap: "16px", fontSize: "12px", color: "var(--color-muted)", alignItems: "center" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                    <ClockIcon size={12} color="var(--color-muted)" />
-                    <span>Reposo estimado: {c.recovery_time || "24 a 48h"}</span>
-                  </span>
-                  <span>ID: <code style={{ color: "var(--color-brand)" }}>{c.slug}</code></span>
-                </div>
-              </div>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    padding: "4px 10px",
-                    borderRadius: "var(--radius-full)",
-                    background: c.status === "published" ? "rgba(34, 197, 94, 0.12)" : "rgba(194, 155, 56, 0.12)",
-                    color: c.status === "published" ? "#22c55e" : "#C29B38",
-                    border: `1px solid ${c.status === "published" ? "rgba(34, 197, 94, 0.3)" : "rgba(194, 155, 56, 0.3)"}`,
-                  }}
-                >
-                  {c.status === "published" ? "● Activo en AuraTips" : "○ En Borrador"}
-                </span>
-                <ChevronRightIcon size={16} color="var(--color-muted)" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </section>
     </section>
   );
 }
