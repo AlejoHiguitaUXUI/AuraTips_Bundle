@@ -209,7 +209,7 @@ export function CourseEditor({
       setError(deleteError.message);
       return;
     }
-    router.push("/dashboard/teaching");
+    router.push("/dashboard/protocolos");
     router.refresh();
   }
 
@@ -274,7 +274,7 @@ export function CourseEditor({
         }}
       >
         <Link
-          href="/dashboard/teaching"
+          href="/dashboard/protocolos"
           className="btn-ghost btn btn-sm"
           style={{ textDecoration: "none", color: "var(--color-brand)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "6px" }}
         >
@@ -283,7 +283,7 @@ export function CourseEditor({
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link
-            href={`/courses/${course.slug}`}
+            href={`/procedimientos/${course.slug}`}
             target="_blank"
             className="btn-ghost btn btn-sm"
             style={{ textDecoration: "none", color: "var(--color-muted)", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "4px" }}
@@ -1383,7 +1383,7 @@ export function CourseEditor({
 
             <div style={{ display: "flex", gap: "10px" }}>
               <Link
-                href={`/courses/${course.slug}`}
+                href={`/procedimientos/${course.slug}`}
                 target="_blank"
                 className="btn secondary"
                 style={{ textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "6px" }}
@@ -1392,7 +1392,7 @@ export function CourseEditor({
               </Link>
 
               <Link
-                href="/dashboard/teaching"
+                href="/dashboard/protocolos"
                 className="btn"
                 style={{
                   backgroundColor: "var(--color-brand)",

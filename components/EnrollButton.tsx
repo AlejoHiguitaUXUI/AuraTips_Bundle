@@ -30,7 +30,7 @@ export function EnrollButton({
   if (!isSignedIn) {
     return (
       <p>
-        <Link href={`/login?next=/courses/${courseSlug}`} className="btn">
+        <Link href={`/login?next=/procedimientos/${courseSlug}`} className="btn">
           Iniciar sesión para activar
         </Link>
       </p>

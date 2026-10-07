@@ -16,7 +16,7 @@ export default async function EditCoursePage({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/login?next=/dashboard/teaching/${slug}`);
+    redirect(`/login?next=/dashboard/protocolos/${slug}`);
   }
 
   const { isSpecialist } = await getClinicalRole(supabase, user);

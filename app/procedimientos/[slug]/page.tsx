@@ -250,7 +250,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             : [{ url: "/og/default.png", width: 1200, height: 630 }],
         },
         alternates: {
-          canonical: `/courses/${data.slug}`,
+          canonical: `/procedimientos/${data.slug}`,
         },
       };
     }
@@ -275,7 +275,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         images: [{ url: "/og/default.png", width: 1200, height: 630 }],
       },
       alternates: {
-        canonical: `/courses/${clinicalProc.slug}`,
+        canonical: `/procedimientos/${clinicalProc.slug}`,
       },
     };
   }
@@ -657,7 +657,7 @@ export default async function CourseDetailPage({ params }: Props) {
                       .map((l: any) => (
                         <Link
                           key={l.id}
-                          href={`/courses/${course.slug}/lessons/${l.id}`}
+                          href={`/procedimientos/${course.slug}/lessons/${l.id}`}
                           className="stage-lesson-link"
                           aria-label={`Ver pauta y checklist: ${l.title}`}
                         >

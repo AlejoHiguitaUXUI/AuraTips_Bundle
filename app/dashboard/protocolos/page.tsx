@@ -23,7 +23,7 @@ export default async function TeachingDashboard() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login?next=/dashboard/teaching");
+    redirect("/login?next=/dashboard/protocolos");
   }
 
   const { isSpecialist } = await getClinicalRole(supabase, user);
@@ -245,7 +245,7 @@ export default async function TeachingDashboard() {
           </div>
           <div style={{ marginLeft: "auto", flexShrink: 0 }}>
             <Link
-              href="/dashboard/teaching/new"
+              href="/dashboard/protocolos/new"
               data-testid="new-course-button"
               className="btn"
               style={{
@@ -272,7 +272,7 @@ export default async function TeachingDashboard() {
         {!error && courses && courses.length === 0 && (
           <div className="empty-state" style={{ padding: "var(--space-8)", textAlign: "center" }}>
             <p style={{ marginBottom: "var(--space-3)" }}>Aún no has registrado ningún protocolo clínico de recuperación.</p>
-            <Link href="/dashboard/teaching/new" className="btn">
+            <Link href="/dashboard/protocolos/new" className="btn">
               Crear tu primer protocolo médico
             </Link>
           </div>
@@ -333,7 +333,7 @@ export default async function TeachingDashboard() {
                     </div>
 
                     <Link
-                      href={`/dashboard/teaching/${c.slug}`}
+                      href={`/dashboard/protocolos/${c.slug}`}
                       style={{
                         display: "block",
                         fontSize: "14px",
@@ -370,7 +370,7 @@ export default async function TeachingDashboard() {
                     }}
                   >
                     <Link
-                      href={`/dashboard/teaching/${c.slug}`}
+                      href={`/dashboard/protocolos/${c.slug}`}
                       style={{
                         fontSize: "12px",
                         fontWeight: 700,

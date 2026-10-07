@@ -46,7 +46,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
       isSpecialist = roleInfo.isSpecialist;
 
       if (isSpecialist && !demoSlug) {
-        redirect("/dashboard/teaching");
+        redirect("/dashboard/protocolos");
       }
 
       const { data } = await supabase
@@ -451,7 +451,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                       </span>
                     </div>
                     <Link
-                      href={`/courses/${c.slug}`}
+                      href={`/procedimientos/${c.slug}`}
                       className="btn-ghost btn btn-sm"
                       style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
                     >
