@@ -106,7 +106,7 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
 
     test('entra a su dashboard, crea un curso GRATIS nuevo (precio 0) y lo publica; verifica en catálogo', async ({ page }) => {
       // 1. Entra al dashboard de dirección clínica
-      await page.goto('/dashboard/teaching');
+      await page.goto('/dashboard/protocolos');
       await expect(page.getByRole('heading', { name: /Dra\. Mariana Gómez/i })).toBeVisible();
 
       // 2. Inicia creación de nuevo protocolo clínico
@@ -115,7 +115,7 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
       await newCourseBtn.click();
 
       // 3. Espera a llegar al formulario de nuevo protocolo
-      await page.waitForURL('**/dashboard/teaching/new');
+      await page.waitForURL('**/dashboard/protocolos/new');
       await expect(page.getByRole('heading', { name: /Nuevo Protocolo de Recuperación/i })).toBeVisible();
 
       // 4. Llena los campos requeridos: título, descripción y precio 0
@@ -136,13 +136,14 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
       await expect(submitBtn).toBeEnabled();
       await submitBtn.click();
 
-      // 6. Espera la redirección al editor de protocolo /dashboard/teaching/[slug]
+      // 6. Espera la redirección al editor de protocolo /dashboard/protocolos/[slug]
       await page.waitForURL(
-        (url) => url.pathname.startsWith('/dashboard/teaching/') && !url.pathname.endsWith('/new'),
+        (url) => (url.pathname.startsWith('/dashboard/protocolos/') || url.pathname.startsWith('/dashboard/teaching/')) && !url.pathname.endsWith('/new'),
         { timeout: 15000 }
       );
       const currentUrl = page.url();
-      createdCourseSlug = currentUrl.split('/dashboard/teaching/')[1].split('?')[0];
+      const basePath = currentUrl.includes('/dashboard/protocolos/') ? '/dashboard/protocolos/' : '/dashboard/teaching/';
+      createdCourseSlug = currentUrl.split(basePath)[1].split('?')[0];
       expect(createdCourseSlug).toBeTruthy();
       expect(createdCourseSlug).not.toBe('new');
 
@@ -195,7 +196,7 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
       }
 
       // 3. Verifica llegada a la página del protocolo
-      await expect(page).toHaveURL(new RegExp(`/courses/${createdCourseSlug}`), { timeout: 15000 });
+      await expect(page).toHaveURL(new RegExp(`/(courses|procedimientos)/${createdCourseSlug}`), { timeout: 15000 });
       await expect(page.getByRole('heading', { level: 1, name: testCourseTitle })).toBeVisible();
 
       // 4. Activa / se inscribe al protocolo (confirmación directa por ser gratuito)

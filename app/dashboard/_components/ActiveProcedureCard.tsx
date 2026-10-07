@@ -413,7 +413,7 @@ export function ActiveProcedureCard({ procedure }: ActiveProcedureCardProps) {
         }}
       >
         <Link
-          href={`/courses/${procedure.slug}`}
+          href={`/procedimientos/${procedure.slug}`}
           className="btn"
           style={{
             padding: "8px 18px",

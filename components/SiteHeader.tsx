@@ -75,7 +75,7 @@ export async function SiteHeader() {
             <>
               {isSpecialist ? (
                 <>
-                  <Link href="/dashboard/teaching">Protocolos Clínicos</Link>
+                  <Link href="/dashboard/protocolos">Protocolos Clínicos</Link>
                   <span
                     style={{
                       display: "inline-flex",

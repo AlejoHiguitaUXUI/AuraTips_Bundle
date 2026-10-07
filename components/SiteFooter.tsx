@@ -121,7 +121,7 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/teaching" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+                <Link href="/dashboard/protocolos" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
                   Dirección Médica & Especialista
                 </Link>
               </li>

@@ -69,7 +69,7 @@ export default function NewCoursePage() {
       return;
     }
 
-    router.push(`/dashboard/teaching/${json.course.slug}`);
+    router.push(`/dashboard/protocolos/${json.course.slug}`);
   }
 
   return (
@@ -77,7 +77,7 @@ export default function NewCoursePage() {
       {/* Navegación y Volver */}
       <div style={{ marginBottom: "var(--space-4)" }}>
         <Link
-          href="/dashboard/teaching"
+          href="/dashboard/protocolos"
           className="btn-ghost btn btn-sm"
           style={{ textDecoration: "none", color: "var(--color-brand)" }}
         >
@@ -337,7 +337,7 @@ export default function NewCoursePage() {
 
           {/* Botones de acción */}
           <div style={{ paddingTop: "var(--space-3)", display: "flex", justifyContent: "flex-end", gap: "12px" }}>
-            <Link href="/dashboard/teaching" className="btn btn-secondary">
+            <Link href="/dashboard/protocolos" className="btn btn-secondary">
               Cancelar
             </Link>
             <button

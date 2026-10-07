@@ -199,7 +199,7 @@ export function ProfileForm({ profile }: { profile: ProfileData }) {
     }
   }
 
-  const backHref = isSpecialist ? "/dashboard/teaching" : "/dashboard/learning";
+  const backHref = isSpecialist ? "/dashboard/protocolos" : "/dashboard/learning";
 
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>

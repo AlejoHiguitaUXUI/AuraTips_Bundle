@@ -117,7 +117,12 @@ export function ProcedureCatalog({
                     marginBottom: "8px",
                   }}
                 >
-                  {proc.title}
+                  <Link
+                    href={`/procedimientos/${proc.slug}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {proc.title}
+                  </Link>
                 </h2>
 
                 {/* Descripción completa del procedimiento */}
@@ -233,7 +238,7 @@ export function ProcedureCatalog({
                   {/* Acceso para Especialista en Dirección Clínica si aplica */}
                   {isSpecialist && (
                     <Link
-                      href={`/dashboard/teaching/${proc.slug}`}
+                      href={`/dashboard/protocolos/${proc.slug}`}
                       onClick={(e) => e.stopPropagation()}
                       style={{
                         fontSize: "11px",

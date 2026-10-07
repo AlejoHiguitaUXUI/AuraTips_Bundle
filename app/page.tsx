@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getClinicalRole } from "@/lib/auth-role";
 import LearningDashboard from "@/app/dashboard/learning/page";
 import { EditorialHero } from "@/components/EditorialHero";
+import { AuraVoiceSection } from "@/components/AuraVoiceSection";
 import {
   LeafIcon,
   ShieldCheckIcon,
@@ -208,7 +209,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         >
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
             <Link
-              href="/dashboard/teaching/new"
+              href="/dashboard/protocolos/new"
               className="btn-clinical-primary"
               title="Crear un nuevo protocolo clínico para pacientes"
             >
@@ -217,7 +218,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </Link>
 
             <Link
-              href="/dashboard/teaching"
+              href="/dashboard/protocolos"
               className="btn-clinical-secondary"
               title="Ir al panel de gestión y edición de protocolos"
             >
@@ -591,7 +592,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
                       {procSlug && (
                         <Link
-                          href={`/courses/${procSlug}`}
+                          href={`/procedimientos/${procSlug}`}
                           style={{
                             fontSize: "12px",
                             color: "var(--color-brand)",
@@ -642,7 +643,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               </p>
             </div>
             <Link
-              href="/dashboard/teaching"
+              href="/dashboard/protocolos"
               style={{
                 fontSize: "13px",
                 fontWeight: 600,
@@ -742,7 +743,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   }}
                 >
                   <Link
-                    href={`/dashboard/teaching/${c.slug}`}
+                    href={`/dashboard/protocolos/${c.slug}`}
                     style={{
                       fontSize: "12px",
                       fontWeight: 700,
@@ -778,7 +779,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Hero Principal Editorial con Arcos de Procedimientos y Acceso a Cuidados */}
       <EditorialHero />
 
-
+      {/* Sección Asesora Clínica por Voz AURA */}
+      <AuraVoiceSection />
     </div>
   );
 }

@@ -60,7 +60,7 @@ function LoginForm() {
         }
       }
 
-      next = isSpecialistUser ? "/dashboard/teaching" : "/dashboard/learning";
+      next = isSpecialistUser ? "/dashboard/protocolos" : "/dashboard/learning";
     }
 
     router.push(next);

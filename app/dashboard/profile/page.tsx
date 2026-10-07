@@ -61,7 +61,7 @@ export default async function ProfilePage() {
     notification_preferences: notificationPreferences,
   };
 
-  const backHref = isSpecialist ? "/dashboard/teaching" : "/dashboard/learning";
+  const backHref = isSpecialist ? "/dashboard/protocolos" : "/dashboard/learning";
   const backLabel = isSpecialist ? "← Volver al Centro de Mando" : "← Volver a Mis Cuidados Activos";
 
   return (

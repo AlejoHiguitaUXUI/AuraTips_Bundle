@@ -149,7 +149,7 @@ export default async function LessonPage({
     <article className="animate-fade-in" style={{ maxWidth: "840px", margin: "0 auto", paddingBottom: "64px" }}>
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" style={{ marginBottom: "20px", fontSize: "14px" }}>
-        <Link href={`/courses/${courseSlug}`} style={{ color: "var(--color-muted)", textDecoration: "none" }}>
+        <Link href={`/procedimientos/${courseSlug}`} style={{ color: "var(--color-muted)", textDecoration: "none" }}>
           ← Volver al Protocolo de {courseTitle}
         </Link>
       </nav>
