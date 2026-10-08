@@ -38,6 +38,7 @@ print("=" * 60)
 
 from livekit.agents import AgentSession, Agent, JobContext, JobRequest, WorkerOptions, cli, AutoSubscribe
 from livekit.plugins import elevenlabs, silero
+from livekit.plugins.google.beta import gemini_stt, gemini_tts
 
 # LLM: usar el plugin de Google (Gemini) si está disponible,
 # con fallback a Anthropic si solo está instalado ese plugin.
@@ -62,6 +63,43 @@ except ImportError:
         )
 
     _LLM_BACKEND = "anthropic (fallback — instala livekit-plugins-google)"
+
+def _make_stt():
+    voice_backend = os.getenv("VOICE_BACKEND", "gemini").lower()
+    if voice_backend == "elevenlabs" and os.getenv("ELEVEN_API_KEY"):
+        logger.info("🎙️ Usando ElevenLabs STT")
+        return elevenlabs.STT(
+            model="scribe_v2_realtime",
+            api_key=os.getenv("ELEVEN_API_KEY"),
+            language_code="es",
+            server_vad={
+                "vad_silence_threshold_secs": 0.3,
+                "min_silence_duration_ms": 250,
+            },
+        )
+    logger.info("🎙️ Usando Google Gemini Live STT (español nativo)")
+    return gemini_stt.STT(
+        api_key=os.getenv("GEMINI_API_KEY"),
+        language="es",
+    )
+
+def _make_tts():
+    voice_backend = os.getenv("VOICE_BACKEND", "gemini").lower()
+    if voice_backend == "elevenlabs" and os.getenv("ELEVEN_API_KEY"):
+        logger.info("🔊 Usando ElevenLabs TTS")
+        return elevenlabs.TTS(
+            api_key=os.getenv("ELEVEN_API_KEY"),
+            voice_id=os.getenv("ELEVEN_VOICE_ID", "EXAVITQu4vr4xnSDxMaL"),
+            model="eleven_flash_v2_5",
+            streaming_latency=3,
+            chunk_length_schedule=[50, 90, 140, 200],
+        )
+    voice_name = os.getenv("GEMINI_VOICE", "Aoede")
+    logger.info(f"🔊 Usando Google Gemini TTS (voz: {voice_name})")
+    return gemini_tts.TTS(
+        api_key=os.getenv("GEMINI_API_KEY"),
+        voice_name=voice_name,
+    )
 
 from shared.tools import TOOLS_LIVEKIT
 from shared.system_prompt import SYSTEM_PROMPT
@@ -91,25 +129,11 @@ async def entrypoint(ctx: JobContext):
 
     try:
         session = AgentSession(
-            stt=elevenlabs.STT(
-                model="scribe_v2_realtime",
-                api_key=os.getenv("ELEVEN_API_KEY"),
-                language_code="es",
-                server_vad={
-                    "vad_silence_threshold_secs": 0.3,
-                    "min_silence_duration_ms": 250,
-                },
-            ),
+            stt=_make_stt(),
             llm=_make_llm(),
-            tts=elevenlabs.TTS(
-                api_key=os.getenv("ELEVEN_API_KEY"),
-                voice_id=os.getenv("ELEVEN_VOICE_ID", "EXAVITQu4vr4xnSDxMaL"),
-                model="eleven_flash_v2_5",
-                streaming_latency=3,
-                chunk_length_schedule=[50, 90, 140, 200],
-            ),
+            tts=_make_tts(),
             vad=silero.VAD.load(
-                min_silence_duration=0.25,
+                min_silence_duration=0.3,
                 min_speech_duration=0.05,
                 prefix_padding_duration=0.2,
             ),
