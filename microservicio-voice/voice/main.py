@@ -7,6 +7,14 @@ Ejecución:
 
 import os
 import sys
+
+# Optimización de memoria RAM para Render (Limitar hilos de ONNX y librerías C)
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+
 import asyncio
 import logging
 

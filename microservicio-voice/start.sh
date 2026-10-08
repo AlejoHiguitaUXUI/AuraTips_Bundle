@@ -22,7 +22,7 @@ with socketserver.TCPServer(('', port), Handler) as httpd:
 HTTP_PID=$!
 
 echo "🎙️ Iniciando Worker de Voz LiveKit (AURA)..."
-python3 voice/main.py dev &
+python3 voice/main.py start &
 WORKER_PID=$!
 
 trap "kill -TERM $HTTP_PID $WORKER_PID 2>/dev/null" SIGTERM SIGINT
