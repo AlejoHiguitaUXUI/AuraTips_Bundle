@@ -50,9 +50,8 @@ export function EdyVoiceWidget({
   const [previewShowTopics, setPreviewShowTopics] = useState(false);
   const [previewActiveTopic, setPreviewActiveTopic] = useState<string | null>(null);
 
-  const endpointBase = process.env.NEXT_PUBLIC_VOICE_SERVICE_URL
-    ? `${process.env.NEXT_PUBLIC_VOICE_SERVICE_URL}/voice/token`
-    : "/api/voice/token";
+  // Usamos la API interna de Next.js (/api/voice/token) que genera el JWT de LiveKit y despacha el agente
+  const endpointBase = "/api/voice/token";
 
   const startVoiceSession = async () => {
     try {
