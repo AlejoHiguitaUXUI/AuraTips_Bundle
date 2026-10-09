@@ -18,9 +18,12 @@ El sistema SHALL analizar cada consulta del paciente en busca de signos de alarm
 ### Requirement: Asistente virtual de voz en tiempo real con WebRTC (AURA)
 El sistema SHALL proveer una asesora virtual interactiva por voz y texto denominada AURA, respaldada por un microservicio desacoplado (`microservicio-voice`) con LiveKit Cloud WebRTC, reconocimiento de voz (STT) y síntesis natural (TTS) de ElevenLabs, y Google Gemini LLM. AURA SHALL orientar a pacientes sobre los 20 procedimientos estéticos faciales, corporales y capilares, responder dudas post-operatorias y guiar hacia la reserva de citas de valoración médica presencial en Medellín.
 
+**Nota Técnica (Feature Flag):** Debido a los altos requerimientos de memoria RAM en tiempo de carga de las dependencias de IA (PyTorch/Silero VAD), la disponibilidad de los componentes de la interfaz de usuario de AURA Voice SHALL estar controlada por la variable de entorno de feature flag `NEXT_PUBLIC_ENABLE_AURA_VOICE`. El asistente de voz solo será visible si esta variable está configurada como `"true"`.
+
 #### Scenario: Paciente inicia llamada de voz con AURA
-- **WHEN** el usuario hace clic en el botón "Consúltalo con AURA" en la barra de búsqueda o activa el modal de voz
+- **WHEN** el usuario hace clic en el botón "Consúltalo con AURA" en la barra de búsqueda o activa el modal de voz y la funcionalidad está habilitada (`NEXT_PUBLIC_ENABLE_AURA_VOICE=true`)
 - **THEN** el sistema solicita un token efímero a `/voice/token`, establece una conexión WebRTC bidireccional con LiveKit Cloud y permite una conversación oral en tiempo real de baja latencia con síntesis de voz humana.
+
 
 ### Requirement: Integración de acceso directo a AURA en la barra de búsqueda clínica
 El sistema SHALL presentar en el componente principal de búsqueda (`ClinicalSearchBar`) una fila responsiva compuesta por la barra de búsqueda tradicional y un botón destacado "Consúltalo con AURA", provisto de un indicador luminoso pulsante verde esmeralda (`.aura-call-pulse-dot`), icono de teléfono y un popover informativo que describe las capacidades de la asesora virtual al pasar el cursor (*hover*).

@@ -8,6 +8,11 @@ import { EdyVoiceWidget } from "@/components/voice/EdyVoiceWidget";
 export function AuraVoiceSection() {
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
 
+  // Feature Flag: Ocultar el componente si no está habilitado explícitamente
+  if (process.env.NEXT_PUBLIC_ENABLE_AURA_VOICE !== "true") {
+    return null;
+  }
+
   return (
     <section
       className="aura-voice-section"

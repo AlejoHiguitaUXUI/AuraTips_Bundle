@@ -4,6 +4,16 @@ Todas las modificaciones notables realizadas en este proyecto están documentada
 
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y este proyecto se adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [1.4.1] - 2026-10-09
+
+### 🔧 Corregido y Optimizado (Fixed & Optimized)
+
+- **Feature Flag para AURA Voice Assistant (`NEXT_PUBLIC_ENABLE_AURA_VOICE`):**
+  - Se implementó un "interruptor" (Feature Flag) para ocultar temporalmente el botón y sección de asistencia por voz en vivo (`AuraVoiceSection`) en producción, debido a limitaciones severas de memoria (OOM) al cargar PyTorch/Silero VAD en el plan gratuito de Render.
+  - El componente regresará de forma predeterminada un valor nulo a menos que la variable de entorno se establezca explícitamente en `"true"`. Esto permite mantener el código intacto en la rama principal y probarlo localmente mientras se tramita la escalabilidad del servidor.
+
+---
+
 ## [1.4.0] - 2026-10-04
 
 ### 🚀 Añadido (Added)
