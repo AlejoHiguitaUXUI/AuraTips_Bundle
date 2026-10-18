@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getClinicalRole } from "@/lib/auth-role";
 import { RatingBadge } from "@/components/RatingBadge";
 import { EnrollButton } from "@/components/EnrollButton";
+import { AssignPatientProtocolModal } from "@/components/AssignPatientProtocolModal";
 import { ReviewList } from "@/components/ReviewList";
 import { ReviewForm } from "@/components/ReviewForm";
 import { CLINICAL_PROCEDURES } from "@/lib/clinical-data";
@@ -144,14 +145,26 @@ async function fetchCourse(slugOrId: string): Promise<{
       modulesData = mods ?? [];
       ratingRow = rRow;
 
-      if (user && !isOwner) {
-        const { data: enrollment } = await supabase
-          .from("enrollments")
-          .select("id")
-          .eq("course_id", dbCourse.id)
-          .eq("user_id", user.id)
-          .maybeSingle();
-        isEnrolled = !!enrollment;
+      if (user && !isOwner && !isSpecialist) {
+        try {
+          const { createAdminClient } = await import("@/lib/supabase/admin");
+          const { resolvePatientProtocols } = await import("@/lib/patient-protocols");
+          const adminClient = createAdminClient();
+          const { activeEnrollments } = await resolvePatientProtocols(adminClient, user.id);
+          isEnrolled = activeEnrollments.some(
+            (e) => e.course_id === dbCourse.id || e.courses?.slug === dbCourse.slug
+          );
+        } catch {
+          const { data: enrollment } = await supabase
+            .from("enrollments")
+            .select("id")
+            .eq("course_id", dbCourse.id)
+            .eq("user_id", user.id)
+            .maybeSingle();
+          isEnrolled = !!enrollment;
+        }
+      } else if (isOwner || isSpecialist) {
+        isEnrolled = true;
       }
 
       const { data: revs } = await supabase
@@ -573,7 +586,7 @@ export default async function CourseDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* Inscripción */}
+        {/* Barra de Estado / Gestión del Protocolo según Rol */}
         {dbCourse && (
           <div
             style={{
@@ -591,20 +604,32 @@ export default async function CourseDetailPage({ params }: Props) {
           >
             <div>
               <h2 style={{ fontSize: "15px", fontWeight: 700, margin: 0 }}>
-                ¿Te realizaste o vas a realizarte este procedimiento?
+                {isSpecialist || isOwner
+                  ? "Gestión clínica de este protocolo"
+                  : "Protocolo asignado a tu recuperación"}
               </h2>
               <p style={{ fontSize: "13px", color: "var(--color-muted)", margin: "4px 0 0" }}>
-                Activa la guía interactiva para guardar tu progreso, checklist diario
-                y recordatorios de medicación.
+                {isSpecialist || isOwner
+                  ? "Edita las etapas y pautas médicas o asigna este protocolo directamente a un paciente."
+                  : "Sigue las etapas de cuidado indicadas por tu especialista en AuraMed y registra tu avance diario."}
               </p>
             </div>
-            <EnrollButton
-              courseId={course.id}
-              courseSlug={course.slug}
-              isSignedIn={!!user}
-              isOwner={isOwner}
-              isEnrolled={isEnrolled}
-            />
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+              {(isSpecialist || isOwner) && (
+                <AssignPatientProtocolModal
+                  defaultCourseId={course.id}
+                  buttonLabel="Asignar a Paciente"
+                />
+              )}
+              <EnrollButton
+                courseId={course.id}
+                courseSlug={course.slug}
+                courseTitle={course.title}
+                isSignedIn={!!user}
+                isOwner={isSpecialist || isOwner}
+                isEnrolled={isEnrolled}
+              />
+            </div>
           </div>
         )}
 

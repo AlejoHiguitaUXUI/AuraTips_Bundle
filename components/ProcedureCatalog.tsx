@@ -57,6 +57,7 @@ export function ProcedureCatalog({
   return (
     <>
       <section
+        data-testid="catalog-grid"
         className="catalog-grid stagger animate-slide-up"
         aria-label="Catálogo informativo de procedimientos médicos de AuraMed"
         style={{
@@ -72,6 +73,7 @@ export function ProcedureCatalog({
           return (
             <article
               key={proc.id}
+              data-testid="procedure-card"
               className="procedure-card"
               style={{
                 display: "flex",

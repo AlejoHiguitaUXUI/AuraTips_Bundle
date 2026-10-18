@@ -129,11 +129,8 @@ export async function SiteHeader() {
           ) : (
             <>
               <span className="site-nav-divider" aria-hidden="true" />
-              <Link href="/login" className="btn-ghost btn btn-sm">
+              <Link href="/login" className="btn btn-sm">
                 Iniciar Sesión
-              </Link>
-              <Link href="/register" className="btn btn-sm">
-                Registrarse
               </Link>
             </>
           )}

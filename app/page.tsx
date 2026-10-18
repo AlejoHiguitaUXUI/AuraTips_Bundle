@@ -6,6 +6,11 @@ import LearningDashboard from "@/app/dashboard/learning/page";
 import { EditorialHero } from "@/components/EditorialHero";
 import { AuraVoiceSection } from "@/components/AuraVoiceSection";
 import {
+  AssignPatientProtocolModal,
+  DeactivateProtocolButton,
+  NewProtocolBadge,
+} from "@/components/AssignPatientProtocolModal";
+import {
   LeafIcon,
   ShieldCheckIcon,
   ClockIcon,
@@ -25,7 +30,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "AuraTips · Acompañamiento Clínico | AuraMed Grupo Estético",
   description:
-    "Portal clínico exclusivo de acompañamiento y seguimiento post-procedimiento estético bajo la supervisión médica de la Dra. Mariana Gómez.",
+    "Portal clínico exclusivo de acompañamiento y seguimiento post-procedimiento estético bajo la supervisión médica de AuraMed Grupo Estético.",
 };
 
 interface HomePageProps {
@@ -51,8 +56,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     // Renderizar directamente el Centro de Mando en la raíz (URL limpia /)
     const { data: courses } = await supabase
       .from("courses")
-      .select("id, title, slug, status, category, recovery_time, updated_at")
-      .order("updated_at", { ascending: false });
+      .select("id, title, slug, status, category, recovery_time, created_at, updated_at")
+      .order("created_at", { ascending: false });
 
     const totalCourses = courses?.length || 0;
     const publishedCount = (courses ?? []).filter((c) => c.status === "published").length;
@@ -216,6 +221,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <PlusIcon size={16} />
               <span>Nuevo Protocolo Clínico</span>
             </Link>
+
+            <AssignPatientProtocolModal />
 
             <Link
               href="/dashboard/protocolos"
@@ -579,16 +586,26 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                         flexWrap: "wrap",
                       }}
                     >
-                      <a
-                        href={`https://wa.me/${phoneClean}?text=${waMessage}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-whatsapp-direct"
-                        title={`Escribir a WhatsApp a ${patientName}`}
-                      >
-                        <MessageCircleIcon size={14} />
-                        <span>Contactar por WhatsApp</span>
-                      </a>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                        <a
+                          href={`https://wa.me/${phoneClean}?text=${waMessage}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-whatsapp-direct"
+                          title={`Escribir a WhatsApp a ${patientName}`}
+                        >
+                          <MessageCircleIcon size={14} />
+                          <span>Contactar por WhatsApp</span>
+                        </a>
+
+                        <DeactivateProtocolButton
+                          enrollmentId={ep.id}
+                          userId={ep.user_id}
+                          courseId={ep.course_id || (ep.courses as any)?.id}
+                          patientName={patientName}
+                          procedureTitle={procTitle}
+                        />
+                      </div>
 
                       {procSlug && (
                         <Link
@@ -679,6 +696,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                       justifyContent: "space-between",
                       alignItems: "center",
                       marginBottom: "6px",
+                      gap: "6px",
                     }}
                   >
                     <span
@@ -692,19 +710,22 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     >
                       {c.category}
                     </span>
-                    <span
-                      style={{
-                        fontSize: "10px",
-                        color: "#16a34a",
-                        fontWeight: 700,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
-                    >
-                      <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e" }} />
-                      Activo
-                    </span>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                      <NewProtocolBadge createdAt={(c as any).created_at} />
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          color: "#16a34a",
+                          fontWeight: 700,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e" }} />
+                        Activo
+                      </span>
+                    </div>
                   </div>
 
                   <strong

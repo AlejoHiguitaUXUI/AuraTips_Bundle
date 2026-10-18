@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getClinicalRole } from "@/lib/auth-role";
 
 export async function POST(
   _request: Request,
@@ -12,7 +13,18 @@ export async function POST(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+    return NextResponse.json({ error: "Inicia sesión para continuar." }, { status: 401 });
+  }
+
+  const { isSpecialist } = await getClinicalRole(supabase, user);
+  if (!isSpecialist) {
+    return NextResponse.json(
+      {
+        error:
+          "Los protocolos clínicos son asignados directamente por tu especialista en AuraMed al finalizar tu procedimiento.",
+      },
+      { status: 403 },
+    );
   }
 
   // Already enrolled? Treat as a no-op success rather than an error.

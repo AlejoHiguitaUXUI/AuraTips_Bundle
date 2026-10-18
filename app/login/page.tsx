@@ -99,8 +99,21 @@ function LoginForm() {
           {pending ? "Iniciando sesión…" : "Ingresar"}
         </button>
       </form>
-      <p className="muted" style={{ marginTop: "16px", textAlign: "center" }}>
-        ¿Aún no tienes cuenta? <Link href="/register">Regístrate aquí</Link>
+      <p
+        className="muted"
+        data-testid="login-credentials-notice"
+        style={{
+          marginTop: "18px",
+          textAlign: "center",
+          fontSize: "13px",
+          lineHeight: 1.5,
+          padding: "12px 14px",
+          borderRadius: "var(--radius-md)",
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
+        Tus credenciales de acceso te serán entregadas por tu especialista en AuraMed al finalizar tu procedimiento.
       </p>
     </section>
   );

@@ -16,10 +16,16 @@ import {
   ClipboardCheckIcon,
 } from "@/components/icons";
 
+import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  resolvePatientProtocols,
+  type HistoricalProcedureRecord,
+} from "@/lib/patient-protocols";
+
 export const metadata = {
   title: "Mis Cuidados Activos · AuraTips",
   description:
-    "Centro clínico de acompañamiento y recuperación post-procedimiento estético supervisado por la especialista.",
+    "Centro clínico de acompañamiento y recuperación post-procedimiento estético supervisado por tu especialista en AuraMed.",
 };
 
 interface PageProps {
@@ -29,6 +35,7 @@ interface PageProps {
 export default async function LearningDashboard({ searchParams }: PageProps) {
   let user: any = null;
   let enrollments: any[] = [];
+  let completedHistory: HistoricalProcedureRecord[] = [];
   let isSpecialist = false;
 
   const resolvedSearchParams = await searchParams;
@@ -49,13 +56,20 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
         redirect("/dashboard/protocolos");
       }
 
-      const { data } = await supabase
-        .from("enrollments")
-        .select("id, enrolled_at, courses ( id, title, slug, cover_url, status )")
-        .eq("user_id", user.id)
-        .eq("status", "active")
-        .order("enrolled_at", { ascending: false });
-      enrollments = data || [];
+      try {
+        const adminClient = createAdminClient();
+        const lifecycle = await resolvePatientProtocols(adminClient, user.id);
+        enrollments = lifecycle.activeEnrollments;
+        completedHistory = lifecycle.completedHistory;
+      } catch {
+        const { data } = await supabase
+          .from("enrollments")
+          .select("id, enrolled_at, courses ( id, title, slug, cover_url, status )")
+          .eq("user_id", user.id)
+          .eq("status", "active")
+          .order("enrolled_at", { ascending: false });
+        enrollments = data || [];
+      }
     }
   } catch (e: any) {
     if (e?.digest?.startsWith("NEXT_REDIRECT")) throw e;
@@ -246,6 +260,74 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             </div>
           </div>
         </div>
+
+        {/* Récord Histórico del Paciente cuando no hay protocolos activos */}
+        {completedHistory.length > 0 && (
+          <div
+            data-testid="completed-procedure-history"
+            className="bento-card"
+            style={{
+              maxWidth: 680,
+              marginInline: "auto",
+              marginTop: "var(--space-6)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-3)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ClipboardCheckIcon size={18} color="var(--color-brand)" />
+              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)", margin: 0 }}>
+                Historial de Procedimientos Realizados en AuraMed
+              </h3>
+            </div>
+            <p style={{ margin: 0, fontSize: "12.5px", color: "var(--color-muted)" }}>
+              Registro de los procedimientos que has realizado en la clínica cuyo ciclo de acompañamiento activo ya finalizó.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+              {completedHistory.map((rec, idx) => (
+                <div
+                  key={`${rec.course_id || rec.slug}-${idx}`}
+                  data-testid="completed-history-item"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                    padding: "var(--space-3) var(--space-4)",
+                    background: "var(--color-surface-2)",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--color-border)",
+                  }}
+                >
+                  <div>
+                    <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
+                      {rec.title}
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                      {rec.category} · Realizado el {new Date(rec.enrolled_at).toLocaleDateString("es-ES")}
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "3px 10px",
+                      borderRadius: "var(--radius-full)",
+                      background: "var(--color-surface)",
+                      color: "var(--color-muted)",
+                      border: "1px solid var(--color-border)",
+                    }}
+                  >
+                    Ciclo finalizado · En tu récord clínico
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {!isSpecialist && (
           <ClinicalAssistantDrawer
             procedureSlug="toxina-botulinica-botox-facial"
@@ -403,7 +485,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
           procedureTitle={activeProcedure.title}
         />
 
-        {/* 5. Additional / History Procedures (if user has more than 1) */}
+        {/* 5. Otros Protocolos Activos (si tiene más de 1 vigente) */}
         {otherEnrollments.length > 0 && (
           <div
             className="bento-card bento-history"
@@ -416,7 +498,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <ClipboardCheckIcon size={18} color="var(--color-brand)" />
               <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)", margin: 0 }}>
-                Otros Protocolos en tu Historial Clínico
+                Otros Protocolos Activos en Seguimiento
               </h3>
             </div>
             <div
@@ -447,7 +529,7 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                         {c.title}
                       </strong>
                       <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
-                        Registrado el {new Date(enr.enrolled_at).toLocaleDateString("es-ES")}
+                        Asignado el {new Date(enr.enrolled_at).toLocaleDateString("es-ES")}
                       </span>
                     </div>
                     <Link
@@ -461,6 +543,76 @@ export default async function LearningDashboard({ searchParams }: PageProps) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* 6. Récord Clínico: Historial de Procedimientos Realizados (sin acceso al protocolo propietario) */}
+        {completedHistory.length > 0 && (
+          <div
+            data-testid="completed-procedure-history"
+            className="bento-card bento-history"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-3)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ClipboardCheckIcon size={18} color="var(--color-brand)" />
+              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--color-text)", margin: 0 }}>
+                Historial de Procedimientos Realizados en AuraMed
+              </h3>
+            </div>
+            <p style={{ margin: 0, fontSize: "12.5px", color: "var(--color-muted)" }}>
+              Registro histórico de tus procedimientos anteriores en la clínica cuyo periodo de protocolo activo ya finalizó.
+            </p>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "var(--space-3)",
+              }}
+            >
+              {completedHistory.map((rec, idx) => (
+                <div
+                  key={`${rec.course_id || rec.slug}-${idx}`}
+                  data-testid="completed-history-item"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                    padding: "var(--space-3) var(--space-4)",
+                    background: "var(--color-surface-2)",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--color-border)",
+                  }}
+                >
+                  <div>
+                    <strong style={{ fontSize: "var(--text-sm)", color: "var(--color-text)", display: "block" }}>
+                      {rec.title}
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                      {rec.category} · Realizado el {new Date(rec.enrolled_at).toLocaleDateString("es-ES")}
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "3px 10px",
+                      borderRadius: "var(--radius-full)",
+                      background: "var(--color-surface)",
+                      color: "var(--color-muted)",
+                      border: "1px solid var(--color-border)",
+                    }}
+                  >
+                    Ciclo finalizado
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         )}

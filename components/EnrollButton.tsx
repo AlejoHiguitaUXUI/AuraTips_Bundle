@@ -1,81 +1,129 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { CheckCircle2Icon } from "@/components/icons";
+import {
+  CheckCircle2Icon,
+  MessageCircleIcon,
+  ArrowRightIcon,
+  ClipboardCheckIcon,
+} from "@/components/icons";
 
 export function EnrollButton({
-  courseId,
+  courseId: _courseId,
   courseSlug,
-  isSignedIn,
+  courseTitle,
+  isSignedIn: _isSignedIn,
   isOwner,
   isEnrolled,
+  isCompletedInHistory = false,
 }: {
   courseId: string;
   courseSlug: string;
+  courseTitle?: string;
   isSignedIn: boolean;
   isOwner: boolean;
   isEnrolled: boolean;
+  isCompletedInHistory?: boolean;
 }) {
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [enrolled, setEnrolled] = useState(isEnrolled);
-
   if (isOwner) {
-    return <p className="muted">Eres el especialista médico a cargo de este protocolo.</p>;
-  }
-
-  if (!isSignedIn) {
     return (
-      <p>
-        <Link href={`/login?next=/procedimientos/${courseSlug}`} className="btn">
-          Iniciar sesión para activar
-        </Link>
-      </p>
-    );
-  }
-
-  if (enrolled) {
-    return (
-      <p
-        data-testid="enrolled-status"
-        style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-brand)", fontWeight: 700 }}
+      <Link
+        href={`/dashboard/protocolos/${courseSlug}`}
+        className="btn secondary btn-sm"
+        style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
       >
-        <CheckCircle2Icon size={16} />
-        <span>Protocolo activo en tu seguimiento</span>
-      </p>
+        <span>Editar protocolo clínico</span>
+        <ArrowRightIcon size={13} />
+      </Link>
     );
   }
 
-  async function enroll() {
-    setPending(true);
-    setError(null);
-    const res = await fetch(`/api/courses/${courseId}/enroll`, {
-      method: "POST",
-    });
-    setPending(false);
-    if (!res.ok) {
-      const json = await res.json().catch(() => ({}));
-      setError(json.error ?? "No se pudo activar el protocolo.");
-      return;
-    }
-    setEnrolled(true);
-    router.refresh();
+  if (isEnrolled) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap",
+        }}
+      >
+        <p
+          data-testid="enrolled-status"
+          style={{
+            margin: 0,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "var(--color-brand)",
+            fontWeight: 700,
+            fontSize: "13.5px",
+          }}
+        >
+          <CheckCircle2Icon size={16} />
+          <span>Protocolo activo en tu seguimiento</span>
+        </p>
+        <Link
+          href="/dashboard/learning"
+          className="btn btn-sm"
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+        >
+          <span>Ir a mis cuidados</span>
+          <ArrowRightIcon size={13} />
+        </Link>
+      </div>
+    );
   }
+
+  const procedureLabel = courseTitle || courseSlug.replace(/-/g, " ");
+  const waText = encodeURIComponent(
+    `Hola equipo de AuraMed, quisiera consultar sobre el procedimiento ${procedureLabel} y agendar una valoración médica.`
+  );
 
   return (
-    <div>
-      {error && <div className="error">{error}</div>}
-      <button
-        data-testid="enroll-button"
-        className="btn"
-        onClick={enroll}
-        disabled={pending}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        gap: "8px",
+      }}
+    >
+      {isCompletedInHistory && (
+        <span
+          data-testid="completed-history-status"
+          style={{
+            fontSize: "12px",
+            fontWeight: 700,
+            color: "var(--color-muted)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
+          <ClipboardCheckIcon size={14} />
+          <span>Procedimiento registrado en tu historial · Ciclo finalizado</span>
+        </span>
+      )}
+      <a
+        href={`https://wa.me/573001234567?text=${waText}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-testid="whatsapp-consultation-link"
+        className="btn-whatsapp-direct"
+        style={{
+          padding: "9px 16px",
+          fontSize: "13px",
+          fontWeight: 700,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          textDecoration: "none",
+        }}
       >
-        {pending ? "Activando…" : "Activar Acompañamiento Clínico"}
-      </button>
+        <MessageCircleIcon size={15} />
+        <span>Consultar con la clínica / Agendar valoración por WhatsApp</span>
+      </a>
     </div>
   );
 }

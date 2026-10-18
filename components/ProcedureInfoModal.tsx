@@ -507,10 +507,9 @@ export function ProcedureInfoModal({
               <strong style={{ display: "block", color: "var(--color-gold-text, #997316)", marginBottom: "2px" }}>
                 Acompañamiento post-tratamiento en AuraTips
               </strong>
-              Este procedimiento cuenta con protocolo clínico post-tratamiento exclusivo.
-              Una vez realizada tu valoración y sesión médica con la Dra. Mariana Gómez,
-              tu cuenta tendrá acceso a tu panel de <strong>&quot;Mi Recuperación&quot;</strong> con
-              tu cronograma diario de cuidados, qué hacer y qué evitar, lista de verificación y seguimiento personalizado.
+              Este procedimiento cuenta con protocolo clínico post-tratamiento exclusivo de AuraMed.
+              Al finalizar tu procedimiento con tu especialista, recibirás tus credenciales para acceder a{" "}
+              <strong>&quot;Mi Recuperación&quot;</strong> con tu cronograma diario de cuidados y seguimiento personalizado.
             </div>
           </div>
         </div>
@@ -541,6 +540,7 @@ export function ProcedureInfoModal({
             href={`https://wa.me/573001234567?text=${waMessage}`}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="whatsapp-consultation-link"
             className="btn btn-sm"
             style={{
               display: "inline-flex",
@@ -552,7 +552,7 @@ export function ProcedureInfoModal({
             }}
           >
             <MessageCircleIcon size={14} />
-            <span>Consultar valoración médica</span>
+            <span>Consultar con la clínica / Agendar valoración por WhatsApp</span>
           </a>
         </div>
       </div>

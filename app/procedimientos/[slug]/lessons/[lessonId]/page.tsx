@@ -51,6 +51,38 @@ export default async function LessonPage({
     notFound();
   }
 
+  // Verificar que el paciente tenga el protocolo vigente y activo (propiedad intelectual de AuraMed)
+  let hasActiveAccess = isSpecialist;
+  if (user && !isSpecialist) {
+    try {
+      const { createAdminClient } = await import("@/lib/supabase/admin");
+      const { resolvePatientProtocols } = await import("@/lib/patient-protocols");
+      const adminClient = createAdminClient();
+      const { activeEnrollments } = await resolvePatientProtocols(adminClient, user.id);
+      hasActiveAccess = activeEnrollments.some(
+        (e) =>
+          (dbCourse?.id && e.course_id === dbCourse.id) ||
+          e.courses?.slug === slug
+      );
+    } catch {
+      if (dbCourse?.id) {
+        const supabase = await createClient();
+        const { data: enr } = await supabase
+          .from("enrollments")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("course_id", dbCourse.id)
+          .maybeSingle();
+        hasActiveAccess = !!enr;
+      }
+    }
+  }
+
+  if (!hasActiveAccess) {
+    const { redirect } = await import("next/navigation");
+    redirect(`/procedimientos?proc=${encodeURIComponent(slug)}`);
+  }
+
   let courseTitle = dbCourse?.title || clinicalProc?.title || "Procedimiento";
   let courseSlug = dbCourse?.slug || clinicalProc?.slug || slug;
 

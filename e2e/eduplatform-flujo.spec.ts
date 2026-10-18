@@ -1,32 +1,30 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
-import fs from 'fs';
 
 /**
- * Suite E2E para AuraTips (Plataforma Clínica de Procedimientos y Recuperación).
- * Adaptado a la arquitectura de consultorio estético Dra. Mariana Gómez.
+ * Suite E2E para AuraTips (Portal Clínico de Cuidados Post-Procedimiento — AuraMed).
  *
  * Flujos Encadenados:
- * 1) Visitante (sin sesión): Navega catálogo, verifica widget de Edy/AURA sin voz activa.
- * 2) Instructor (Dra. Mariana Gómez): Entra a dirección clínica, crea nuevo protocolo gratis (precio 0), publica y verifica en catálogo público.
- * 3) Estudiante (Paciente Ana Gómez): Busca ese mismo protocolo, se inscribe directamente y verifica en su panel de cuidados activos.
- * Limpieza (Teardown): Elimina el protocolo creado para no alterar el catálogo médico real.
+ * 1) Visitante (sin sesión): Entra a la portada editorial (/), verifica el aviso de credenciales en /login
+ *    (sin auto-registro) y explora la vitrina informativa /procedimientos verificando el CTA de WhatsApp.
+ * 2) Especialista: Crea y publica un nuevo protocolo clínico, regresa a /dashboard/protocolos,
+ *    verifica el badge "Nuevo" y asigna el protocolo a la paciente desde el modal compartido.
+ * 3) Paciente (Ana Gómez): Ingresa a su sesión y verifica que el protocolo delegado por el especialista
+ *    aparece activo en su panel; y que al finalizar el ciclo, el protocolo se desactiva dejando el
+ *    procedimiento en su historial clínico sin exponer el contenido propietario.
  */
 
 const authDir = path.resolve(__dirname, '.auth');
 const instructorStorage = path.join(authDir, 'instructor.json');
 const studentStorage = path.join(authDir, 'student.json');
 
-// Variables de estado encadenadas entre flujos
 const testTimestamp = Date.now();
-const testCourseTitle = `Protocolo E2E Playwright ${testTimestamp}`;
-const testCourseDescription = `Protocolo médico de prueba E2E automatizada en AuraTips (Timestamp: ${testTimestamp}).`;
+const testCourseTitle = `Protocolo Clínico AuraMed ${testTimestamp}`;
+const testCourseDescription = `Protocolo médico post-tratamiento supervisado por especialistas de AuraMed (${testTimestamp}).`;
 let createdCourseSlug = '';
 let createdCourseId = '';
 
-test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
-
-  // Limpieza al finalizar para no alterar el consultorio médico
+test.describe.serial('AuraTips — Flujos Clínicos E2E Encadenados', () => {
   test.afterAll(async () => {
     if (createdCourseSlug || createdCourseId) {
       try {
@@ -34,27 +32,18 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
         const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
         if (supabaseUrl && supabaseServiceKey) {
           const { createClient } = await import('@supabase/supabase-js');
-          const adminClient = createClient(supabaseUrl, supabaseServiceKey);
+          const admin = createClient(supabaseUrl, supabaseServiceKey, {
+            auth: { persistSession: false },
+          });
 
-          // Obtener ID si no se capturó
-          let targetId = createdCourseId;
-          if (!targetId && createdCourseSlug) {
-            const { data } = await adminClient
-              .from('courses')
-              .select('id')
-              .eq('slug', createdCourseSlug)
-              .maybeSingle();
-            if (data?.id) targetId = data.id;
-          }
-
-          if (targetId) {
-            await adminClient.from('enrollments').delete().eq('course_id', targetId);
-            await adminClient.from('courses').delete().eq('id', targetId);
-            console.log(`[Teardown E2E] Protocolo de prueba '${testCourseTitle}' (${targetId}) eliminado con éxito.`);
+          if (createdCourseId) {
+            await admin.from('courses').delete().eq('id', createdCourseId);
+          } else if (createdCourseSlug) {
+            await admin.from('courses').delete().eq('slug', createdCourseSlug);
           }
         }
       } catch (err) {
-        console.warn('[Teardown E2E] Error durante la limpieza de datos de prueba:', err);
+        console.warn('No se pudo limpiar el protocolo E2E en afterAll:', err);
       }
     }
   });
@@ -65,159 +54,165 @@ test.describe.serial('EduPlatform / AuraTips - Flujos E2E Encadenados', () => {
   test.describe('1) Visitante (sin sesión)', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
-    test('navega el catálogo y verifica la presencia del widget/botón de Edy en el DOM', async ({ page }) => {
-      // 1. Abre la página pública de AuraTips
+    test('explora la portada editorial, verifica aviso de credenciales en login y consulta la vitrina /procedimientos con CTA a WhatsApp', async ({ page }) => {
+      // 1. Abre la portada pública de AuraTips
       await page.goto('/');
-
-      // 2. Navega y verifica el catálogo público
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+      // Verifica que el botón principal lleva al Portal de Cuidados (/login) y que no hay botón de auto-registro
+      const portalBtn = page.locator('#hero-portal-cuidados-btn');
+      await expect(portalBtn).toBeVisible();
+      await expect(page.getByRole('link', { name: /Registrarse/i })).toHaveCount(0);
+
+      // 2. Verifica en /login el mensaje natural de entrega de credenciales por el especialista de AuraMed
+      await portalBtn.click();
+      await expect(page).toHaveURL(/\/login/);
+      const credentialsNotice = page.getByTestId('login-credentials-notice');
+      await expect(credentialsNotice).toBeVisible();
+      await expect(credentialsNotice).toContainText(/especialista en AuraMed/i);
+
+      // 3. Explora la vitrina informativa /procedimientos (solo lectura)
+      await page.goto('/procedimientos');
       const catalogGrid = page.getByTestId('catalog-grid');
       await expect(catalogGrid).toBeVisible();
 
       const procedureCards = page.getByTestId('procedure-card');
       await expect(procedureCards.first()).toBeVisible({ timeout: 10000 });
-      const cardsCount = await procedureCards.count();
-      expect(cardsCount).toBeGreaterThan(0);
 
-      // 3. Verifica que el botón de Edy / AURA está presente en el DOM
-      const edyVoiceBtn = page.getByTestId('edy-voice-button');
-      await expect(edyVoiceBtn).toBeVisible();
-      await expect(page.getByRole('button', { name: /Consúltalo con AURA|Hablar en vivo/i })).toBeVisible();
-
-      // 4. Abre el modal del widget para comprobar su renderizado en el DOM (sin simular voz)
-      await edyVoiceBtn.click();
-      const edyWidget = page.getByTestId('edy-voice-widget');
-      await expect(edyWidget).toBeVisible();
-      await expect(page.getByRole('dialog', { name: /Llamada de voz con AURA/i })).toBeVisible();
-
-      // 5. Cierra el modal de voz
-      const closeBtn = page.getByRole('button', { name: /Cerrar modal de voz/i });
-      await expect(closeBtn).toBeVisible();
-      await closeBtn.click();
-      await expect(edyWidget).not.toBeVisible();
+      // 4. Abre la ficha informativa de un procedimiento y verifica el CTA a WhatsApp (sin auto-inscripción)
+      await procedureCards.first().click();
+      const whatsappLink = page.getByTestId('whatsapp-consultation-link');
+      await expect(whatsappLink).toBeVisible();
+      await expect(whatsappLink).toContainText(/Consultar con la clínica \/ Agendar valoración por WhatsApp/i);
+      await expect(page.getByTestId('enroll-button')).toHaveCount(0);
     });
   });
 
   // ──────────────────────────────────────────────────────────────────────────
-  // 2) Instructor (storageState de instructor)
+  // 2) Especialista: Creación, Badge "Nuevo" en /dashboard/protocolos y Delegación a Paciente
   // ──────────────────────────────────────────────────────────────────────────
-  test.describe('2) Instructor (storageState de instructor)', () => {
+  test.describe('2) Especialista (Dirección Clínica)', () => {
     test.use({ storageState: instructorStorage });
 
-    test('entra a su dashboard, crea un curso GRATIS nuevo (precio 0) y lo publica; verifica en catálogo', async ({ page }) => {
-      // 1. Entra al dashboard de dirección clínica
+    test('crea y publica un protocolo, verifica el badge Nuevo en /dashboard/protocolos y lo asigna a la paciente desde la lista compartida', async ({ page }) => {
+      // 1. Entra a la sección de Protocolos Clínicos
       await page.goto('/dashboard/protocolos');
-      await expect(page.getByRole('heading', { name: /Dra\. Mariana Gómez/i })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Dirección de Protocolos Clínicos/i })).toBeVisible();
 
       // 2. Inicia creación de nuevo protocolo clínico
       const newCourseBtn = page.getByTestId('new-course-button');
       await expect(newCourseBtn).toBeVisible();
       await newCourseBtn.click();
 
-      // 3. Espera a llegar al formulario de nuevo protocolo
       await page.waitForURL('**/dashboard/protocolos/new');
-      await expect(page.getByRole('heading', { name: /Nuevo Protocolo de Recuperación/i })).toBeVisible();
+      await page.getByTestId('course-title-input').fill(testCourseTitle);
+      await page.getByTestId('course-description-input').fill(testCourseDescription);
+      await page.getByTestId('course-price-input').fill('0');
+      await page.getByTestId('course-submit-button').click();
 
-      // 4. Llena los campos requeridos: título, descripción y precio 0
-      const titleInput = page.getByTestId('course-title-input');
-      await expect(titleInput).toBeVisible();
-      await titleInput.fill(testCourseTitle);
-
-      const descInput = page.getByTestId('course-description-input');
-      await expect(descInput).toBeVisible();
-      await descInput.fill(testCourseDescription);
-
-      const priceInput = page.getByTestId('course-price-input');
-      await expect(priceInput).toBeVisible();
-      await priceInput.fill('0');
-
-      // 5. Envía el formulario para crear el protocolo
-      const submitBtn = page.getByTestId('course-submit-button');
-      await expect(submitBtn).toBeEnabled();
-      await submitBtn.click();
-
-      // 6. Espera la redirección al editor de protocolo /dashboard/protocolos/[slug]
+      // 3. Espera redirección al editor y publica el protocolo
       await page.waitForURL(
-        (url) => (url.pathname.startsWith('/dashboard/protocolos/') || url.pathname.startsWith('/dashboard/teaching/')) && !url.pathname.endsWith('/new'),
+        (url) => url.pathname.startsWith('/dashboard/protocolos/') && !url.pathname.endsWith('/new'),
         { timeout: 15000 }
       );
-      const currentUrl = page.url();
-      const basePath = currentUrl.includes('/dashboard/protocolos/') ? '/dashboard/protocolos/' : '/dashboard/teaching/';
-      createdCourseSlug = currentUrl.split(basePath)[1].split('?')[0];
+      createdCourseSlug = page.url().split('/dashboard/protocolos/')[1].split('?')[0];
       expect(createdCourseSlug).toBeTruthy();
-      expect(createdCourseSlug).not.toBe('new');
 
-      // 7. En el editor, verifica estado borrador y publica
       const statusBadge = page.getByTestId('course-status-badge');
       await expect(statusBadge).toContainText(/En Borrador/i);
 
       const publishBtn = page.getByTestId('publish-course-button');
-      await expect(publishBtn).toHaveText(/Publicar/i);
       await publishBtn.click();
-
-      // Espera explícita al cambio de estado en vivo
       await expect(statusBadge).toContainText(/Activo en Clínica/i, { timeout: 10000 });
 
-      // 8. Navega al catálogo público y verifica que el nuevo protocolo aparece
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
+      // 4. Regresa a la sección /dashboard/protocolos (sin ir a la raíz ni entrar al detalle interno)
+      //    y verifica que la tarjeta del protocolo recién creado muestra el badge "Nuevo" y estado "Activo"
+      await page.goto('/dashboard/protocolos');
+      const createdCard = page.getByTestId('protocol-card').filter({ hasText: testCourseTitle });
+      await expect(createdCard).toBeVisible({ timeout: 10000 });
+      await expect(createdCard.getByTestId('new-protocol-badge')).toHaveText('Nuevo');
+      await expect(createdCard).toContainText('Activo');
 
-      const publishedCard = page.getByRole('link', { name: new RegExp(testCourseTitle, 'i') });
-      await expect(publishedCard).toBeVisible({ timeout: 10000 });
+      // 5. Abre el modal compartido "Asignar Protocolo a Paciente" y delega el protocolo a la paciente existente
+      await page.getByTestId('open-assign-protocol-modal').click();
+      const assignModal = page.getByTestId('assign-protocol-modal');
+      await expect(assignModal).toBeVisible();
+
+      const patientSelect = page.getByTestId('assign-patient-select');
+      await expect(patientSelect).toBeVisible();
+      // Seleccionar a la paciente de prueba (paciente@auratips.io)
+      const patientOption = patientSelect.locator('option', { hasText: /paciente@auratips\.io/i });
+      const patientVal = await patientOption.getAttribute('value');
+      if (patientVal) {
+        await patientSelect.selectOption(patientVal);
+      }
+
+      const protocolSelect = page.getByTestId('assign-protocol-select');
+      const protocolOption = protocolSelect.locator('option', { hasText: testCourseTitle });
+      const protocolVal = await protocolOption.getAttribute('value');
+      expect(protocolVal).toBeTruthy();
+      createdCourseId = protocolVal || '';
+      await protocolSelect.selectOption(createdCourseId);
+
+      await page.getByTestId('confirm-assign-protocol-button').click();
+
+      // Verifica la tarjeta de confirmación de credenciales y cierra el modal
+      await expect(page.getByTestId('assignment-confirmation-card')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByTestId('assigned-patient-email')).toContainText('paciente@auratips.io');
+      await page.getByTestId('close-assign-modal-button').click();
     });
   });
 
   // ──────────────────────────────────────────────────────────────────────────
-  // 3) Estudiante (storageState de estudiante)
+  // 3) Paciente (Ana Gómez): Acceso directo a su protocolo delegado y Récord Histórico
   // ──────────────────────────────────────────────────────────────────────────
-  test.describe('3) Estudiante (storageState de estudiante)', () => {
+  test.describe('3) Paciente (Ana Gómez)', () => {
     test.use({ storageState: studentStorage });
 
-    test('busca ESE mismo curso, se inscribe directamente y verifica que aparece en su panel de cuidados', async ({ page }) => {
-      // 1. Abre la plataforma como estudiante autenticado
-      await page.goto('/');
-
-      // 2. Busca ESE mismo curso en la barra de búsqueda clínica
-      const searchInput = page.getByTestId('clinical-search-input');
-      await expect(searchInput).toBeVisible();
-      await searchInput.fill(testCourseTitle);
-
-      // Si el dropdown spotlight muestra el resultado, hace click; o navega desde el catálogo
-      const searchItem = page.getByTestId('clinical-search-item').filter({ hasText: testCourseTitle });
-
-      try {
-        await expect(searchItem).toBeVisible({ timeout: 4000 });
-        await searchItem.click();
-      } catch {
-        // En caso de que el spotlight no haya terminado la llamada de red, interactuar con la tarjeta visible en catálogo
-        const catalogCard = page.getByRole('link', { name: new RegExp(testCourseTitle, 'i') });
-        await expect(catalogCard).toBeVisible();
-        await catalogCard.click();
-      }
-
-      // 3. Verifica llegada a la página del protocolo
-      await expect(page).toHaveURL(new RegExp(`/(courses|procedimientos)/${createdCourseSlug}`), { timeout: 15000 });
-      await expect(page.getByRole('heading', { level: 1, name: testCourseTitle })).toBeVisible();
-
-      // 4. Activa / se inscribe al protocolo (confirmación directa por ser gratuito)
-      const enrollBtn = page.getByTestId('enroll-button');
-      await expect(enrollBtn).toBeVisible();
-      await expect(enrollBtn).toContainText(/Activar Acompañamiento Clínico/i);
-      await enrollBtn.click();
-
-      // Espera explícita de confirmación de activación
-      const enrolledStatus = page.getByTestId('enrolled-status');
-      await expect(enrolledStatus).toBeVisible({ timeout: 10000 });
-      await expect(enrolledStatus).toContainText(/Protocolo activo en tu seguimiento/i);
-
-      // 5. Entra a su panel de cuidados y protocolos inscritos
+    test('ingresa con sus credenciales y ve inmediatamente el protocolo asignado en su panel de cuidados', async ({ page }) => {
       await page.goto('/dashboard/learning');
       await page.waitForLoadState('networkidle');
 
-      // 6. Verifica que ESE mismo protocolo encadenado aparece en su panel
       await expect(page.getByTestId('active-procedure-card')).toBeVisible();
       const activeTitle = page.getByTestId('active-procedure-title');
       await expect(activeTitle).toHaveText(testCourseTitle);
+    });
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 4) Ciclo de finalización del protocolo y preservación en el récord del paciente
+  // ──────────────────────────────────────────────────────────────────────────
+  test.describe('4) Finalización de protocolo por el especialista y récord del paciente', () => {
+    test.use({ storageState: instructorStorage });
+
+    test('el especialista finaliza el protocolo activo de la paciente desde su panel', async ({ page }) => {
+      await page.goto('/dashboard/protocolos');
+      const activePatientCard = page
+        .getByTestId('specialist-active-patient-card')
+        .filter({ hasText: testCourseTitle });
+      await expect(activePatientCard).toBeVisible();
+
+      await activePatientCard.getByTestId('deactivate-protocol-button').click();
+      await expect(activePatientCard).toHaveCount(0, { timeout: 10000 });
+    });
+  });
+
+  test.describe('5) Verificación de récord histórico sin acceso al protocolo propietario', () => {
+    test.use({ storageState: studentStorage });
+
+    test('la paciente conserva el procedimiento en su historial clínico pero ya no puede abrir el protocolo propietario', async ({ page }) => {
+      await page.goto('/dashboard/learning');
+      await page.waitForLoadState('networkidle');
+
+      // Verifica que el procedimiento quedó registrado en su Historial de Procedimientos Realizados
+      const historySection = page.getByTestId('completed-procedure-history');
+      await expect(historySection).toBeVisible();
+      await expect(historySection).toContainText(testCourseTitle);
+      await expect(historySection).toContainText(/Ciclo finalizado/i);
+
+      // Si intenta acceder por URL directa al protocolo interno, es redirigida a la vitrina informativa
+      await page.goto(`/procedimientos/${createdCourseSlug}`);
+      await expect(page).toHaveURL(new RegExp(`/procedimientos\\?proc=${createdCourseSlug}`));
     });
   });
 });

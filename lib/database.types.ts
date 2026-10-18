@@ -228,6 +228,7 @@ export interface Database {
           user_id: string;
           course_id: string;
           status?: EnrollmentStatus;
+          enrolled_at?: string;
           procedure_date?: string | null;
           assigned_by?: string | null;
           personal_notes?: string | null;

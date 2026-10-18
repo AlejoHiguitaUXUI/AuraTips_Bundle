@@ -15,6 +15,11 @@ export const metadata = {
 };
 
 import { getClinicalRole } from "@/lib/auth-role";
+import {
+  AssignPatientProtocolModal,
+  DeactivateProtocolButton,
+  NewProtocolBadge,
+} from "@/components/AssignPatientProtocolModal";
 
 export default async function TeachingDashboard() {
   const supabase = await createClient();
@@ -34,9 +39,9 @@ export default async function TeachingDashboard() {
   // RLS scopes to owner_id
   const { data: courses, error } = await supabase
     .from("courses")
-    .select("id, title, slug, status, category, recovery_time, updated_at")
+    .select("id, title, slug, status, category, recovery_time, created_at, updated_at")
     .eq("owner_id", user.id)
-    .order("updated_at", { ascending: false });
+    .order("created_at", { ascending: false });
 
   const publishedCount = (courses ?? []).filter((c) => c.status === "published").length;
 
@@ -45,9 +50,9 @@ export default async function TeachingDashboard() {
   try {
     const { data: enrolledData } = await supabase
       .from("enrollments")
-      .select("id, enrolled_at, user_id, courses ( title, slug ), profiles ( display_name )")
+      .select("id, enrolled_at, user_id, course_id, courses ( id, title, slug ), profiles ( display_name )")
       .order("enrolled_at", { ascending: false })
-      .limit(8);
+      .limit(12);
     activePatients = enrolledData || [];
   } catch (err) {
     console.warn("TeachingDashboard: Could not fetch active enrollments:", err);
@@ -180,9 +185,11 @@ export default async function TeachingDashboard() {
             {activePatients.map((ep) => {
               const patientName = (ep.profiles as any)?.display_name || "Paciente AuraMed";
               const procTitle = (ep.courses as any)?.title || "Procedimiento Asignado";
+              const procId = ep.course_id || (ep.courses as any)?.id;
               return (
                 <div
                   key={ep.id}
+                  data-testid="specialist-active-patient-card"
                   style={{
                     padding: "12px 16px",
                     borderRadius: "var(--radius-md)",
@@ -191,24 +198,35 @@ export default async function TeachingDashboard() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    gap: "10px",
+                    flexWrap: "wrap",
                   }}
                 >
                   <div>
                     <strong style={{ display: "block", fontSize: "var(--text-sm)" }}>{patientName}</strong>
                     <span style={{ fontSize: "12px", color: "var(--color-brand)" }}>{procTitle}</span>
                   </div>
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      padding: "2px 8px",
-                      borderRadius: "999px",
-                      background: "rgba(34, 197, 94, 0.12)",
-                      color: "#16a34a",
-                      fontWeight: 600,
-                    }}
-                  >
-                    En seguimiento
-                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        padding: "2px 8px",
+                        borderRadius: "999px",
+                        background: "rgba(34, 197, 94, 0.12)",
+                        color: "#16a34a",
+                        fontWeight: 600,
+                      }}
+                    >
+                      En seguimiento
+                    </span>
+                    <DeactivateProtocolButton
+                      enrollmentId={ep.id}
+                      userId={ep.user_id}
+                      courseId={procId}
+                      patientName={patientName}
+                      procedureTitle={procTitle}
+                    />
+                  </div>
                 </div>
               );
             })}
@@ -235,7 +253,7 @@ export default async function TeachingDashboard() {
             flexWrap: "wrap",
           }}
         >
-          <div style={{ flex: "1 1 500px", minWidth: "260px" }}>
+          <div style={{ flex: "1 1 460px", minWidth: "260px" }}>
             <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, margin: 0 }}>
               Dirección de Protocolos Clínicos
             </h2>
@@ -243,7 +261,8 @@ export default async function TeachingDashboard() {
               Gestión de pautas de cuidado post-tratamiento, cronogramas de recuperación, pautas recomendadas (qué hacer) y acciones a evitar (qué evitar).
             </p>
           </div>
-          <div style={{ marginLeft: "auto", flexShrink: 0 }}>
+          <div style={{ marginLeft: "auto", flexShrink: 0, display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <AssignPatientProtocolModal />
             <Link
               href="/dashboard/protocolos/new"
               data-testid="new-course-button"
@@ -289,7 +308,7 @@ export default async function TeachingDashboard() {
             {courses.map((c) => {
               const isPublished = c.status === "published";
               return (
-                <div key={c.id} className="protocol-quick-card">
+                <div key={c.id} data-testid="protocol-card" className="protocol-quick-card">
                   <div>
                     <div
                       style={{
@@ -297,6 +316,7 @@ export default async function TeachingDashboard() {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: "6px",
+                        gap: "6px",
                       }}
                     >
                       <span
@@ -310,26 +330,29 @@ export default async function TeachingDashboard() {
                       >
                         {c.category || "Inyectables"}
                       </span>
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          color: isPublished ? "#16a34a" : "#d97706",
-                          fontWeight: 700,
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        <NewProtocolBadge createdAt={(c as any).created_at} />
                         <span
                           style={{
-                            width: 5,
-                            height: 5,
-                            borderRadius: "50%",
-                            background: isPublished ? "#22c55e" : "#f59e0b",
+                            fontSize: "10px",
+                            color: isPublished ? "#16a34a" : "#d97706",
+                            fontWeight: 700,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
                           }}
-                        />
-                        {isPublished ? "Activo" : "Borrador"}
-                      </span>
+                        >
+                          <span
+                            style={{
+                              width: 5,
+                              height: 5,
+                              borderRadius: "50%",
+                              background: isPublished ? "#22c55e" : "#f59e0b",
+                            }}
+                          />
+                          {isPublished ? "Activo" : "Borrador"}
+                        </span>
+                      </div>
                     </div>
 
                     <Link

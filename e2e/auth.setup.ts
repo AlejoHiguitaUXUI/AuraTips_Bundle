@@ -20,7 +20,7 @@ setup('autenticar instructor (Dra. Mariana Gómez)', async ({ page }) => {
 
   // Esperar navegación exitosa al panel
   await page.waitForURL((url) => url.pathname.includes('/dashboard'), { timeout: 15000 });
-  await expect(page.getByRole('link', { name: /Dirección Clínica/i })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('link', { name: /Protocolos Clínicos/i })).toBeVisible({ timeout: 10000 });
 
   await page.context().storageState({ path: instructorFile });
 });
@@ -39,7 +39,7 @@ setup('autenticar estudiante (Ana Gómez)', async ({ page }) => {
 
   // Esperar navegación exitosa al panel de aprendizaje/cuidados
   await page.waitForURL((url) => url.pathname.includes('/dashboard'), { timeout: 15000 });
-  await expect(page.getByRole('link', { name: 'Mis Cuidados', exact: true })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('link', { name: 'Mi Recuperación', exact: true })).toBeVisible({ timeout: 10000 });
 
   await page.context().storageState({ path: studentFile });
 });

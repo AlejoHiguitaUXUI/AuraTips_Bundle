@@ -1,54 +1,68 @@
-# 🔌 Contrato de Integración: AuraTips con el Sistema Madre de la Clínica
+# Contrato de Integración: AuraTips con el Sistema Madre de AuraMed
 
-Este documento define las especificaciones técnicas y el contrato de interfaz para la **integración final entre el Sistema Madre de la Clínica (EMR / CRM)** y **AuraTips** (Microservicio de Acompañamiento Post-Tratamiento).
+Este documento define las especificaciones técnicas y el contrato de interfaz para la integración bidireccional entre el **Sistema Madre de AuraMed (AuraLead / EMR)** y **AuraTips** (Microservicio Especializado de Acompañamiento Post-Procedimiento).
 
 ---
 
-## 🏛️ Filosofía Arquitectónica y Desacoplamiento
+## Filosofía Arquitectónica y Desacoplamiento
 
 ```mermaid
-graph LR
-    subgraph "Sistema Madre (Clínica Principal)"
-        EMR[Historia Clínica & EMR]
-        Billing[Facturación & Consentimientos]
-        Appts[Agenda & Citas Médicas]
+flowchart LR
+    subgraph "Sistema Madre AuraMed / AuraLead"
+        EMR["Historia Clínica & CRM"]
+        FollowUp["Motor de Seguimiento & Recompra"]
+        Alerts["Central de Alertas Clínicas"]
     end
 
-    subgraph "AuraTips (Microservicio Especializado)"
-        AssignAPI[Endpoint: /api/v1/followup/assign]
-        RAG[Asistente Clínico RAG con gte-small]
-        CarePortal[Centro del Paciente: Mis Cuidados Activos]
-        Guardrails[Triaje Preventivo de Emergencias Médicas]
+    subgraph "AuraTips (Microservicio Post-Procedimiento)"
+        AssignAPI["POST /api/v1/followup/assign"]
+        StatusAPI["GET /api/v1/followup/status/:externalPatientId"]
+        SpecPanel["Panel Especialista: Delegación de Protocolos"]
+        CarePortal["Portal Paciente: Protocolo Activo y Checklist"]
+        Guardrails["Triaje Preventivo RAG"]
     end
 
-    EMR -->|Evento: Tratamiento Realizado| AssignAPI
-    AssignAPI --> CarePortal
-    Guardrails -->|Webhook: Alerta de Alarma Crítica| EMR
+    EMR -->|"1. Notifica procedimiento realizado"| AssignAPI
+    AssignAPI --> SpecPanel
+    SpecPanel -->|"Activa protocolo por N días"| CarePortal
+    CarePortal -->|"2. Webhook: patient.protocol_completed"| FollowUp
+    EMR -->|"3. Consulta protocolo activo y checklist"| StatusAPI
+    Guardrails -->|"4. Webhook: patient.emergency_alert_triggered"| Alerts
 ```
 
-### Principios Clave:
-1. **No duplicidad:** El microservicio AuraTips no gestiona historias clínicas legales completas ni pasarelas de pago; su única responsabilidad es maximizar la adherencia al cuidado y la seguridad post-procedimiento.
-2. **Identidad federada:** El sistema madre comunica al paciente vía un identificador externo (`external_id`), correo o teléfono, sin requerir re-registro manual.
-3. **Canal bidireccional:** AuraTips recibe altas de tratamiento y devuelve al sistema madre métricas de adherencia diaria y alertas de urgencia médica en tiempo real.
+### Principios Clave
+1. **Separación de responsabilidades:** AuraTips gestiona exclusivamente el acompañamiento post-procedimiento activo y la adherencia diaria. El historial médico completo y la gestión comercial de recompra pertenecen al Sistema Madre de **AuraMed**.
+2. **Propiedad intelectual del protocolo:** Los protocolos clínicos de AuraMed tienen una vigencia definida (7, 14, 21 o 30 días). Una vez finalizado o caducado el periodo, el paciente conserva la constancia histórica del procedimiento realizado pero se revoca el acceso al contenido instructivo propietario.
+3. **Comunicación bidireccional firmada:** AuraMed notifica los procedimientos realizados y consulta el avance activo; AuraTips emite webhooks firmados con `HMAC-SHA256` cuando un protocolo concluye o cuando se detecta una señal de alarma médica en el chat.
 
 ---
 
-## 🔐 Seguridad y Autenticación
+## Seguridad y Autenticación
 
-Todas las solicitudes máquina a máquina (M2M) entre el sistema madre y AuraTips deben incluir un token secreto de servicio en la cabecera HTTP:
+### 1. Solicitudes entrantes (AuraMed → AuraTips)
+Todas las solicitudes máquina a máquina (M2M) hacia `/api/v1/followup/*` requieren el token secreto de servicio en la cabecera HTTP:
 
 ```http
 Authorization: Bearer <AURATIPS_SERVICE_SECRET>
 Content-Type: application/json
 ```
 
+### 2. Webhooks salientes (AuraTips → AuraMed)
+AuraTips envía peticiones `POST` hacia la URL configurada en `AURATIPS_WEBHOOK_URL` firmando el cuerpo JSON con `AURATIPS_SERVICE_SECRET`:
+
+```http
+Content-Type: application/json
+X-Auratips-Event: patient.protocol_completed | patient.emergency_alert_triggered
+X-Auratips-Signature: sha256=<hmac_sha256_hex>
+```
+
 ---
 
-## 📡 Endpoints del Contrato
+## Endpoints del Contrato
 
-### 1. Alta y Asignación de Procedimiento al Paciente
+### Caso A.1 — Notificación de Procedimiento Realizado (AuraMed → AuraTips)
 
-Permite al sistema madre activar el seguimiento post-procedimiento inmediatamente después de que la **Dra. Mariana Gómez** finaliza la aplicación en cabina.
+Permite a **AuraMed / AuraLead** notificar que un paciente acaba de finalizar un procedimiento en consultorio para que el especialista en AuraTips visualice la notificación y delegue operativamente el protocolo (o lo active de inmediato si se envía `"auto_activate": true`).
 
 * **Método:** `POST`
 * **Ruta:** `/api/v1/followup/assign`
@@ -61,21 +75,20 @@ Permite al sistema madre activar el seguimiento post-procedimiento inmediatament
 ```json
 {
   "patient": {
-    "external_id": "emr-pac-84920",
+    "external_id": "auramed-pac-84920",
     "full_name": "Ana Gómez",
     "email": "ana.gomez@ejemplo.com",
-    "phone": "+573001234567"
+    "phone": "+57 300 123 4567"
   },
   "procedure": {
     "slug": "toxina-botulinica-botox-facial",
-    "application_date": "2026-09-22T14:30:00Z",
-    "doctor_name": "Dra. Mariana Gómez",
-    "clinic_location": "Sede El Poblado - Consultorio 402",
-    "batch_number": "BTX-2026-09A",
-    "treatment_notes": "Aplicación de 50 UI en tercio superior facial."
+    "application_date": "2026-10-17T14:30:00Z",
+    "doctor_name": "Especialista AuraMed",
+    "clinic_location": "AuraMed Sede Principal",
+    "treatment_notes": "Aplicación en tercio superior facial."
   },
-  "initial_day": 0,
-  "generate_access_link": true
+  "auto_activate": false,
+  "expires_after_days": 14
 }
 ```
 
@@ -84,21 +97,58 @@ Permite al sistema madre activar el seguimiento post-procedimiento inmediatament
 ```json
 {
   "success": true,
-  "followup_id": "fol_93b2a8d1-7c4e",
+  "followup_id": "not_eb1f24fb",
   "patient_id": "eb1f24fb-a432-4881-b703-a921e95892b6",
-  "procedure_title": "Toxina Botulínica Facial Integral",
-  "current_day": 0,
-  "phase_tag": "Día 0",
-  "access_url": "https://auratips.aestheticacare.com/dashboard/learning?token=eyJh...jwt",
-  "whatsapp_welcome_message": "Hola Ana, la Dra. Mariana Gómez ha activado tu protocolo de recuperación en AuraTips. Accede a tus cuidados de hoy aquí: https://auratips.aestheticacare.com/..."
+  "external_id": "auramed-pac-84920",
+  "procedure_slug": "toxina-botulinica-botox-facial",
+  "procedure_title": "Toxina Botulínica (Botox Facial)",
+  "status": "pending_specialist_delegation",
+  "expires_after_days": 14,
+  "message": "Notificación de procedimiento recibida desde AuraMed. Lista para delegación por el especialista en AuraTips."
 }
 ```
 
 ---
 
-### 2. Consulta de Estado y Adherencia del Paciente
+### Caso A.2 — Webhook de Cierre / Caducidad del Protocolo (AuraTips → AuraMed)
 
-Permite al médico revisar en su software principal cómo va la recuperación del paciente antes de la cita de revisión de los 14 días.
+Cuando el protocolo activo del paciente cumple su ciclo de días (7, 14, 21 o 30 días) o es finalizado manualmente por el especialista en AuraTips, se emite este webhook hacia **AuraMed** indicando que el cuidado post-operatorio concluyó y el paciente está listo para seguimiento o recomendación de recompra.
+
+* **Evento:** `patient.protocol_completed`
+* **Headers:** `X-Auratips-Signature: sha256=...`
+
+#### Payload Emitido (`webhook body`):
+
+```json
+{
+  "event": "patient.protocol_completed",
+  "timestamp": "2026-10-31T14:30:00Z",
+  "patient": {
+    "id": "eb1f24fb-a432-4881-b703-a921e95892b6",
+    "external_id": "auramed-pac-84920",
+    "full_name": "Ana Gómez",
+    "email": "ana.gomez@ejemplo.com",
+    "phone": "+57 300 123 4567"
+  },
+  "procedure": {
+    "course_id": "c72e89bc-1234-4567-89ab-cdef01234567",
+    "slug": "toxina-botulinica-botox-facial",
+    "title": "Toxina Botulínica (Botox Facial)",
+    "category": "Rejuvenecimiento Facial",
+    "enrolled_at": "2026-10-17T14:30:00Z",
+    "completed_at": "2026-10-31T14:30:00Z",
+    "duration_days": 14
+  },
+  "closure_reason": "expired_automatically",
+  "next_action_hint": "ready_for_followup_or_repurchase"
+}
+```
+
+---
+
+### Caso B — Consulta de Estado del Protocolo Activo y Checklist (AuraMed → AuraTips)
+
+Permite a **AuraMed** consultar únicamente el estado del protocolo activo actual del paciente y su porcentaje de cumplimiento del checklist diario de cuidados (sin exponer historial clínico general).
 
 * **Método:** `GET`
 * **Ruta:** `/api/v1/followup/status/:externalPatientId`
@@ -108,61 +158,56 @@ Permite al médico revisar en su software principal cómo va la recuperación de
 
 ```json
 {
-  "external_id": "emr-pac-84920",
+  "external_id": "auramed-pac-84920",
+  "patient_id": "eb1f24fb-a432-4881-b703-a921e95892b6",
   "patient_name": "Ana Gómez",
-  "procedure_slug": "toxina-botulinica-botox-facial",
-  "doctor_name": "Dra. Mariana Gómez",
-  "current_day": 2,
-  "checklist_compliance_rate": "100%",
-  "checklist_history": [
-    { "day": 0, "completed": 3, "total": 3 },
-    { "day": 1, "completed": 4, "total": 4 },
-    { "day": 2, "completed": 2, "total": 3 }
-  ],
-  "emergency_alerts_triggered": 0,
-  "chat_queries_count": 4,
-  "last_query": "¿Es normal tener ligera inflamación hoy?",
-  "next_clinical_control_date": "2026-10-06"
-}
-```
-
----
-
-### 3. Webhook de Notificación de Urgencia (AuraTips → Sistema Madre)
-
-Si el paciente escribe en AuraTips un síntoma que activa el triaje crítico (ej: sospecha de isquemia vascular, necrosis o dolor desproporcionado), AuraTips emite inmediatamente un webhook HTTP POST al sistema madre de la clínica:
-
-* **Método:** `POST`
-* **URL:** Configurada en el sistema madre (`https://emr.clinicaprincipal.com/api/webhooks/auratips-alert`)
-* **Headers:** `X-Auratips-Signature: sha256=...`
-
-#### Payload emitido (`webhook body`):
-
-```json
-{
-  "event": "patient.emergency_alert_triggered",
-  "timestamp": "2026-09-22T17:15:30Z",
-  "patient": {
-    "external_id": "emr-pac-84920",
-    "full_name": "Ana Gómez",
-    "phone": "+573001234567"
+  "has_active_protocol": true,
+  "active_protocol": {
+    "course_id": "c72e89bc-1234-4567-89ab-cdef01234567",
+    "procedure_slug": "toxina-botulinica-botox-facial",
+    "procedure_title": "Toxina Botulínica (Botox Facial)",
+    "enrolled_at": "2026-10-17T14:30:00Z",
+    "current_day": 2,
+    "remaining_days": 12,
+    "expires_after_days": 14
   },
-  "procedure": "Relleno y Perfilado de Labios con Ácido Hialurónico",
-  "doctor": "Dra. Mariana Gómez",
-  "urgency_level": "CRITICAL_ISCHEMIA_SUSPECTED",
-  "user_message": "Tengo la piel blanca, fría y siento dolor punzante en el labio superior",
-  "automated_actions_taken": [
-    "Instrucción de suspender frío o masajes emitida al paciente",
-    "Botón directo de WhatsApp hacia Dra. Mariana Gómez presentado",
-    "Alerta prioritaria transmitida al sistema madre"
+  "checklist_compliance_rate": "83%",
+  "checklist_history": [
+    { "day": 0, "stage_title": "Primeras 4 a 6 horas críticas", "completed": 3, "total": 3 },
+    { "day": 1, "stage_title": "Primeras 24 a 72 horas", "completed": 2, "total": 3 }
   ]
 }
 ```
 
 ---
 
-## 🛠️ Plan de Implementación de la Integración (Fase Final)
+### Caso C — Webhook de Alerta de Urgencia Clínica (AuraTips → AuraMed)
 
-1. **Creación de Endpoint Handler:** `app/api/v1/followup/assign/route.ts` con validación de schema Zod y verificación de API Secret.
-2. **Módulo de Webhook Emitter:** `lib/integration/webhook-emitter.ts` con reintentos exponenciales y firma criptográfica HMAC-SHA256.
-3. **Generación de Enlaces Temporales:** Emisión de JWT / magic-links para que el paciente acceda desde WhatsApp directamente a su panel sin teclear contraseñas.
+Si el paciente reporta en el asistente clínico de AuraTips un síntoma que activa el triaje de emergencia (ej. sospecha de compromiso vascular, dolor severo o fiebre), AuraTips presenta al paciente el botón de WhatsApp prioritario hacia la clínica y emite en paralelo el siguiente webhook externo hacia **AuraMed**:
+
+* **Evento:** `patient.emergency_alert_triggered`
+* **Headers:** `X-Auratips-Signature: sha256=...`
+
+#### Payload Emitido (`webhook body`):
+
+```json
+{
+  "event": "patient.emergency_alert_triggered",
+  "timestamp": "2026-10-18T17:15:30Z",
+  "patient": {
+    "external_id": "auramed-pac-84920",
+    "full_name": "Ana Gómez",
+    "phone": "+57 300 123 4567"
+  },
+  "procedure_slug": "relleno-acido-hialuronico-labios",
+  "recovery_day": 1,
+  "urgency_level": "vascular_compromise",
+  "matched_categories": ["vascular_compromise"],
+  "user_message": "Tengo la piel blanca, fría y siento dolor intenso en el labio superior",
+  "automated_actions_taken": [
+    "Instrucción inmediata de reposo y no manipulación emitida al paciente",
+    "Canal directo de WhatsApp prioritario hacia AuraMed presentado en el chat",
+    "Webhook de alerta crítica transmitido al Sistema Madre de AuraMed"
+  ]
+}
+```
