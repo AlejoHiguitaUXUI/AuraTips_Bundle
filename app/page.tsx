@@ -24,14 +24,22 @@ import {
   PlusIcon,
   PencilIcon,
 } from "@/components/icons";
+import type { Metadata } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "AuraTips · Acompañamiento Clínico | AuraMed Grupo Estético",
+export const metadata: Metadata = {
+  title: {
+    absolute: "AuraTips · Cuidado y Recuperación Post-Procedimiento Estético | AuraMed",
+  },
   description:
-    "Portal clínico exclusivo de acompañamiento y seguimiento post-procedimiento estético bajo la supervisión médica de AuraMed Grupo Estético.",
+    "Portal clínico exclusivo de acompañamiento, cronogramas de desinflamación y seguimiento post-procedimiento estético bajo la supervisión médica de la Dra. Mariana Gómez en AuraMed.",
+  alternates: {
+    canonical: "/",
+  },
 };
+
 
 interface HomePageProps {
   searchParams?: Promise<{ demo?: string; category?: string }>;
@@ -795,8 +803,49 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   // 3. CASO VISITANTE (NO AUTENTICADO):
   // Renderizar la landing pública sobria de AuraTips
+  const siteUrl = getSiteUrl();
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "MedicalClinic",
+        "@id": `${siteUrl}/#clinic`,
+        name: "AuraTips · By AuraMed Grupo Estético",
+        url: siteUrl,
+        image: `${siteUrl}/opengraph-image`,
+        logo: `${siteUrl}/icon`,
+        description:
+          "Portal clínico de acompañamiento y protocolos de recuperación post-procedimiento estético bajo supervisión médica en Medellín, Colombia.",
+        medicalSpecialty: ["Dermatology", "PlasticSurgery"],
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Medellín",
+          addressRegion: "Antioquia",
+          addressCountry: "CO",
+        },
+        founder: {
+          "@id": `${siteUrl}/#physician`,
+        },
+      },
+      {
+        "@type": "Physician",
+        "@id": `${siteUrl}/#physician`,
+        name: "Dra. Mariana Gómez",
+        jobTitle: "Médica Especialista en Medicina Estética Facial y Corporal",
+        identifier: "RM-482910-ANT",
+        worksFor: {
+          "@id": `${siteUrl}/#clinic`,
+        },
+      },
+    ],
+  };
+
   return (
     <div className="animate-fade-in" style={{ paddingBottom: "var(--space-12)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
+      />
       {/* Hero Principal Editorial con Arcos de Procedimientos y Acceso a Cuidados */}
       <EditorialHero />
 
@@ -805,3 +854,4 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     </div>
   );
 }
+

@@ -64,7 +64,7 @@ export function SiteFooter() {
 
           {/* Columna 2: Procedimientos Clave */}
           <div>
-            <h4
+            <h2
               style={{
                 fontSize: "12px",
                 fontWeight: 700,
@@ -75,7 +75,7 @@ export function SiteFooter() {
               }}
             >
               Procedimientos Médicos
-            </h4>
+            </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
               <li>
                 <Link href="/procedimientos?proc=toxina-botulinica-botox-facial" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
@@ -102,7 +102,7 @@ export function SiteFooter() {
 
           {/* Columna 3: Centro del Paciente */}
           <div>
-            <h4
+            <h2
               style={{
                 fontSize: "12px",
                 fontWeight: 700,
@@ -113,7 +113,7 @@ export function SiteFooter() {
               }}
             >
               Centro del Paciente
-            </h4>
+            </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
               <li>
                 <Link href="/dashboard/learning" style={{ color: "var(--color-muted)", textDecoration: "none" }}>
@@ -140,7 +140,7 @@ export function SiteFooter() {
 
           {/* Columna 4: Acompañamiento Médico */}
           <div>
-            <h4
+            <h2
               style={{
                 fontSize: "12px",
                 fontWeight: 700,
@@ -151,7 +151,8 @@ export function SiteFooter() {
               }}
             >
               Atención y Soporte
-            </h4>
+            </h2>
+
             <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "12px" }}>
               <StethoscopeIcon size={16} color="var(--color-brand)" style={{ marginTop: "2px", flexShrink: 0 }} />
               <div style={{ fontSize: "13px", lineHeight: 1.4 }}>

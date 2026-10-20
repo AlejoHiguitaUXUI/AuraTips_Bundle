@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
@@ -6,6 +7,7 @@ import { filterCourses, getPublishedCourses } from "@/lib/queries";
 import { ClinicalPill } from "@/components/ClinicalPill";
 import { getClinicalRole } from "@/lib/auth-role";
 import { ProcedureCatalog, ProcedureItem } from "@/components/ProcedureCatalog";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   LeafIcon,
   ActivityIcon,
@@ -15,19 +17,91 @@ import {
   MessageCircleIcon,
 } from "@/components/icons";
 
-export const metadata = {
-  title: "Conoce otros procedimientos · AuraMed Grupo Estético & AuraTips",
-  description:
-    "Descubre los tratamientos médicos de vanguardia de AuraMed: beneficios estéticos, tiempos de reposo esperados y pautas informativas bajo supervisión médica.",
+type ProcedimientosPageProps = {
+  searchParams?: Promise<{ category?: string; proc?: string; selected?: string }>;
 };
+
+export async function generateMetadata({
+  searchParams,
+}: ProcedimientosPageProps): Promise<Metadata> {
+  const resolvedParams = searchParams ? await searchParams : {};
+  const procSlug = resolvedParams.proc || resolvedParams.selected;
+
+  if (procSlug) {
+    const localProc = getProcedureBySlug(procSlug);
+    let title = localProc?.title;
+    let description = localProc?.description;
+    let coverUrl = localProc?.cover_url;
+    let canonicalSlug = localProc?.slug || procSlug;
+
+    if (!localProc) {
+      try {
+        const supabase = await createClient();
+        const { data } = await supabase
+          .from("courses")
+          .select("title, description, cover_url, slug")
+          .eq("slug", procSlug)
+          .maybeSingle();
+        if (data) {
+          title = data.title;
+          description = data.description ?? undefined;
+          coverUrl = data.cover_url ?? undefined;
+          canonicalSlug = data.slug;
+        }
+
+      } catch {
+        // fallback
+      }
+    }
+
+    if (title) {
+      const cleanDesc =
+        description && description.length >= 50
+          ? description.slice(0, 160)
+          : `Ficha clínica informativa, tiempos de recuperación y cuidados post-tratamiento de ${title} en AuraMed por la Dra. Mariana Gómez.`;
+
+      return {
+        title: `${title} · Cuidados y Recuperación | AuraMed`,
+        description: cleanDesc,
+        alternates: {
+          canonical: `/procedimientos?proc=${encodeURIComponent(canonicalSlug)}`,
+        },
+        openGraph: {
+          title: `${title} · AuraMed & AuraTips`,
+          description: cleanDesc,
+          url: `/procedimientos?proc=${encodeURIComponent(canonicalSlug)}`,
+          images: coverUrl
+            ? [{ url: coverUrl, width: 1200, height: 630, alt: title }]
+            : [{ url: "/opengraph-image", width: 1200, height: 630, alt: title }],
+        },
+      };
+    }
+  }
+
+  return {
+    title: "Procedimientos de Medicina Estética · AuraMed Grupo Estético",
+    description:
+      "Descubre los tratamientos médicos de vanguardia de AuraMed: beneficios estéticos, tiempos de reposo esperados y pautas informativas bajo supervisión de la Dra. Mariana Gómez.",
+    alternates: {
+      canonical: "/procedimientos",
+    },
+    openGraph: {
+      title: "Procedimientos de Medicina Estética · AuraMed & AuraTips",
+      description:
+        "Explora nuestros tratamientos estéticos faciales, corporales y capilares con tiempos de recuperación y supervisión médica especializada.",
+      url: "/procedimientos",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    },
+  };
+}
 
 export default async function ProcedimientosPage({
   searchParams,
-}: {
-  searchParams?: Promise<{ category?: string; proc?: string }>;
-}) {
+}: ProcedimientosPageProps) {
   const resolvedParams = searchParams ? await searchParams : {};
   const currentCategory = resolvedParams.category || "Todos";
+  const initialSelectedSlug = resolvedParams.proc || resolvedParams.selected || undefined;
+
 
   let dbCourses: any[] | null = null;
   let isSpecialist = false;
@@ -107,8 +181,71 @@ export default async function ProcedimientosPage({
     { name: "Capilar", icon: <LeafIcon size={16} /> },
   ];
 
+  const siteUrl = getSiteUrl();
+  const activeProc = initialSelectedSlug
+    ? procedures.find(
+        (p) => p.slug.toLowerCase() === initialSelectedSlug.toLowerCase()
+      )
+    : undefined;
+
+  const catalogJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      ...(activeProc
+        ? [
+            {
+              "@type": "MedicalProcedure",
+              "@id": `${siteUrl}/procedimientos?proc=${encodeURIComponent(activeProc.slug)}#procedure`,
+              name: activeProc.title,
+              description: activeProc.description,
+              image: activeProc.cover_url.startsWith("http")
+                ? activeProc.cover_url
+                : `${siteUrl}${activeProc.cover_url}`,
+              procedureType: "https://schema.org/TherapeuticProcedure",
+              bodyLocation: activeProc.category,
+              followup: activeProc.recovery_time,
+              performer: {
+                "@type": "Physician",
+                name: activeProc.author_name || "Dra. Mariana Gómez",
+                jobTitle: "Médica Especialista en Medicina Estética",
+              },
+              publisher: {
+                "@type": "MedicalClinic",
+                name: "AuraTips · By AuraMed Grupo Estético",
+                url: siteUrl,
+              },
+            },
+          ]
+        : []),
+      {
+        "@type": "ItemList",
+        name: "Catálogo de Procedimientos de Medicina Estética — AuraMed",
+        numberOfItems: procedures.length,
+        itemListElement: procedures.map((proc, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          url: `${siteUrl}/procedimientos?proc=${encodeURIComponent(proc.slug)}`,
+          item: {
+            "@type": "MedicalProcedure",
+            name: proc.title,
+            description: proc.description,
+            image: proc.cover_url.startsWith("http")
+              ? proc.cover_url
+              : `${siteUrl}${proc.cover_url}`,
+            procedureType: "https://schema.org/TherapeuticProcedure",
+            followup: proc.recovery_time,
+          },
+        })),
+      },
+    ],
+  };
+
   return (
     <div className="animate-fade-in" style={{ paddingBottom: "var(--space-12)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogJsonLd) }}
+      />
       {/* Encabezado Editorial "Conoce otros procedimientos" (Con Vidrio Esmerilado Frosted Glass & Alto Contraste) */}
       <section
         className="glass-panel"
@@ -134,6 +271,9 @@ export default async function ProcedimientosPage({
             }}
           >
             Conoce otros procedimientos
+            <span className="sr-only">
+              {" "}— Tratamientos de Medicina Estética Facial, Corporal y Capilar en AuraMed
+            </span>
           </h1>
 
           <p
@@ -252,9 +392,11 @@ export default async function ProcedimientosPage({
           <ProcedureCatalog
             procedures={filteredProcedures}
             isSpecialist={isSpecialist}
+            initialSelectedSlug={initialSelectedSlug}
           />
         </Suspense>
       )}
     </div>
   );
 }
+

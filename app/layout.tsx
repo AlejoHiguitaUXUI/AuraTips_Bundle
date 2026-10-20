@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { GlobalAurora } from "@/components/GlobalAurora";
 import { ScrollEnhancements } from "@/components/ScrollEnhancements";
+import { getSiteUrl } from "@/lib/site-url";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,21 +25,42 @@ const jetbrainsMono = JetBrains_Mono({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
     template: "%s · AuraTips",
   },
   description:
-    "Acompañamiento clínico integral y protocolos de recuperación post-procedimiento estético por la Dra. Mariana Gómez. Cuidado médico experto, cálido y personalizado.",
+    "Acompañamiento clínico integral y protocolos de recuperación post-procedimiento estético por la Dra. Mariana Gómez. Cuidado médico experto, cálido y personalizado en Medellín.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "es_CO",
+    url: "/",
     siteName: "AuraTips · Acompañamiento Clínico de Recuperación",
     title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
     description:
       "Protocolos guiados de recuperación post-tratamiento estético, tiempos de desinflamación y pautas médicas supervisadas por la Dra. Mariana Gómez.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "AuraTips · Acompañamiento Clínico de Recuperación — Dra. Mariana Gómez",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AuraTips · Acompañamiento Clínico de Recuperación | Dra. Mariana Gómez",
+    description:
+      "Protocolos guiados de recuperación post-tratamiento estético y supervisión médica por la Dra. Mariana Gómez en AuraMed.",
+    images: ["/opengraph-image"],
   },
 };
+
 
 export default function RootLayout({
   children,

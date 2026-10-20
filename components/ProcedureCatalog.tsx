@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
   ClockIcon,
@@ -23,15 +24,24 @@ export interface ProcedureItem extends ProcedureModalData {
 interface ProcedureCatalogProps {
   procedures: ProcedureItem[];
   isSpecialist?: boolean;
+  initialSelectedSlug?: string;
 }
 
 export function ProcedureCatalog({
   procedures,
   isSpecialist = false,
+  initialSelectedSlug,
 }: ProcedureCatalogProps) {
   const searchParams = useSearchParams();
   const [selectedProcedure, setSelectedProcedure] =
-    useState<ProcedureItem | null>(null);
+    useState<ProcedureItem | null>(() => {
+      if (!initialSelectedSlug) return null;
+      return (
+        procedures.find(
+          (p) => p.slug.toLowerCase() === initialSelectedSlug.toLowerCase()
+        ) ?? null
+      );
+    });
 
   // Soporte para abrir el modal automáticamente si viene ?proc=slug en la URL
   useEffect(() => {
@@ -66,7 +76,7 @@ export function ProcedureCatalog({
           gap: "var(--space-6, 24px)",
         }}
       >
-        {procedures.map((proc) => {
+        {procedures.map((proc, index) => {
           const painMeter =
             "●".repeat(proc.pain_level) + "○".repeat(5 - proc.pain_level);
 
@@ -88,12 +98,14 @@ export function ProcedureCatalog({
                 className="procedure-thumb-wrap"
                 style={{ position: "relative", height: "200px" }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={proc.cover_url}
-                  alt={proc.title}
+                  alt={`${proc.title} — Procedimiento médico estético en AuraMed`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                   className="procedure-thumb"
-                  loading="lazy"
+                  style={{ objectFit: "cover" }}
+                  priority={index < 3}
                 />
                 <span className="procedure-category-tag">{proc.category}</span>
               </div>
@@ -120,12 +132,18 @@ export function ProcedureCatalog({
                   }}
                 >
                   <Link
-                    href={`/procedimientos/${proc.slug}`}
+                    href={`/procedimientos?proc=${encodeURIComponent(proc.slug)}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleOpenModal(proc);
+                    }}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     {proc.title}
                   </Link>
                 </h2>
+
 
                 {/* Descripción completa del procedimiento */}
                 <p

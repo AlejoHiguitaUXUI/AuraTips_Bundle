@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Image from "next/image";
 import {
   XIcon,
   ClockIcon,
@@ -128,13 +129,12 @@ export function ProcedureInfoModal({
             borderTopRightRadius: "inherit",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={procedure.cover_url}
-            alt={procedure.title}
+            alt={`Ficha informativa: ${procedure.title}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 680px"
             style={{
-              width: "100%",
-              height: "100%",
               objectFit: "cover",
             }}
           />

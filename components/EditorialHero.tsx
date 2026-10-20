@@ -229,6 +229,9 @@ export function EditorialHero() {
           <span>Cuidado</span>
           <span className="editorial-hero-amp" aria-hidden="true">&</span>
           <span>Recuperación</span>
+          <span className="sr-only">
+            {" "}Post-Procedimiento Estético en Medellín · Dra. Mariana Gómez (AuraMed)
+          </span>
         </h1>
 
         {/* Subencabezados Balanceados */}
@@ -308,18 +311,15 @@ export function EditorialHero() {
                       src={proc.image}
                       alt={proc.alt}
                       fill
-                      sizes="(max-width: 768px) 360px, (max-width: 1200px) 480px, 600px"
-                      quality={100}
+                      sizes="(max-width: 768px) 320px, (max-width: 1200px) 420px, 520px"
+                      quality={82}
                       draggable={false}
                       className="editorial-arch-img"
-                      // Solo 12 fotos: se cargan todas de inmediato para que ninguna
-                      // tarjeta entre al carrusel vacía. La prioridad es estática
-                      // (slides visibles al cargar) para no re-renderizar atributos en cada giro.
-                      priority={index <= 2 || index >= len - 2}
-                      loading={index <= 2 || index >= len - 2 ? undefined : "eager"}
+                      priority={index <= 1 || index === len - 1}
                     />
                     <div className="editorial-arch-overlay" aria-hidden="true" />
                   </div>
+
 
                   <div className="editorial-arch-badge">
                     <span className="editorial-arch-badge-name">{proc.name}</span>

@@ -10,7 +10,9 @@ import { AssignPatientProtocolModal } from "@/components/AssignPatientProtocolMo
 import { ReviewList } from "@/components/ReviewList";
 import { ReviewForm } from "@/components/ReviewForm";
 import { CLINICAL_PROCEDURES } from "@/lib/clinical-data";
+import { getSiteUrl } from "@/lib/site-url";
 import {
+
   ClockIcon,
   SyringeIcon,
   ShieldAlertIcon,
@@ -260,7 +262,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           description,
           images: data.cover_url
             ? [{ url: data.cover_url, width: 1200, height: 630 }]
-            : [{ url: "/og/default.png", width: 1200, height: 630 }],
+            : [{ url: "/opengraph-image", width: 1200, height: 630 }],
         },
         alternates: {
           canonical: `/procedimientos/${data.slug}`,
@@ -285,7 +287,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title: `${clinicalProc.title} · AuraTips`,
         description,
-        images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+        images: clinicalProc.cover_url
+          ? [{ url: clinicalProc.cover_url, width: 1200, height: 630 }]
+          : [{ url: "/opengraph-image", width: 1200, height: 630 }],
       },
       alternates: {
         canonical: `/procedimientos/${clinicalProc.slug}`,
@@ -302,16 +306,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // ─── JSON-LD ──────────────────────────────────────────────────────────────────
 
 function ProcedureJsonLd({ course }: { course: UnifiedCourse }) {
+  const siteUrl = getSiteUrl();
+  const imageUrl = course.cover_url
+    ? course.cover_url.startsWith("http")
+      ? course.cover_url
+      : `${siteUrl}${course.cover_url}`
+    : `${siteUrl}/opengraph-image`;
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "MedicalProcedure",
     name: course.title,
     description: course.description ?? undefined,
-    image: course.cover_url ?? undefined,
+    image: imageUrl,
     // S7: procedureType con URL estándar de schema.org para maximizar rich snippets
     procedureType: "https://schema.org/TherapeuticProcedure",
-    // Categoría libre accesible como additionalType
-    additionalType: `https://schema.org/${encodeURIComponent(course.category)}`,
+    bodyLocation: course.category,
     followup: course.recovery_time,
     performer: course.author?.display_name
       ? {
@@ -322,11 +332,11 @@ function ProcedureJsonLd({ course }: { course: UnifiedCourse }) {
       : undefined,
     publisher: {
       "@type": "Organization",
-      name: "AuraTips",
-      url: "https://auratips.com",
+      name: "AuraTips · By AuraMed Grupo Estético",
+      url: siteUrl,
       logo: {
         "@type": "ImageObject",
-        url: "https://auratips.com/logo.png",
+        url: `${siteUrl}/icon`,
       },
     },
   };
@@ -338,6 +348,7 @@ function ProcedureJsonLd({ course }: { course: UnifiedCourse }) {
     />
   );
 }
+
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
